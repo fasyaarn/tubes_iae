@@ -1,0 +1,662 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EduBrain - Attendance Tracking</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-gradient: linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%);
+            --panel-bg: rgba(30, 41, 59, 0.7);
+            --panel-border: rgba(255, 255, 255, 0.08);
+            --text-primary: #f8fafc;
+            --text-secondary: #94a3b8;
+            --accent: #6366f1;
+            --accent-hover: #4f46e5;
+            --success: #10b981;
+            --danger: #ef4444;
+            --warning: #f59e0b;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Outfit', sans-serif;
+        }
+
+        body {
+            background: var(--bg-gradient);
+            color: var(--text-primary);
+            min-height: 100vh;
+            padding: 2rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1100px;
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: var(--panel-bg);
+            border: 1px solid var(--panel-border);
+            padding: 1.5rem 2rem;
+            border-radius: 16px;
+            backdrop-filter: blur(12px);
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            background: linear-gradient(to right, #818cf8, #c084fc);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .btn {
+            padding: 0.6rem 1.2rem;
+            border-radius: 8px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-decoration: none;
+            border: none;
+            font-size: 0.9rem;
+        }
+
+        .btn-primary {
+            background: var(--accent);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: var(--accent-hover);
+            transform: translateY(-1px);
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--text-primary);
+            border: 1px solid var(--panel-border);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .btn-danger {
+            background: rgba(239, 68, 68, 0.2);
+            color: #fca5a5;
+            border: 1px solid rgba(239, 68, 68, 0.3);
+        }
+
+        .btn-danger:hover {
+            background: var(--danger);
+            color: white;
+        }
+
+        .user-badge {
+            background: rgba(99, 102, 241, 0.15);
+            border: 1px solid rgba(99, 102, 241, 0.3);
+            color: #a5b4fc;
+            padding: 0.4rem 1rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 500;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 2rem;
+        }
+
+        @media (min-width: 768px) {
+            .grid {
+                grid-template-columns: 1fr 2fr;
+            }
+        }
+
+        .card {
+            background: var(--panel-bg);
+            border: 1px solid var(--panel-border);
+            border-radius: 16px;
+            padding: 2rem;
+            backdrop-filter: blur(12px);
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .card-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #e2e8f0;
+            border-bottom: 1px solid var(--panel-border);
+            padding-bottom: 0.75rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        label {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+
+        input, textarea, select {
+            background: rgba(15, 23, 42, 0.6);
+            border: 1px solid var(--panel-border);
+            border-radius: 8px;
+            padding: 0.75rem 1rem;
+            color: white;
+            font-size: 0.95rem;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        input:focus, textarea:focus, select:focus {
+            border-color: var(--accent);
+        }
+
+        select option {
+            background: #1e293b;
+            color: white;
+        }
+
+        .table-container {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+        }
+
+        th {
+            color: var(--text-secondary);
+            font-weight: 600;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            padding: 1rem;
+            border-bottom: 2px solid var(--panel-border);
+        }
+
+        td {
+            padding: 1rem;
+            border-bottom: 1px solid var(--panel-border);
+            font-size: 0.95rem;
+            color: #cbd5e1;
+        }
+
+        tr:hover td {
+            background: rgba(255, 255, 255, 0.02);
+        }
+
+        .action-btns {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .status-badge {
+            padding: 0.25rem 0.6rem;
+            border-radius: 6px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-transform: capitalize;
+            display: inline-block;
+        }
+        .status-present {
+            background: rgba(16, 185, 129, 0.15);
+            color: #a7f3d0;
+            border: 1px solid rgba(16, 185, 129, 0.3);
+        }
+        .status-absent {
+            background: rgba(239, 68, 68, 0.15);
+            color: #fca5a5;
+            border: 1px solid rgba(239, 68, 68, 0.3);
+        }
+        .status-late {
+            background: rgba(245, 158, 11, 0.15);
+            color: #fde68a;
+            border: 1px solid rgba(245, 158, 11, 0.3);
+        }
+
+        .alert {
+            padding: 1rem;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            display: none;
+        }
+        .alert-error {
+            background: rgba(239, 68, 68, 0.15);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            color: #fca5a5;
+        }
+        .alert-success {
+            background: rgba(16, 185, 129, 0.15);
+            border: 1px solid rgba(16, 185, 129, 0.3);
+            color: #a7f3d0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="logo">
+                <span>⏰</span> EduBrain Attendance
+            </div>
+            <div class="nav-links">
+                <a href="/" class="btn btn-secondary">Portal Gateway</a>
+                <span id="user-badge" class="user-badge">Checking Auth...</span>
+                <button onclick="logout()" class="btn btn-danger btn-sm">Logout</button>
+            </div>
+        </header>
+
+        <div id="alert-box" class="alert"></div>
+
+        <div class="grid">
+            <!-- Mark Attendance Form -->
+            <div class="card" id="form-card">
+                <div class="card-title" id="form-title">Mark Attendance</div>
+                <form id="attendance-form" onsubmit="handleFormSubmit(event)">
+                    <input type="hidden" id="record-id">
+
+                    <!-- Admin selects student, student is auto-selected -->
+                    <div class="form-group" id="student-select-group" style="display: none;">
+                        <label for="student-select">Select Student</label>
+                        <select id="student-select">
+                            <option value="">-- Choose Student --</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="course-select">Select Course</label>
+                        <select id="course-select" required>
+                            <option value="">-- Choose Course --</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="date-input">Attendance Date</label>
+                        <input type="date" id="date-input" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="status-select">Status</label>
+                        <select id="status-select" required>
+                            <option value="present">Present</option>
+                            <option value="absent">Absent</option>
+                            <option value="late">Late</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="notes-input">Notes (Optional)</label>
+                        <textarea id="notes-input" rows="2" placeholder="e.g. sick with doctor note..."></textarea>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary" style="margin-top: 1rem; width: 100%;">Record Attendance</button>
+                </form>
+            </div>
+
+            <!-- Attendance Logs -->
+            <div class="card">
+                <div class="card-title">Attendance History Logs</div>
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Student</th>
+                                <th>Course Title</th>
+                                <th>Date</th>
+                                <th>Status</th>
+                                <th>Notes</th>
+                                <th class="admin-actions" style="display: none;">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="attendance-list-body">
+                            <tr>
+                                <td colspan="6" style="text-align: center; color: var(--text-secondary);">Loading logs...</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const GRAPHQL_URL = '/attendance/graphql';
+
+        const token = localStorage.getItem('token');
+        const userStr = localStorage.getItem('user');
+        let currentUser = null;
+
+        // Date input defaults to today
+        document.getElementById('date-input').valueAsDate = new Date();
+
+        if (!token || !userStr) {
+            window.location.href = '/auth';
+        } else {
+            currentUser = JSON.parse(userStr);
+            document.getElementById('user-badge').textContent = `${currentUser.name} (${currentUser.role})`;
+            
+            if (currentUser.role === 'admin') {
+                document.getElementById('student-select-group').style.display = 'flex';
+                document.getElementById('student-select').setAttribute('required', 'true');
+            }
+        }
+
+        function logout() {
+            localStorage.clear();
+            window.location.href = '/auth';
+        }
+
+        function showAlert(message, type = 'success') {
+            const alertBox = document.getElementById('alert-box');
+            alertBox.className = `alert alert-${type}`;
+            alertBox.textContent = message;
+            alertBox.style.display = 'block';
+            setTimeout(() => {
+                alertBox.style.display = 'none';
+            }, 6000);
+        }
+
+        async function fetchGraphQL(url, query, variables = {}) {
+            try {
+                const response = await fetch(url, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify({ query, variables })
+                });
+                const result = await response.json();
+                if (result.errors) {
+                    throw new Error(result.errors[0].message);
+                }
+                return result.data;
+            } catch (err) {
+                showAlert(err.message, 'error');
+                console.error(err);
+            }
+        }
+
+        // Load courses select. If student: load only their registered courses. If admin: load all courses.
+        async function loadCoursesDropdown() {
+            if (currentUser.role === 'admin') {
+                const query = `query { courses { id title } }`;
+                const data = await fetchGraphQL('/courses/graphql', query);
+                if (!data) return;
+                
+                const select = document.getElementById('course-select');
+                data.courses.forEach(c => {
+                    const opt = document.createElement('option');
+                    opt.value = c.id;
+                    opt.textContent = c.title;
+                    select.appendChild(opt);
+                });
+            } else {
+                // Fetch student's enrollments to determine eligible courses
+                const query = `
+                    query GetOwnEnrollments($student_id: ID!) {
+                        studentEnrollments(student_id: $student_id) {
+                            course_id
+                            course {
+                                title
+                            }
+                        }
+                    }
+                `;
+                const data = await fetchGraphQL('/enrollments/graphql', query, { student_id: currentUser.id });
+                if (!data) return;
+
+                const select = document.getElementById('course-select');
+                data.studentEnrollments.forEach(e => {
+                    if (e.course) {
+                        const opt = document.createElement('option');
+                        opt.value = e.course_id;
+                        opt.textContent = e.course.title;
+                        select.appendChild(opt);
+                    }
+                });
+            }
+        }
+
+        // Load students dropdown (Admin only)
+        async function loadStudentsDropdown() {
+            if (currentUser.role !== 'admin') return;
+            const query = `query { students { id name } }`;
+            const data = await fetchGraphQL('/students/graphql', query);
+            if (!data) return;
+
+            const select = document.getElementById('student-select');
+            data.students.forEach(s => {
+                const opt = document.createElement('option');
+                opt.value = s.id;
+                opt.textContent = s.name;
+                select.appendChild(opt);
+            });
+        }
+
+        // Load History logs
+        async function loadLogs() {
+            let query;
+            let variables = {};
+
+            if (currentUser.role === 'admin') {
+                query = `
+                    query {
+                        attendanceLogs {
+                            id
+                            student_id
+                            course_id
+                            date
+                            status
+                            notes
+                            student {
+                                name
+                            }
+                            course {
+                                title
+                            }
+                        }
+                    }
+                `;
+            } else {
+                query = `
+                    query GetOwnAttendance($student_id: ID!) {
+                        studentAttendance(student_id: $student_id) {
+                            id
+                            student_id
+                            course_id
+                            date
+                            status
+                            notes
+                            student {
+                                name
+                            }
+                            course {
+                                title
+                            }
+                        }
+                    }
+                `;
+                variables = { student_id: currentUser.id };
+            }
+
+            const data = await fetchGraphQL(GRAPHQL_URL, query, variables);
+            if (!data) return;
+
+            const list = currentUser.role === 'admin' ? data.attendanceLogs : data.studentAttendance;
+            const tbody = document.getElementById('attendance-list-body');
+            tbody.innerHTML = '';
+
+            const isAdmin = currentUser.role === 'admin';
+            document.querySelectorAll('.admin-actions').forEach(el => el.style.display = isAdmin ? 'table-cell' : 'none');
+
+            if (list.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="6" style="text-align: center; color: var(--text-secondary);">No attendance recorded.</td></tr>`;
+                return;
+            }
+
+            list.forEach(a => {
+                const studentName = a.student ? a.student.name : `Student #${a.student_id}`;
+                const courseTitle = a.course ? a.course.title : `Course #${a.course_id}`;
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td style="font-weight: 500; color: #fff;">${studentName}</td>
+                    <td>${courseTitle}</td>
+                    <td>${a.date}</td>
+                    <td><span class="status-badge status-${a.status}">${a.status}</span></td>
+                    <td style="font-size: 0.85rem; color: var(--text-secondary);">${a.notes || '-'}</td>
+                    ${isAdmin ? `
+                        <td class="admin-actions">
+                            <div class="action-btns">
+                                <button onclick="editRecord(${JSON.stringify(a).replace(/"/g, '&quot;')})" class="btn btn-secondary btn-sm" style="padding: 0.3rem 0.6rem; font-size: 0.8rem;">Edit</button>
+                                <button onclick="deleteRecord(${a.id})" class="btn btn-danger btn-sm" style="padding: 0.3rem 0.6rem; font-size: 0.8rem;">Delete</button>
+                            </div>
+                        </td>
+                    ` : ''}
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        // Form Resets
+        function resetForm() {
+            document.getElementById('attendance-form').reset();
+            document.getElementById('record-id').value = '';
+            document.getElementById('form-title').textContent = 'Mark Attendance';
+            document.getElementById('date-input').valueAsDate = new Date();
+            if (currentUser.role === 'admin') {
+                document.getElementById('student-select').disabled = false;
+            }
+            document.getElementById('course-select').disabled = false;
+            document.getElementById('date-input').disabled = false;
+        }
+
+        // Populate Edit Form (Admin only)
+        function editRecord(a) {
+            document.getElementById('record-id').value = a.id;
+            if (currentUser.role === 'admin') {
+                document.getElementById('student-select').value = a.student_id;
+                document.getElementById('student-select').disabled = true;
+            }
+            document.getElementById('course-select').value = a.course_id;
+            document.getElementById('course-select').disabled = true;
+            document.getElementById('date-input').value = a.date;
+            document.getElementById('date-input').disabled = true;
+
+            document.getElementById('status-select').value = a.status;
+            document.getElementById('notes-input').value = a.notes || '';
+            document.getElementById('form-title').textContent = `Edit Attendance Log #${a.id}`;
+        }
+
+        // Form Submit handler
+        async function handleFormSubmit(event) {
+            event.preventDefault();
+            const id = document.getElementById('record-id').value;
+            const status = document.getElementById('status-select').value;
+            const notes = document.getElementById('notes-input').value;
+
+            if (id) {
+                // Update
+                const mutation = `
+                    mutation UpdateAttendance($id: ID!, $status: String!, $notes: String) {
+                        updateAttendanceStatus(id: $id, status: $status, notes: $notes) {
+                            id
+                        }
+                    }
+                `;
+                const data = await fetchGraphQL(GRAPHQL_URL, mutation, { id, status, notes });
+                if (data) {
+                    showAlert('Attendance log updated successfully!');
+                    resetForm();
+                    loadLogs();
+                }
+            } else {
+                // Create
+                const student_id = currentUser.role === 'admin'
+                    ? document.getElementById('student-select').value
+                    : currentUser.id;
+                const course_id = document.getElementById('course-select').value;
+                const date = document.getElementById('date-input').value;
+
+                if (!student_id || !course_id || !date) {
+                    showAlert('Please fill in all required fields', 'error');
+                    return;
+                }
+
+                const mutation = `
+                    mutation MarkAttendance($student_id: ID!, $course_id: ID!, $date: String!, $status: String, $notes: String) {
+                        markAttendance(student_id: $student_id, course_id: $course_id, date: $date, status: $status, notes: $notes) {
+                            id
+                        }
+                    }
+                `;
+                const variables = { student_id, course_id, date, status, notes };
+                const data = await fetchGraphQL(GRAPHQL_URL, mutation, variables);
+                if (data) {
+                    showAlert('Attendance marked successfully!');
+                    resetForm();
+                    loadLogs();
+                }
+            }
+        }
+
+        // Delete record
+        async function deleteRecord(id) {
+            if (!confirm('Are you sure you want to delete this log?')) return;
+            const mutation = `
+                mutation DeleteAttendance($id: ID!) {
+                    deleteAttendance(id: $id)
+                }
+            `;
+            const data = await fetchGraphQL(GRAPHQL_URL, mutation, { id });
+            if (data && data.deleteAttendance) {
+                showAlert('Attendance log deleted.');
+                loadLogs();
+            }
+        }
+
+        // Init
+        async function init() {
+            await loadCoursesDropdown();
+            await loadStudentsDropdown();
+            await loadLogs();
+        }
+
+        init();
+    </script>
+</body>
+</html>

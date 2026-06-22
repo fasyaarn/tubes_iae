@@ -1,0 +1,93 @@
+version: '3.8'
+
+services:
+  gateway:
+    build:
+      context: ./gateway/backend
+      dockerfile: Dockerfile
+    container_name: edubrain-gateway
+    ports:
+      - "5000:5000"
+    environment:
+      - PORT=5000
+      - AUTH_SERVICE_URL=http://auth:5001
+      - STUDENTS_SERVICE_URL=http://students:5002
+      - COURSES_SERVICE_URL=http://courses:5003
+      - ENROLLMENTS_SERVICE_URL=http://enrollments:5004
+      - ATTENDANCE_SERVICE_URL=http://attendance:5005
+      - ARTICLES_SERVICE_URL=http://articles:5006
+    depends_on:
+      - auth
+      - students
+      - courses
+      - enrollments
+      - attendance
+      - articles
+
+  auth:
+    build:
+      context: ./auth/backend
+      dockerfile: Dockerfile
+    container_name: edubrain-auth
+    ports:
+      - "5001:5001"
+    environment:
+      - AUTH_PORT=5001
+      - STUDENTS_SERVICE_URL=http://students:5002/graphql
+
+  students:
+    build:
+      context: ./students/backend
+      dockerfile: Dockerfile
+    container_name: edubrain-students
+    ports:
+      - "5002:5002"
+    environment:
+      - STUDENT_PORT=5002
+
+  courses:
+    build:
+      context: ./courses/backend
+      dockerfile: Dockerfile
+    container_name: edubrain-courses
+    ports:
+      - "5003:5003"
+    environment:
+      - COURSE_PORT=5003
+
+  enrollments:
+    build:
+      context: ./enrollments/backend
+      dockerfile: Dockerfile
+    container_name: edubrain-enrollments
+    ports:
+      - "5004:5004"
+    environment:
+      - ENROLLMENT_PORT=5004
+      - STUDENTS_SERVICE_URL=http://students:5002/graphql
+      - COURSES_SERVICE_URL=http://courses:5003/graphql
+      - ATTENDANCE_SERVICE_URL=http://attendance:5005/graphql
+      - ARTICLES_SERVICE_URL=http://articles:5006/graphql
+
+  attendance:
+    build:
+      context: ./attendance/backend
+      dockerfile: Dockerfile
+    container_name: edubrain-attendance
+    ports:
+      - "5005:5005"
+    environment:
+      - ATTENDANCE_PORT=5005
+      - STUDENTS_SERVICE_URL=http://students:5002/graphql
+      - COURSES_SERVICE_URL=http://courses:5003/graphql
+      - ARTICLES_SERVICE_URL=http://articles:5006/graphql
+
+  articles:
+    build:
+      context: ./articles/backend
+      dockerfile: Dockerfile
+    container_name: edubrain-articles
+    ports:
+      - "5006:5006"
+    environment:
+      - ARTICLE_PORT=5006

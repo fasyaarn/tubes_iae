@@ -1,0 +1,26 @@
+{
+  "name": "edubrain-microservices",
+  "version": "1.0.0",
+  "description": "EduBrain Online Learning Platform - Microservices with GraphQL & SQLite",
+  "main": "gateway/server.js",
+  "scripts": {
+    "start": "concurrently -k \"node auth/backend/src/index.js\" \"node students/backend/src/index.js\" \"node courses/backend/src/index.js\" \"node enrollments/backend/src/index.js\" \"node attendance/backend/src/index.js\" \"node articles/backend/src/index.js\" \"node gateway/backend/src/index.js\"",
+    "dev": "concurrently -k \"nodemon auth/backend/src/index.js\" \"nodemon students/backend/src/index.js\" \"nodemon courses/backend/src/index.js\" \"nodemon enrollments/backend/src/index.js\" \"nodemon attendance/backend/src/index.js\" \"nodemon articles/backend/src/index.js\" \"nodemon gateway/backend/src/index.js\""
+  },
+  "dependencies": {
+    "@apollo/server": "^4.11.0",
+    "axios": "^1.6.8",
+    "bcryptjs": "^2.4.3",
+    "concurrently": "^8.2.2",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2",
+    "graphql": "^16.9.0",
+    "http-proxy-middleware": "^3.0.0",
+    "jsonwebtoken": "^9.0.2",
+    "sqlite3": "^5.1.7"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.0"
+  }
+}

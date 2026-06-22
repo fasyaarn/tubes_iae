@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EduBrain - Microservices Learning Portal</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-gradient: linear-gradient(135deg, #090d16 0%, #111827 50%, #1e1b4b 100%);
+            --panel-bg: rgba(17, 24, 39, 0.75);
+            --panel-border: rgba(255, 255, 255, 0.08);
+            --text-primary: #f8fafc;
+            --text-secondary: #94a3b8;
+            --accent: #6366f1;
+            --accent-glow: rgba(99, 102, 241, 0.4);
+            --success: #10b981;
+            --success-glow: rgba(16, 185, 129, 0.3);
+            --danger: #ef4444;
+            --danger-glow: rgba(239, 68, 68, 0.3);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Outfit', sans-serif;
+        }
+
+        body {
+            background: var(--bg-gradient);
+            color: var(--text-primary);
+            min-height: 100vh;
+            padding: 2.5rem 1.5rem;
+            display: flex;
+            justify-content: center;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            display: flex;
+            flex-direction: column;
+            gap: 2.5rem;
+        }
+
+        /* Hero Banner */
+        .hero {
+            background: var(--panel-bg);
+            border: 1px solid var(--panel-border);
+            padding: 3rem;
+            border-radius: 24px;
+            backdrop-filter: blur(16px);
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -100px;
+            right: -100px;
+            width: 300px;
+            height: 300px;
+            background: var(--accent);
+            filter: blur(120px);
+            opacity: 0.25;
+            border-radius: 50%;
+            pointer-events: none;
+        }
+
+        .hero-title {
+            font-size: 2.5rem;
+            font-weight: 800;
+            background: linear-gradient(to right, #a5b4fc, #e9d5ff, #818cf8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero-subtitle {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+            max-width: 700px;
+            line-height: 1.6;
+        }
+
+        .user-panel {
+            margin-top: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--panel-border);
+            padding: 0.75rem 1.5rem;
+            border-radius: 12px;
+            width: fit-content;
+        }
+
+        /* Microservices Grid Dashboard */
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 2rem;
+        }
+
+        .service-card {
+            background: var(--panel-bg);
+            border: 1px solid var(--panel-border);
+            border-radius: 20px;
+            padding: 2rem;
+            backdrop-filter: blur(12px);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            gap: 1.5rem;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .service-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--accent);
+            box-shadow: 0 12px 30px rgba(99, 102, 241, 0.15);
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+        }
+
+        .icon-box {
+            font-size: 2rem;
+            background: rgba(255, 255, 255, 0.03);
+            padding: 0.6rem;
+            border-radius: 12px;
+            border: 1px solid var(--panel-border);
+        }
+
+        .status-badge {
+            padding: 0.3rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .status-online {
+            background: rgba(16, 185, 129, 0.15);
+            color: #a7f3d0;
+            border: 1px solid rgba(16, 185, 129, 0.3);
+            box-shadow: 0 0 10px rgba(16, 185, 129, 0.1);
+        }
+
+        .status-offline {
+            background: rgba(239, 68, 68, 0.15);
+            color: #fca5a5;
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            box-shadow: 0 0 10px rgba(239, 68, 68, 0.1);
+        }
+
+        .pulse {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            display: inline-block;
+        }
+        .status-online .pulse {
+            background: #10b981;
+            box-shadow: 0 0 8px #10b981;
+            animation: pulse-green 1.5s infinite;
+        }
+        .status-offline .pulse {
+            background: #ef4444;
+            box-shadow: 0 0 8px #ef4444;
+            animation: pulse-red 1.5s infinite;
+        }
+
+        @keyframes pulse-green {
+            0% { transform: scale(0.9); opacity: 0.8; }
+            50% { transform: scale(1.15); opacity: 1; }
+            100% { transform: scale(0.9); opacity: 0.8; }
+        }
+        @keyframes pulse-red {
+            0% { transform: scale(0.9); opacity: 0.8; }
+            50% { transform: scale(1.15); opacity: 1; }
+            100% { transform: scale(0.9); opacity: 0.8; }
+        }
+
+        .card-body {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .service-title {
+            font-size: 1.35rem;
+            font-weight: 700;
+            color: white;
+        }
+
+        .service-desc {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            line-height: 1.5;
+        }
+
+        .card-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-top: 1px solid var(--panel-border);
+            padding-top: 1rem;
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+        }
+
+        .arrow-link {
+            color: var(--accent);
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+            transition: gap 0.2s;
+        }
+
+        .service-card:hover .arrow-link {
+            gap: 0.5rem;
+        }
+
+        .btn {
+            padding: 0.6rem 1.2rem;
+            border-radius: 8px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-decoration: none;
+            border: none;
+            font-size: 0.9rem;
+        }
+
+        .btn-primary {
+            background: var(--accent);
+            color: white;
+            box-shadow: 0 4px 12px var(--accent-glow);
+        }
+
+        .btn-primary:hover {
+            background: #4f46e5;
+            transform: translateY(-1px);
+        }
+
+        .btn-danger {
+            background: rgba(239, 68, 68, 0.15);
+            color: #fca5a5;
+            border: 1px solid rgba(239, 68, 68, 0.3);
+        }
+
+        .btn-danger:hover {
+            background: var(--danger);
+            color: white;
+        }
+
+        .badge-role {
+            background: rgba(99, 102, 241, 0.15);
+            color: #a5b4fc;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 0.8rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Hero Section -->
+        <div class="hero">
+            <h1 class="hero-title">EduBrain Portal Dashboard</h1>
+            <p class="hero-subtitle">
+                Welcome to the EduBrain Online Learning Platform. This implementation features a fully decoupled microservices architecture. Every service runs independently on its own port, maintains its own local SQLite database, and exposes a GraphQL API.
+            </p>
+            <div id="auth-section">
+                <!-- Loaded dynamically -->
+                <button class="btn btn-primary" onclick="window.location.href='/auth/'">Sign In to Dashboard</button>
+            </div>
+        </div>
+
+        <!-- Services Grid -->
+        <div class="dashboard-grid">
+            
+            <!-- Auth Service -->
+            <a href="/auth/" class="service-card">
+                <div class="card-header">
+                    <div class="icon-box">🔑</div>
+                    <div id="badge-auth" class="status-badge status-offline"><span class="pulse"></span>Checking</div>
+                </div>
+                <div class="card-body">
+                    <div class="service-title">Authentication Service</div>
+                    <div class="service-desc">Manages user accounts, login validation, registrations, and issues secure JWT credentials. Seeding available.</div>
+                </div>
+                <div class="card-footer">
+                    <span>Port 5001</span>
+                    <span class="arrow-link">Open Service &rarr;</span>
+                </div>
+            </a>
+
+            <!-- Students Service -->
+            <a href="/students/" class="service-card">
+                <div class="card-header">
+                    <div class="icon-box">👨‍🎓</div>
+                    <div id="badge-students" class="status-badge status-offline"><span class="pulse"></span>Checking</div>
+                </div>
+                <div class="card-body">
+                    <div class="service-title">Students Service</div>
+                    <div class="service-desc">Stores and manages academic student profiles (Names, emails, phone numbers, addresses). Synchronized automatically with Auth.</div>
+                </div>
+                <div class="card-footer">
+                    <span>Port 5002</span>
+                    <span class="arrow-link">Open Service &rarr;</span>
+                </div>
+            </a>
+
+            <!-- Courses Service -->
+            <a href="/courses/" class="service-card">
+                <div class="card-header">
+                    <div class="icon-box">📚</div>
+                    <div id="badge-courses" class="status-badge status-offline"><span class="pulse"></span>Checking</div>
+                </div>
+                <div class="card-body">
+                    <div class="service-title">Courses Service</div>
+                    <div class="service-desc">Hosts the course catalog. Manages subject titles, syllabus summaries, course credits, and assigned instructors.</div>
+                </div>
+                <div class="card-footer">
+                    <span>Port 5003</span>
+                    <span class="arrow-link">Open Service &rarr;</span>
+                </div>
+            </a>
+
+            <!-- Enrollments Service -->
+            <a href="/enrollments/" class="service-card">
+                <div class="card-header">
+                    <div class="icon-box">📂</div>
+                    <div id="badge-enrollments" class="status-badge status-offline"><span class="pulse"></span>Checking</div>
+                </div>
+                <div class="card-body">
+                    <div class="service-title">Enrollment Service</div>
+                    <div class="service-desc">Orchestrates student registrations in courses. Resolves cross-service student and course data dynamically.</div>
+                </div>
+                <div class="card-footer">
+                    <span>Port 5004</span>
+                    <span class="arrow-link">Open Service &rarr;</span>
+                </div>
+            </a>
+
+            <!-- Articles Service -->
+            <a href="/articles/" class="service-card">
+                <div class="card-header">
+                    <div class="icon-box">📖</div>
+                    <div id="badge-articles" class="status-badge status-offline"><span class="pulse"></span>Checking</div>
+                </div>
+                <div class="card-body">
+                    <div class="service-title">Articles Service</div>
+                    <div class="service-desc">Hosts course reading articles. Logs student reading progress. Serves as a gateway checkpoint for attendance validation.</div>
+                </div>
+                <div class="card-footer">
+                    <span>Port 5006</span>
+                    <span class="arrow-link">Open Service &rarr;</span>
+                </div>
+            </a>
+
+            <!-- Attendance Service -->
+            <a href="/attendance/" class="service-card">
+                <div class="card-header">
+                    <div class="icon-box">⏰</div>
+                    <div id="badge-attendance" class="status-badge status-offline"><span class="pulse"></span>Checking</div>
+                </div>
+                <div class="card-body">
+                    <div class="service-title">Attendance Service</div>
+                    <div class="service-desc">Tracks student attendance. Incorporates cross-service validation: checks if student has read required articles before marking attendance.</div>
+                </div>
+                <div class="card-footer">
+                    <span>Port 5005</span>
+                    <span class="arrow-link">Open Service &rarr;</span>
+                </div>
+            </a>
+
+        </div>
+    </div>
+
+    <script>
+        // Check local auth status
+        const token = localStorage.getItem('token');
+        const userStr = localStorage.getItem('user');
+        
+        const authSection = document.getElementById('auth-section');
+
+        if (token && userStr) {
+            const user = JSON.parse(userStr);
+            authSection.innerHTML = `
+                <div class="user-panel">
+                    <span>Logged in as: <strong style="color: #fff;">${user.name}</strong></span>
+                    <span class="badge-role">${user.role}</span>
+                    <button class="btn btn-danger" onclick="logout()" style="padding: 0.45rem 1rem; font-size: 0.85rem;">Logout</button>
+                </div>
+            `;
+        } else {
+            authSection.innerHTML = `
+                <button class="btn btn-primary" onclick="window.location.href='/auth/'">Sign In to Platform</button>
+            `;
+        }
+
+        function logout() {
+            localStorage.clear();
+            window.location.reload();
+        }
+
+        // Check active microservices statuses
+        async function checkStatus() {
+            try {
+                const res = await fetch('/api/status');
+                const data = await res.json();
+                if (data && data.success) {
+                    for (const [name, status] of Object.entries(data.statuses)) {
+                        const badge = document.getElementById(`badge-${name}`);
+                        if (badge) {
+                            if (status === 'ONLINE') {
+                                badge.className = 'status-badge status-online';
+                                badge.innerHTML = '<span class="pulse"></span>Online';
+                            } else {
+                                badge.className = 'status-badge status-offline';
+                                badge.innerHTML = '<span class="pulse"></span>Offline';
+                            }
+                        }
+                    }
+                }
+            } catch (err) {
+                console.error('Failed to contact health check endpoint:', err.message);
+            }
+        }
+
+        // Poll statuses every 5 seconds
+        checkStatus();
+        setInterval(checkStatus, 5000);
+    </script>
+</body>
+</html>

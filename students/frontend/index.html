@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EduBrain - Student Management</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-gradient: linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%);
+            --panel-bg: rgba(30, 41, 59, 0.7);
+            --panel-border: rgba(255, 255, 255, 0.08);
+            --text-primary: #f8fafc;
+            --text-secondary: #94a3b8;
+            --accent: #6366f1;
+            --accent-hover: #4f46e5;
+            --success: #10b981;
+            --danger: #ef4444;
+            --warning: #f59e0b;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Outfit', sans-serif;
+        }
+
+        body {
+            background: var(--bg-gradient);
+            color: var(--text-primary);
+            min-height: 100vh;
+            padding: 2rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1100px;
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+
+        /* Header Navigation */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: var(--panel-bg);
+            border: 1px solid var(--panel-border);
+            padding: 1.5rem 2rem;
+            border-radius: 16px;
+            backdrop-filter: blur(12px);
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            background: linear-gradient(to right, #818cf8, #c084fc);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .btn {
+            padding: 0.6rem 1.2rem;
+            border-radius: 8px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-decoration: none;
+            border: none;
+            font-size: 0.9rem;
+        }
+
+        .btn-primary {
+            background: var(--accent);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: var(--accent-hover);
+            transform: translateY(-1px);
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--text-primary);
+            border: 1px solid var(--panel-border);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .btn-danger {
+            background: rgba(239, 68, 68, 0.2);
+            color: #fca5a5;
+            border: 1px solid rgba(239, 68, 68, 0.3);
+        }
+
+        .btn-danger:hover {
+            background: var(--danger);
+            color: white;
+        }
+
+        /* User badge */
+        .user-badge {
+            background: rgba(99, 102, 241, 0.15);
+            border: 1px solid rgba(99, 102, 241, 0.3);
+            color: #a5b4fc;
+            padding: 0.4rem 1rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 500;
+        }
+
+        /* Main Workspace Grid */
+        .grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 2rem;
+        }
+
+        @media (min-width: 768px) {
+            .grid {
+                grid-template-columns: 1fr 2fr;
+            }
+        }
+
+        .card {
+            background: var(--panel-bg);
+            border: 1px solid var(--panel-border);
+            border-radius: 16px;
+            padding: 2rem;
+            backdrop-filter: blur(12px);
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .card-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #e2e8f0;
+            border-bottom: 1px solid var(--panel-border);
+            padding-bottom: 0.75rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        /* Form Controls */
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        label {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+
+        input, textarea {
+            background: rgba(15, 23, 42, 0.6);
+            border: 1px solid var(--panel-border);
+            border-radius: 8px;
+            padding: 0.75rem 1rem;
+            color: white;
+            font-size: 0.95rem;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        input:focus, textarea:focus {
+            border-color: var(--accent);
+        }
+
+        /* Data Tables */
+        .table-container {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+        }
+
+        th {
+            color: var(--text-secondary);
+            font-weight: 600;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            padding: 1rem;
+            border-bottom: 2px solid var(--panel-border);
+        }
+
+        td {
+            padding: 1rem;
+            border-bottom: 1px solid var(--panel-border);
+            font-size: 0.95rem;
+            color: #cbd5e1;
+        }
+
+        tr:hover td {
+            background: rgba(255, 255, 255, 0.02);
+        }
+
+        .action-btns {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        /* Alert notifications */
+        .alert {
+            padding: 1rem;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            display: none;
+        }
+        .alert-error {
+            background: rgba(239, 68, 68, 0.15);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            color: #fca5a5;
+        }
+        .alert-success {
+            background: rgba(16, 185, 129, 0.15);
+            border: 1px solid rgba(16, 185, 129, 0.3);
+            color: #a7f3d0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="logo">
+                <span>👨‍🎓</span> EduBrain Students
+            </div>
+            <div class="nav-links">
+                <a href="/" class="btn btn-secondary">Portal Gateway</a>
+                <span id="user-badge" class="user-badge">Checking Auth...</span>
+                <button onclick="logout()" class="btn btn-danger btn-sm">Logout</button>
+            </div>
+        </header>
+
+        <div id="alert-box" class="alert"></div>
+
+        <div class="grid">
+            <!-- Student Form -->
+            <div class="card" id="form-card" style="display: none;">
+                <div class="card-title" id="form-title">Add Student</div>
+                <form id="student-form" onsubmit="handleFormSubmit(event)">
+                    <input type="hidden" id="student-id">
+                    <div class="form-group">
+                        <label for="name">Full Name</label>
+                        <input type="text" id="name" required placeholder="e.g. Fasya Arinal">
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email Address</label>
+                        <input type="email" id="email" required placeholder="name@edubrain.id">
+                    </div>
+                    <div class="form-group">
+                        <label for="phone">Phone Number</label>
+                        <input type="text" id="phone" placeholder="e.g. 0812345678">
+                    </div>
+                    <div class="form-group">
+                        <label for="address">Address</label>
+                        <textarea id="address" rows="3" placeholder="Street Address, City"></textarea>
+                    </div>
+                    <div style="display: flex; gap: 0.5rem; margin-top: 1rem;">
+                        <button type="submit" class="btn btn-primary" style="flex: 2;">Save Student</button>
+                        <button type="button" onclick="resetForm()" class="btn btn-secondary" style="flex: 1;">Cancel</button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Access restriction warning for Students -->
+            <div class="card" id="restrict-card" style="display: none;">
+                <div class="card-title">Access Restricted</div>
+                <p style="color: var(--text-secondary); line-height: 1.5;">
+                    Student accounts only have read-only privileges. To add, edit, or delete students, you must be logged in as an <strong>Admin</strong>.
+                </p>
+            </div>
+
+            <!-- Student List -->
+            <div class="card" style="grid-column: span 1;">
+                <div class="card-title">
+                    Students Registry
+                    <span id="admin-add-badge"></span>
+                </div>
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Name</th>
+                                <th>Email</th>
+                                <th>Phone</th>
+                                <th>Address</th>
+                                <th class="admin-actions" style="display: none;">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="student-list-body">
+                            <tr>
+                                <td colspan="6" style="text-align: center; color: var(--text-secondary);">Loading students data...</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const GRAPHQL_URL = '/students/graphql'; // gateway proxy path
+
+        // Retrieve Token
+        const token = localStorage.getItem('token');
+        const userStr = localStorage.getItem('user');
+        let currentUser = null;
+
+        if (!token || !userStr) {
+            // Redirect to Login via gateway
+            window.location.href = '/auth';
+        } else {
+            currentUser = JSON.parse(userStr);
+            document.getElementById('user-badge').textContent = `${currentUser.name} (${currentUser.role})`;
+            
+            // Show forms/restricted depending on role
+            if (currentUser.role === 'admin') {
+                document.getElementById('form-card').style.display = 'flex';
+                document.getElementById('admin-add-badge').innerHTML = `<button onclick="resetForm()" class="btn btn-primary btn-sm">+ Add New</button>`;
+                // Expand grid to fit both forms and table side-by-side
+                document.querySelector('.grid').style.gridTemplateColumns = '1fr 2fr';
+            } else {
+                document.getElementById('restrict-card').style.display = 'flex';
+                document.querySelector('.grid').style.gridTemplateColumns = '1fr 2fr';
+            }
+        }
+
+        // Logout
+        function logout() {
+            localStorage.clear();
+            window.location.href = '/auth';
+        }
+
+        // Show Notification Alert
+        function showAlert(message, type = 'success') {
+            const alertBox = document.getElementById('alert-box');
+            alertBox.className = `alert alert-${type}`;
+            alertBox.textContent = message;
+            alertBox.style.display = 'block';
+            setTimeout(() => {
+                alertBox.style.display = 'none';
+            }, 4000);
+        }
+
+        // Fetch GraphQL query
+        async function fetchGraphQL(query, variables = {}) {
+            try {
+                const response = await fetch(GRAPHQL_URL, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify({ query, variables })
+                });
+                const result = await response.json();
+                if (result.errors) {
+                    throw new Error(result.errors[0].message);
+                }
+                return result.data;
+            } catch (err) {
+                showAlert(err.message, 'error');
+                console.error(err);
+            }
+        }
+
+        // Load Students list
+        async function loadStudents() {
+            const query = `
+                query {
+                    students {
+                        id
+                        name
+                        email
+                        phone
+                        address
+                    }
+                }
+            `;
+            const data = await fetchGraphQL(query);
+            if (!data) return;
+
+            const tbody = document.getElementById('student-list-body');
+            tbody.innerHTML = '';
+
+            const isAdmin = currentUser.role === 'admin';
+            const actionHeaders = document.querySelectorAll('.admin-actions');
+            actionHeaders.forEach(el => el.style.display = isAdmin ? 'table-cell' : 'none');
+
+            data.students.forEach(student => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td>${student.id}</td>
+                    <td style="font-weight: 500;">${student.name}</td>
+                    <td>${student.email}</td>
+                    <td>${student.phone || '-'}</td>
+                    <td>${student.address || '-'}</td>
+                    ${isAdmin ? `
+                        <td class="admin-actions">
+                            <div class="action-btns">
+                                <button onclick="editStudent(${JSON.stringify(student).replace(/"/g, '&quot;')})" class="btn btn-secondary btn-sm" style="padding: 0.3rem 0.6rem; font-size: 0.8rem;">Edit</button>
+                                <button onclick="deleteStudent(${student.id})" class="btn btn-danger btn-sm" style="padding: 0.3rem 0.6rem; font-size: 0.8rem;">Delete</button>
+                            </div>
+                        </td>
+                    ` : ''}
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        // Reset Add/Edit Form
+        function resetForm() {
+            document.getElementById('student-form').reset();
+            document.getElementById('student-id').value = '';
+            document.getElementById('form-title').textContent = 'Add Student';
+        }
+
+        // Populate Edit Form
+        function editStudent(student) {
+            document.getElementById('student-id').value = student.id;
+            document.getElementById('name').value = student.name;
+            document.getElementById('email').value = student.email;
+            document.getElementById('phone').value = student.phone || '';
+            document.getElementById('address').value = student.address || '';
+            document.getElementById('form-title').textContent = `Edit Student #${student.id}`;
+            document.getElementById('name').focus();
+        }
+
+        // Handle Add / Edit form submit
+        async function handleFormSubmit(event) {
+            event.preventDefault();
+            const id = document.getElementById('student-id').value;
+            const name = document.getElementById('name').value;
+            const email = document.getElementById('email').value;
+            const phone = document.getElementById('phone').value;
+            const address = document.getElementById('address').value;
+
+            if (id) {
+                // Update
+                const mutation = `
+                    mutation UpdateStudent($id: ID!, $name: String!, $email: String!, $phone: String, $address: String) {
+                        updateStudent(id: $id, name: $name, email: $email, phone: $phone, address: $address) {
+                            id
+                            name
+                        }
+                    }
+                `;
+                const variables = { id, name, email, phone, address };
+                const data = await fetchGraphQL(mutation, variables);
+                if (data) {
+                    showAlert(`Student "${data.updateStudent.name}" updated successfully!`);
+                    resetForm();
+                    loadStudents();
+                }
+            } else {
+                // Create
+                const mutation = `
+                    mutation CreateStudent($name: String!, $email: String!, $phone: String, $address: String) {
+                        createStudent(name: $name, email: $email, phone: $phone, address: $address) {
+                            id
+                            name
+                        }
+                    }
+                `;
+                const variables = { name, email, phone, address };
+                const data = await fetchGraphQL(mutation, variables);
+                if (data) {
+                    showAlert(`Student "${data.createStudent.name}" registered successfully!`);
+                    resetForm();
+                    loadStudents();
+                }
+            }
+        }
+
+        // Delete student record
+        async function deleteStudent(id) {
+            if (!confirm(`Are you sure you want to delete student #${id}? This cannot be undone.`)) return;
+
+            const mutation = `
+                mutation DeleteStudent($id: ID!) {
+                    deleteStudent(id: $id)
+                }
+            `;
+            const data = await fetchGraphQL(mutation, { id });
+            if (data && data.deleteStudent) {
+                showAlert('Student record deleted successfully.');
+                loadStudents();
+            }
+        }
+
+        // Initial Load
+        loadStudents();
+    </script>
+</body>
+</html>
