@@ -290,7 +290,7 @@
                     <!-- Admin sees student select; student is locked to their own profile -->
                     <div class="form-group" id="student-select-group" style="display: none;">
                         <label for="student-select">Select Student</label>
-                        <select id="student-select" required>
+                        <select id="student-select">
                             <option value="">-- Choose Student --</option>
                         </select>
                     </div>
@@ -333,7 +333,7 @@
     </div>
 
     <script>
-        const GRAPHQL_URL = '/enrollments/graphql';
+        const GRAPHQL_URL = window.location.port === '5000' ? '/enrollments/graphql' : '/graphql'; // gateway path or direct port 5004 path
 
         const token = localStorage.getItem('token');
         const userStr = localStorage.getItem('user');
@@ -347,6 +347,7 @@
             
             if (currentUser.role === 'admin') {
                 document.getElementById('student-select-group').style.display = 'flex';
+                document.getElementById('student-select').setAttribute('required', 'true');
             }
         }
 
@@ -367,7 +368,13 @@
 
         async function fetchGraphQL(url, query, variables = {}) {
             try {
-                const response = await fetch(url, {
+                let targetUrl = url;
+                if (window.location.port !== '5000') {
+                    if (url.startsWith('/courses')) targetUrl = 'http://localhost:5003/graphql';
+                    else if (url.startsWith('/students')) targetUrl = 'http://localhost:5002/graphql';
+                    else if (url.startsWith('/enrollments')) targetUrl = 'http://localhost:5004/graphql';
+                }
+                const response = await fetch(targetUrl, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',

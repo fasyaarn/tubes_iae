@@ -343,7 +343,7 @@
     </div>
 
     <script>
-        const GRAPHQL_URL = '/articles/graphql';
+        const GRAPHQL_URL = window.location.port === '5000' ? '/articles/graphql' : '/graphql'; // gateway path or direct port 5006 path
 
         const token = localStorage.getItem('token');
         const userStr = localStorage.getItem('user');
@@ -379,7 +379,13 @@
 
         async function fetchGraphQL(url, query, variables = {}) {
             try {
-                const response = await fetch(url, {
+                let targetUrl = url;
+                if (window.location.port !== '5000') {
+                    if (url.startsWith('/courses')) targetUrl = 'http://localhost:5003/graphql';
+                    else if (url.startsWith('/articles')) targetUrl = 'http://localhost:5006/graphql';
+                    else if (url.startsWith('/enrollments')) targetUrl = 'http://localhost:5004/graphql';
+                }
+                const response = await fetch(targetUrl, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -416,6 +422,29 @@
             });
         }
 
+        const enrolledCourseIds = new Set();
+
+        async function loadStudentEnrollments() {
+            if (currentUser.role !== 'student') return;
+            const query = `
+                query GetStudentEnrollments($student_id: ID!) {
+                    studentEnrollments(student_id: $student_id) {
+                        course_id
+                        status
+                    }
+                }
+            `;
+            const data = await fetchGraphQL('/enrollments/graphql', query, { student_id: currentUser.id });
+            if (data && data.studentEnrollments) {
+                enrolledCourseIds.clear();
+                data.studentEnrollments.forEach(e => {
+                    if (e.status === 'active' || e.status === 'completed') {
+                        enrolledCourseIds.add(e.course_id.toString());
+                    }
+                });
+            }
+        }
+
         // Load Articles
         async function loadArticles() {
             const query = `
@@ -435,12 +464,17 @@
             const container = document.getElementById('article-list-container');
             container.innerHTML = '';
 
-            if (data.articles.length === 0) {
-                container.innerHTML = `<div style="text-align: center; color: var(--text-secondary);">No articles written yet.</div>`;
+            let articlesToShow = data.articles;
+            if (currentUser.role === 'student') {
+                articlesToShow = data.articles.filter(art => enrolledCourseIds.has(art.course_id.toString()));
+            }
+
+            if (articlesToShow.length === 0) {
+                container.innerHTML = `<div style="text-align: center; color: var(--text-secondary);">No articles available. (You must be enrolled in a course to see its articles)</div>`;
                 return;
             }
 
-            data.articles.forEach(art => {
+            articlesToShow.forEach(art => {
                 const courseTitle = courseMap.get(art.course_id.toString()) || `Course #${art.course_id}`;
                 const div = document.createElement('div');
                 div.className = 'article-item';
@@ -466,6 +500,10 @@
 
         // Open Reader
         async function openReader(art) {
+            if (currentUser.role === 'student' && !enrolledCourseIds.has(art.course_id.toString())) {
+                showAlert('You must enroll in the course to read this article.', 'error');
+                return;
+            }
             const readerTitle = document.getElementById('reader-title');
             const readerBody = document.getElementById('reader-body');
             const courseTitle = courseMap.get(art.course_id.toString()) || `Course #${art.course_id}`;
@@ -578,6 +616,7 @@
         // Init loads
         async function init() {
             await loadCourses();
+            await loadStudentEnrollments();
             await loadArticles();
         }
 

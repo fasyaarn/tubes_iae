@@ -1,7 +1,42 @@
 const { dbAll, dbGet, dbRun } = require('../config/db');
 const { GraphQLError } = require('graphql');
+const axios = require('axios');
+
+const ARTICLES_SERVICE_URL = process.env.ARTICLES_SERVICE_URL || 'http://localhost:5006/graphql';
+
+async function callService(url, query, variables = {}, token = '') {
+    try {
+        const headers = { 'Content-Type': 'application/json' };
+        if (token) headers['Authorization'] = token;
+
+        const res = await axios.post(url, { query, variables }, { headers });
+        if (res.data.errors) {
+            console.error(`GraphQL errors calling ${url}:`, res.data.errors);
+            return null;
+        }
+        return res.data.data;
+    } catch (err) {
+        console.error(`HTTP error calling ${url}:`, err.message);
+        return null;
+    }
+}
 
 const resolvers = {
+    Course: {
+        article: async (parent, _, context) => {
+            const authHeader = context.reqHeaders?.authorization || '';
+            const data = await callService(
+                ARTICLES_SERVICE_URL,
+                `query GetArticles { articles { id title content course_id is_read created_at } }`,
+                {},
+                authHeader
+            );
+            if (data && data.articles) {
+                return data.articles.find(a => String(a.course_id) === String(parent.id)) || null;
+            }
+            return null;
+        }
+    },
     Query: {
         courses: async () => {
             return await dbAll('SELECT * FROM courses ORDER BY id ASC');

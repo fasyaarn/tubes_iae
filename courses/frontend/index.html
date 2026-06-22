@@ -329,7 +329,7 @@
     </div>
 
     <script>
-        const GRAPHQL_URL = '/courses/graphql'; // gateway proxy path
+        const GRAPHQL_URL = window.location.port === '5000' ? '/courses/graphql' : '/graphql'; // gateway proxy path or direct port 5003 path
 
         const token = localStorage.getItem('token');
         const userStr = localStorage.getItem('user');

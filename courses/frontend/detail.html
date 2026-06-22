@@ -631,7 +631,21 @@
         // Helper fetch GraphQL
         async function fetchGraphQL(servicePath, query, variables = {}) {
             try {
-                const response = await fetch(`${servicePath}/graphql`, {
+                let url;
+                if (window.location.port === '5000') {
+                    url = `${servicePath}/graphql`;
+                } else {
+                    const ports = {
+                        '/auth': 5001,
+                        '/students': 5002,
+                        '/courses': 5003,
+                        '/enrollments': 5004,
+                        '/attendance': 5005,
+                        '/articles': 5006
+                    };
+                    url = `http://localhost:${ports[servicePath] || 5000}/graphql`;
+                }
+                const response = await fetch(url, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -653,7 +667,7 @@
 
         // Load all data
         async function loadAllData() {
-            // Load Course Details
+            // Load Course & Article Details
             const courseQuery = `
                 query GetCourse($id: ID!) {
                     course(id: $id) {
@@ -662,6 +676,12 @@
                         description
                         instructor
                         credits
+                        article {
+                            id
+                            title
+                            content
+                            is_read
+                        }
                     }
                 }
             `;
@@ -678,24 +698,10 @@
             document.getElementById('course-instructor-text').textContent = `👨‍🏫 Instructor: ${course.instructor || 'TBD'}`;
             document.getElementById('course-desc-text').textContent = course.description || 'No syllabus description provided.';
 
-            // Load article linked to this course
-            const articlesQuery = `
-                query {
-                    articles {
-                        id
-                        title
-                        content
-                        course_id
-                        is_read
-                    }
-                }
-            `;
-            const aData = await fetchGraphQL('/articles', articlesQuery);
-            if (aData && aData.articles) {
-                article = aData.articles.find(a => String(a.course_id) === String(courseId)) || null;
-                if (article) {
-                    isRead = !!article.is_read;
-                }
+            // Set article from course relation
+            article = course.article || null;
+            if (article) {
+                isRead = !!article.is_read;
             }
 
             if (currentUser.role === 'admin') {
@@ -721,7 +727,7 @@
                         }
                     }
                 `;
-                const enData = await fetchGraphQL('/enrollments', enQuery, { student_id: currentUser.student_id });
+                const enData = await fetchGraphQL('/enrollments', enQuery, { student_id: currentUser.id });
                 if (enData && enData.studentEnrollments) {
                     enrollment = enData.studentEnrollments.find(e => String(e.course_id) === String(courseId)) || null;
                 }
@@ -738,7 +744,7 @@
                         }
                     }
                 `;
-                const attData = await fetchGraphQL('/attendance', attQuery, { student_id: currentUser.student_id });
+                const attData = await fetchGraphQL('/attendance', attQuery, { student_id: currentUser.id });
                 if (attData && attData.studentAttendance) {
                     // Check attendance for today
                     const todayStr = getTodayStr();
@@ -969,13 +975,13 @@
                 }
             `;
             const data = await fetchGraphQL('/enrollments', mutate, {
-                studentId: currentUser.student_id,
+                studentId: currentUser.id,
                 courseId: courseId
             });
             if (data && data.createEnrollment) {
                 showToast('🎉 Enrolled successfully!', 'success');
                 enrollment = data.createEnrollment;
-                renderFlowState();
+                await loadAllData();
             }
         }
 
@@ -1016,7 +1022,7 @@
                 }
             `;
             const data = await fetchGraphQL('/attendance', mutate, {
-                studentId: currentUser.student_id,
+                studentId: currentUser.id,
                 courseId: courseId,
                 date: getTodayStr(),
                 status: status,

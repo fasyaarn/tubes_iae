@@ -249,7 +249,7 @@
     </div>
 
     <script>
-        const GRAPHQL_URL = '/auth/graphql'; // gateway path proxying to port 5001
+        const GRAPHQL_URL = window.location.port === '5000' ? '/auth/graphql' : '/graphql'; // gateway path proxying to port 5001 or direct port 5001 path
 
         // Check if already logged in, redirect to Gateway
         if (localStorage.getItem('token')) {

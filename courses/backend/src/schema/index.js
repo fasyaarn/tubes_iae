@@ -1,4 +1,14 @@
 const typeDefs = `#graphql
+    type ArticleRef {
+        id: ID!
+        title: String!
+        content: String!
+        course_id: ID
+        created_by: ID
+        created_at: String!
+        is_read: Boolean
+    }
+
     type Course {
         id: ID!
         title: String!
@@ -6,6 +16,7 @@ const typeDefs = `#graphql
         instructor: String
         credits: Int!
         created_at: String!
+        article: ArticleRef
     }
 
     type Query {
@@ -21,3 +32,4 @@ const typeDefs = `#graphql
 `;
 
 module.exports = typeDefs;
+

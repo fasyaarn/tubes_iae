@@ -326,7 +326,7 @@
     </div>
 
     <script>
-        const GRAPHQL_URL = '/students/graphql'; // gateway proxy path
+        const GRAPHQL_URL = window.location.port === '5000' ? '/students/graphql' : '/graphql'; // gateway proxy path or direct port 5002 path
 
         // Retrieve Token
         const token = localStorage.getItem('token');
@@ -338,18 +338,19 @@
             window.location.href = '/auth';
         } else {
             currentUser = JSON.parse(userStr);
+            
+            if (currentUser.role !== 'admin') {
+                // Students are not allowed to access Student Service frontend at all
+                window.location.href = '/';
+                return;
+            }
+            
             document.getElementById('user-badge').textContent = `${currentUser.name} (${currentUser.role})`;
             
-            // Show forms/restricted depending on role
-            if (currentUser.role === 'admin') {
-                document.getElementById('form-card').style.display = 'flex';
-                document.getElementById('admin-add-badge').innerHTML = `<button onclick="resetForm()" class="btn btn-primary btn-sm">+ Add New</button>`;
-                // Expand grid to fit both forms and table side-by-side
-                document.querySelector('.grid').style.gridTemplateColumns = '1fr 2fr';
-            } else {
-                document.getElementById('restrict-card').style.display = 'flex';
-                document.querySelector('.grid').style.gridTemplateColumns = '1fr 2fr';
-            }
+            // Show forms for admin
+            document.getElementById('form-card').style.display = 'flex';
+            document.getElementById('admin-add-badge').innerHTML = `<button onclick="resetForm()" class="btn btn-primary btn-sm">+ Add New</button>`;
+            document.querySelector('.grid').style.gridTemplateColumns = '1fr 2fr';
         }
 
         // Logout

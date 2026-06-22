@@ -354,7 +354,7 @@
     </div>
 
     <script>
-        const GRAPHQL_URL = '/attendance/graphql';
+        const GRAPHQL_URL = window.location.port === '5000' ? '/attendance/graphql' : '/graphql'; // gateway path or direct port 5005 path
 
         const token = localStorage.getItem('token');
         const userStr = localStorage.getItem('user');
@@ -372,6 +372,9 @@
             if (currentUser.role === 'admin') {
                 document.getElementById('student-select-group').style.display = 'flex';
                 document.getElementById('student-select').setAttribute('required', 'true');
+            } else {
+                document.getElementById('form-card').style.display = 'none';
+                document.querySelector('.grid').style.gridTemplateColumns = '1fr';
             }
         }
 
@@ -392,7 +395,14 @@
 
         async function fetchGraphQL(url, query, variables = {}) {
             try {
-                const response = await fetch(url, {
+                let targetUrl = url;
+                if (window.location.port !== '5000') {
+                    if (url.startsWith('/courses')) targetUrl = 'http://localhost:5003/graphql';
+                    else if (url.startsWith('/students')) targetUrl = 'http://localhost:5002/graphql';
+                    else if (url.startsWith('/enrollments')) targetUrl = 'http://localhost:5004/graphql';
+                    else if (url.startsWith('/attendance')) targetUrl = 'http://localhost:5005/graphql';
+                }
+                const response = await fetch(targetUrl, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',

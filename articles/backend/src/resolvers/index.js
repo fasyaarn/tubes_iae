@@ -1,5 +1,33 @@
 const { dbAll, dbGet, dbRun } = require('../config/db');
 const { GraphQLError } = require('graphql');
+const axios = require('axios');
+
+const ENROLLMENTS_SERVICE_URL = process.env.ENROLLMENTS_SERVICE_URL || 'http://localhost:5004/graphql';
+
+async function getEnrolledCourseIds(studentId, token) {
+    try {
+        const query = `
+            query GetStudentEnrollments($student_id: ID!) {
+                studentEnrollments(student_id: $student_id) {
+                    course_id
+                    status
+                }
+            }
+        `;
+        const res = await axios.post(
+            ENROLLMENTS_SERVICE_URL,
+            { query, variables: { student_id: studentId } },
+            { headers: { 'Authorization': token } }
+        );
+        if (res.data.errors) return [];
+        return res.data.data.studentEnrollments
+            .filter(e => e.status === 'active' || e.status === 'completed')
+            .map(e => e.course_id.toString());
+    } catch (err) {
+        console.error('Error fetching enrollments in article service:', err.message);
+        return [];
+    }
+}
 
 const resolvers = {
     Article: {
@@ -14,13 +42,24 @@ const resolvers = {
         }
     },
     Query: {
-        articles: async () => {
-            return await dbAll('SELECT * FROM articles ORDER BY created_at DESC');
+        articles: async (_, __, context) => {
+            const allArticles = await dbAll('SELECT * FROM articles ORDER BY created_at DESC');
+            if (context.user && context.user.role === 'student') {
+                const enrolledIds = await getEnrolledCourseIds(context.user.student_id, context.token);
+                return allArticles.filter(art => enrolledIds.includes(art.course_id.toString()));
+            }
+            return allArticles;
         },
         article: async (_, { id }, context) => {
             const article = await dbGet('SELECT * FROM articles WHERE id = ?', [id]);
             if (!article) {
                 throw new GraphQLError('Article not found', { extensions: { code: 'NOT_FOUND' } });
+            }
+            if (context.user && context.user.role === 'student') {
+                const enrolledIds = await getEnrolledCourseIds(context.user.student_id, context.token);
+                if (!enrolledIds.includes(article.course_id.toString())) {
+                    throw new GraphQLError('You are not enrolled in the course for this article', { extensions: { code: 'FORBIDDEN' } });
+                }
             }
             return article;
         },

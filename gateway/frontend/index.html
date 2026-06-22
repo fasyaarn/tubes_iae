@@ -315,7 +315,7 @@
             </a>
 
             <!-- Students Service -->
-            <a href="/students/" class="service-card">
+            <a href="/students/" class="service-card" id="card-students">
                 <div class="card-header">
                     <div class="icon-box">👨‍🎓</div>
                     <div id="badge-students" class="status-badge status-offline"><span class="pulse"></span>Checking</div>
@@ -413,6 +413,10 @@
                     <button class="btn btn-danger" onclick="logout()" style="padding: 0.45rem 1rem; font-size: 0.85rem;">Logout</button>
                 </div>
             `;
+            if (user.role === 'student') {
+                const studentCard = document.getElementById('card-students');
+                if (studentCard) studentCard.style.display = 'none';
+            }
         } else {
             authSection.innerHTML = `
                 <button class="btn btn-primary" onclick="window.location.href='/auth/'">Sign In to Platform</button>

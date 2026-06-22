@@ -28,7 +28,7 @@ const context = async ({ req }) => {
     const token = header.startsWith('Bearer ') ? header.slice(7) : header;
     try {
         const user = jwt.verify(token, SECRET);
-        return { user };
+        return { user, token: header };
     } catch (err) {
         return { user: null };
     }

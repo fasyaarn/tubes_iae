@@ -23,16 +23,16 @@ const PORT = process.env.COURSE_PORT || 5003;
 // Auth Context
 const context = async ({ req }) => {
     const header = req.headers.authorization;
-    if (!header) return { user: null };
-
-    const token = header.startsWith('Bearer ') ? header.slice(7) : header;
-    try {
-        const user = jwt.verify(token, SECRET);
-        return { user };
-    } catch (err) {
-        return { user: null };
+    let user = null;
+    if (header) {
+        const token = header.startsWith('Bearer ') ? header.slice(7) : header;
+        try {
+            user = jwt.verify(token, SECRET);
+        } catch (err) {}
     }
+    return { user, reqHeaders: req.headers };
 };
+
 
 async function startServer() {
     try {
