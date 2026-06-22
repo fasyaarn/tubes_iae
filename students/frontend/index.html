@@ -342,15 +342,17 @@
             if (currentUser.role !== 'admin') {
                 // Students are not allowed to access Student Service frontend at all
                 window.location.href = '/';
-                return;
+            } else {
+                document.getElementById('user-badge').textContent = `${currentUser.name} (${currentUser.role})`;
+                
+                // Show forms for admin
+                document.getElementById('form-card').style.display = 'flex';
+                document.getElementById('admin-add-badge').innerHTML = `<button onclick="resetForm()" class="btn btn-primary btn-sm">+ Add New</button>`;
+                document.querySelector('.grid').style.gridTemplateColumns = '1fr 2fr';
+                
+                // Initial Load
+                loadStudents();
             }
-            
-            document.getElementById('user-badge').textContent = `${currentUser.name} (${currentUser.role})`;
-            
-            // Show forms for admin
-            document.getElementById('form-card').style.display = 'flex';
-            document.getElementById('admin-add-badge').innerHTML = `<button onclick="resetForm()" class="btn btn-primary btn-sm">+ Add New</button>`;
-            document.querySelector('.grid').style.gridTemplateColumns = '1fr 2fr';
         }
 
         // Logout
@@ -516,8 +518,7 @@
             }
         }
 
-        // Initial Load
-        loadStudents();
+        // Initial Load handled in auth block
     </script>
 </body>
 </html>
