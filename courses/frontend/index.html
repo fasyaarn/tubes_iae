@@ -314,7 +314,7 @@
                                 <th>Instructor</th>
                                 <th>Credits</th>
                                 <th>Description</th>
-                                <th class="admin-actions" style="display: none;">Actions</th>
+                                <th class="course-actions">Actions</th>
                             </tr>
                         </thead>
                         <tbody id="course-list-body">
@@ -406,8 +406,8 @@
             tbody.innerHTML = '';
 
             const isAdmin = currentUser.role === 'admin';
-            const actionHeaders = document.querySelectorAll('.admin-actions');
-            actionHeaders.forEach(el => el.style.display = isAdmin ? 'table-cell' : 'none');
+            const actionHeaders = document.querySelectorAll('.course-actions');
+            actionHeaders.forEach(el => el.style.display = 'table-cell');
 
             data.courses.forEach(course => {
                 const tr = document.createElement('tr');
@@ -417,14 +417,16 @@
                     <td>${course.instructor || '-'}</td>
                     <td><span class="badge-credit">${course.credits} SKS</span></td>
                     <td style="font-size: 0.85rem; max-width: 200px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${course.description || '-'}</td>
-                    ${isAdmin ? `
-                        <td class="admin-actions">
-                            <div class="action-btns">
+                    <td class="course-actions">
+                        <div class="action-btns">
+                            ${isAdmin ? `
                                 <button onclick="editCourse(${JSON.stringify(course).replace(/"/g, '&quot;')})" class="btn btn-secondary btn-sm" style="padding: 0.3rem 0.6rem; font-size: 0.8rem;">Edit</button>
                                 <button onclick="deleteCourse(${course.id})" class="btn btn-danger btn-sm" style="padding: 0.3rem 0.6rem; font-size: 0.8rem;">Delete</button>
-                            </div>
-                        </td>
-                    ` : ''}
+                            ` : `
+                                <a href="detail.html?id=${course.id}" class="btn btn-primary btn-sm" style="padding: 0.3rem 0.6rem; font-size: 0.8rem; text-decoration: none;">View Details</a>
+                            `}
+                        </div>
+                    </td>
                 `;
                 tbody.appendChild(tr);
             });

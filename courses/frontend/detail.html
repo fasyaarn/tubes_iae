@@ -1,0 +1,1055 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EduBrain - Course Details</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-gradient: linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%);
+            --panel-bg: rgba(30, 41, 59, 0.75);
+            --panel-border: rgba(255, 255, 255, 0.08);
+            --text-primary: #f8fafc;
+            --text-secondary: #94a3b8;
+            --accent: #6366f1;
+            --accent-hover: #4f46e5;
+            --accent-glow: rgba(99, 102, 241, 0.4);
+            --success: #10b981;
+            --danger: #ef4444;
+            --warning: #f59e0b;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Outfit', sans-serif;
+        }
+
+        body {
+            background: var(--bg-gradient);
+            color: var(--text-primary);
+            min-height: 100vh;
+            padding: 2.5rem 1.5rem;
+            display: flex;
+            justify-content: center;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1000px;
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: var(--panel-bg);
+            border: 1px solid var(--panel-border);
+            padding: 1.5rem 2rem;
+            border-radius: 16px;
+            backdrop-filter: blur(12px);
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            background: linear-gradient(to right, #818cf8, #c084fc);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .btn {
+            padding: 0.6rem 1.2rem;
+            border-radius: 8px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-decoration: none;
+            border: none;
+            font-size: 0.9rem;
+        }
+
+        .btn-primary {
+            background: var(--accent);
+            color: white;
+            box-shadow: 0 4px 12px var(--accent-glow);
+        }
+
+        .btn-primary:hover:not(:disabled) {
+            background: var(--accent-hover);
+            transform: translateY(-1px);
+        }
+
+        .btn-primary:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--text-primary);
+            border: 1px solid var(--panel-border);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .user-badge {
+            background: rgba(99, 102, 241, 0.15);
+            border: 1px solid rgba(99, 102, 241, 0.3);
+            color: #a5b4fc;
+            padding: 0.4rem 1rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 500;
+        }
+
+        /* Hero banner for Course Details */
+        .course-hero {
+            background: var(--panel-bg);
+            border: 1px solid var(--panel-border);
+            border-radius: 24px;
+            padding: 2.5rem;
+            backdrop-filter: blur(16px);
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+
+        .course-hero::before {
+            content: '';
+            position: absolute;
+            top: -50px;
+            right: -50px;
+            width: 200px;
+            height: 200px;
+            background: var(--accent);
+            filter: blur(100px);
+            opacity: 0.2;
+            border-radius: 50%;
+            pointer-events: none;
+        }
+
+        .course-title {
+            font-size: 2.2rem;
+            font-weight: 800;
+            color: white;
+        }
+
+        .course-meta {
+            display: flex;
+            gap: 1.5rem;
+            font-size: 0.95rem;
+            color: var(--text-secondary);
+        }
+
+        .badge-sks {
+            background: rgba(99, 102, 241, 0.2);
+            color: #a5b4fc;
+            padding: 0.2rem 0.6rem;
+            border-radius: 6px;
+            font-weight: 600;
+        }
+
+        /* 3-Step visual flow indicator */
+        .course-steps {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+            border-top: 1px solid var(--panel-border);
+            padding-top: 1.5rem;
+        }
+
+        .step-item {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid var(--panel-border);
+            padding: 0.75rem 1.25rem;
+            border-radius: 12px;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+
+        .step-item.active {
+            border-color: var(--accent);
+            color: white;
+            background: rgba(99, 102, 241, 0.05);
+            box-shadow: 0 0 15px rgba(99, 102, 241, 0.1);
+        }
+
+        .step-item.done {
+            border-color: var(--success);
+            color: #a7f3d0;
+            background: rgba(16, 185, 129, 0.05);
+        }
+
+        .step-num {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.08);
+            font-weight: 700;
+            font-size: 0.8rem;
+            color: inherit;
+        }
+
+        .step-item.active .step-num {
+            background: var(--accent);
+            color: white;
+        }
+
+        .step-item.done .step-num {
+            background: var(--success);
+            color: white;
+        }
+
+        /* Panels for actions */
+        .grid-panels {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .action-panel {
+            background: var(--panel-bg);
+            border: 1px solid var(--panel-border);
+            border-radius: 20px;
+            padding: 2rem;
+            backdrop-filter: blur(12px);
+            display: flex;
+            flex-direction: column;
+            gap: 1.25rem;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        .action-panel.panel-locked {
+            opacity: 0.4;
+            cursor: not-allowed;
+            pointer-events: none;
+        }
+
+        .action-panel.panel-done {
+            border-color: rgba(16, 185, 129, 0.3);
+            background: rgba(16, 185, 129, 0.02);
+        }
+
+        .panel-icon {
+            font-size: 2.2rem;
+            background: rgba(255, 255, 255, 0.03);
+            padding: 0.5rem;
+            border-radius: 12px;
+            width: fit-content;
+            border: 1px solid var(--panel-border);
+        }
+
+        .panel-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: white;
+        }
+
+        .panel-desc {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            line-height: 1.5;
+        }
+
+        /* Toast container */
+        .toast-container {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+            z-index: 1000;
+            pointer-events: none;
+        }
+
+        .toast {
+            background: #1e293b;
+            border: 1px solid var(--panel-border);
+            color: white;
+            padding: 1rem 1.5rem;
+            border-radius: 10px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.4);
+            transform: translateY(20px);
+            opacity: 0;
+            animation: slideUp 0.3s forwards;
+            pointer-events: auto;
+        }
+
+        .toast-success { border-color: var(--success); }
+        .toast-error { border-color: var(--danger); }
+
+        @keyframes slideUp {
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        /* Inline Article Reader */
+        .article-reader {
+            grid-column: span 1;
+            background: var(--panel-bg);
+            border: 1px solid var(--panel-border);
+            border-radius: 20px;
+            padding: 2.5rem;
+            backdrop-filter: blur(12px);
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+            margin-top: 1.5rem;
+        }
+
+        .reader-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--panel-border);
+            padding-bottom: 1rem;
+        }
+
+        .reader-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: white;
+        }
+
+        .reader-body {
+            font-size: 1rem;
+            color: #cbd5e1;
+            line-height: 1.7;
+            max-height: 400px;
+            overflow-y: auto;
+            padding-right: 1rem;
+        }
+
+        .reader-body p {
+            margin-bottom: 1rem;
+        }
+
+        .reader-body h2 {
+            font-size: 1.25rem;
+            margin-top: 1.5rem;
+            margin-bottom: 0.75rem;
+            color: white;
+        }
+
+        .reader-body h1 {
+            font-size: 1.5rem;
+            margin-top: 1.5rem;
+            margin-bottom: 0.75rem;
+            color: white;
+        }
+
+        /* Custom Scrollbar for reader */
+        .reader-body::-webkit-scrollbar {
+            width: 6px;
+        }
+        .reader-body::-webkit-scrollbar-track {
+            background: rgba(0,0,0,0.1);
+        }
+        .reader-body::-webkit-scrollbar-thumb {
+            background: rgba(255,255,255,0.1);
+            border-radius: 3px;
+        }
+
+        /* Timer progress bar */
+        .timer-container {
+            background: rgba(0,0,0,0.2);
+            border: 1px solid var(--panel-border);
+            padding: 1rem 1.25rem;
+            border-radius: 12px;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .timer-header-info {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+        }
+
+        .timer-bar-bg {
+            height: 8px;
+            background: rgba(255,255,255,0.05);
+            border-radius: 4px;
+            overflow: hidden;
+            width: 100%;
+        }
+
+        .timer-bar-fill {
+            height: 100%;
+            background: var(--accent);
+            width: 0%;
+            transition: width 1s linear;
+        }
+
+        /* Attendance Badge statuses */
+        .attendance-badge {
+            padding: 0.4rem 1rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 700;
+            width: fit-content;
+            text-transform: uppercase;
+        }
+
+        .badge-present {
+            background: rgba(16, 185, 129, 0.15);
+            color: #a7f3d0;
+            border: 1px solid rgba(16, 185, 129, 0.3);
+        }
+
+        .badge-absent {
+            background: rgba(239, 68, 68, 0.15);
+            color: #fca5a5;
+            border: 1px solid rgba(239, 68, 68, 0.3);
+        }
+
+        .badge-late {
+            background: rgba(245, 158, 11, 0.15);
+            color: #fde68a;
+            border: 1px solid rgba(245, 158, 11, 0.3);
+        }
+
+        .spinner {
+            border: 4px solid rgba(255,255,255,0.05);
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            border-left-color: var(--accent);
+            animation: spin 0.8s linear infinite;
+            margin: auto;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .countdown-warning {
+            color: var(--danger);
+            font-weight: 700;
+            animation: pulse 1s infinite;
+        }
+
+        @keyframes pulse {
+            0% { opacity: 0.7; }
+            50% { opacity: 1; }
+            100% { opacity: 0.7; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="logo">
+                <span>📚</span> EduBrain Courses
+            </div>
+            <div class="nav-links">
+                <a href="/courses/" class="btn btn-secondary">← Back to Catalog</a>
+                <span id="user-badge" class="user-badge">Checking Auth...</span>
+            </div>
+        </header>
+
+        <!-- Course Hero Section -->
+        <div class="course-hero" id="course-hero-sec">
+            <div style="display: flex; align-items: center; justify-content: space-between;">
+                <span class="badge-sks" id="course-credits">0 SKS</span>
+            </div>
+            <h1 class="course-title" id="course-title-text">Loading Course details...</h1>
+            <p class="course-meta" id="course-instructor-text">👨‍🏫 Instructor: -</p>
+            <p style="font-size: 1rem; color: var(--text-secondary); line-height: 1.6;" id="course-desc-text">-</p>
+
+            <!-- 3-Step Flow Indicator -->
+            <div class="course-steps" id="student-steps" style="display: none;">
+                <div class="step-item" id="step-1-indicator">
+                    <div class="step-num">1</div>
+                    <span>Enrollment</span>
+                </div>
+                <div class="step-item" id="step-2-indicator">
+                    <div class="step-num">2</div>
+                    <span>Read Article</span>
+                </div>
+                <div class="step-item" id="step-3-indicator">
+                    <div class="step-num">3</div>
+                    <span>Mark Attendance</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Action Grid Panels -->
+        <div class="grid-panels" id="action-grid" style="display: none;">
+            <!-- Panel 1: Enrollment -->
+            <div class="action-panel" id="panel-enrollment">
+                <div class="panel-icon">🎓</div>
+                <div class="panel-title">Enrollment</div>
+                <div class="panel-desc" id="enrollment-desc">Checking enrollment status...</div>
+                <div id="enrollment-action-area"></div>
+            </div>
+
+            <!-- Panel 2: Article Material -->
+            <div class="action-panel panel-locked" id="panel-article">
+                <div class="panel-icon">📰</div>
+                <div class="panel-title">Course Material</div>
+                <div class="panel-desc" id="article-desc">Enroll in the course first to unlock learning materials.</div>
+                <div id="article-action-area"></div>
+            </div>
+
+            <!-- Panel 3: Today's Attendance -->
+            <div class="action-panel panel-locked" id="panel-attendance">
+                <div class="panel-icon" id="attendance-panel-icon">⏰</div>
+                <div class="panel-title">Today's Attendance</div>
+                <div class="panel-desc" id="attendance-desc">Complete enrollment and read materials first.</div>
+                <div id="attendance-action-area"></div>
+            </div>
+        </div>
+
+        <!-- Inline Article Reader -->
+        <div class="article-reader" id="article-reader-sec" style="display: none;">
+            <div class="reader-header">
+                <h2 class="reader-title" id="reader-article-title">Article Reader</h2>
+                <button class="btn btn-secondary btn-sm" onclick="closeReader()">✕ Close Reader</button>
+            </div>
+
+            <!-- Progress bar -->
+            <div class="timer-container" id="reading-timer-container" style="display: none;">
+                <div class="timer-header-info">
+                    <span id="reading-progress-text">Read for 15 seconds to unlock attendance...</span>
+                    <span id="reading-deadline-text">Time left: 40s</span>
+                </div>
+                <div class="timer-bar-bg">
+                    <div class="timer-bar-fill" id="reading-timer-fill"></div>
+                </div>
+            </div>
+
+            <div class="reader-body" id="reader-body-content">
+                <!-- Loaded dynamically -->
+            </div>
+
+            <div style="display: flex; gap: 0.75rem; border-top: 1px solid var(--panel-border); padding-top: 1.5rem;">
+                <button class="btn btn-secondary" onclick="closeReader()">Close</button>
+                <button class="btn btn-primary" id="btn-complete-read" disabled onclick="submitReadDone()">Mark as Read</button>
+            </div>
+        </div>
+
+        <!-- Admin View Notice -->
+        <div class="course-hero" id="admin-article-preview" style="display: none;">
+            <h2 style="font-size: 1.25rem; font-weight: 700; border-bottom: 1px solid var(--panel-border); padding-bottom: 0.75rem; margin-bottom: 1rem;">📰 Course Article (Admin Preview)</h2>
+            <div id="admin-article-content" style="color: #cbd5e1; line-height: 1.6; max-height: 300px; overflow-y: auto;">
+                No article linked to this course.
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast container -->
+    <div class="toast-container" id="toast-container"></div>
+
+    <script>
+        const READ_SECONDS = 15; // Min seconds to read
+        const DEADLINE_SECONDS = 40; // Max seconds before absent
+
+        // Get query params
+        const urlParams = new URLSearchParams(window.location.search);
+        const courseId = urlParams.get('id');
+
+        const token = localStorage.getItem('token');
+        const userStr = localStorage.getItem('user');
+        let currentUser = null;
+
+        // Timers
+        let globalCountdown = DEADLINE_SECONDS;
+        let globalTimerInterval = null;
+        let readSecondsElapsed = 0;
+        let readTimerInterval = null;
+        let isRead = false;
+        let isAttended = false;
+        let article = null;
+        let enrollment = null;
+        let attendance = null;
+
+        if (!courseId) {
+            window.location.href = '/courses/';
+        }
+
+        if (!token || !userStr) {
+            window.location.href = '/auth/';
+        } else {
+            currentUser = JSON.parse(userStr);
+            document.getElementById('user-badge').textContent = `${currentUser.name} (${currentUser.role})`;
+        }
+
+        // Show toast
+        function showToast(message, type = 'success') {
+            const container = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+            toast.className = `toast toast-${type}`;
+            toast.textContent = message;
+            container.appendChild(toast);
+
+            setTimeout(() => {
+                toast.style.opacity = '0';
+                toast.style.transform = 'translateY(10px)';
+                setTimeout(() => toast.remove(), 300);
+            }, 3500);
+        }
+
+        // Helper fetch GraphQL
+        async function fetchGraphQL(servicePath, query, variables = {}) {
+            try {
+                const response = await fetch(`${servicePath}/graphql`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify({ query, variables })
+                });
+                const resJson = await response.json();
+                if (resJson.errors) {
+                    throw new Error(resJson.errors[0].message);
+                }
+                return resJson.data;
+            } catch (err) {
+                showToast(err.message, 'error');
+                console.error(err);
+                return null;
+            }
+        }
+
+        // Load all data
+        async function loadAllData() {
+            // Load Course Details
+            const courseQuery = `
+                query GetCourse($id: ID!) {
+                    course(id: $id) {
+                        id
+                        title
+                        description
+                        instructor
+                        credits
+                    }
+                }
+            `;
+            const cData = await fetchGraphQL('/courses', courseQuery, { id: courseId });
+            if (!cData || !cData.course) {
+                document.getElementById('course-title-text').textContent = 'Course Not Found';
+                showToast('Failed to load course details', 'error');
+                return;
+            }
+
+            const course = cData.course;
+            document.getElementById('course-title-text').textContent = course.title;
+            document.getElementById('course-credits').textContent = `${course.credits} SKS`;
+            document.getElementById('course-instructor-text').textContent = `👨‍🏫 Instructor: ${course.instructor || 'TBD'}`;
+            document.getElementById('course-desc-text').textContent = course.description || 'No syllabus description provided.';
+
+            // Load article linked to this course
+            const articlesQuery = `
+                query {
+                    articles {
+                        id
+                        title
+                        content
+                        course_id
+                        is_read
+                    }
+                }
+            `;
+            const aData = await fetchGraphQL('/articles', articlesQuery);
+            if (aData && aData.articles) {
+                article = aData.articles.find(a => String(a.course_id) === String(courseId)) || null;
+                if (article) {
+                    isRead = !!article.is_read;
+                }
+            }
+
+            if (currentUser.role === 'admin') {
+                // Admin Mode: Preview article
+                document.getElementById('admin-article-preview').style.display = 'block';
+                if (article) {
+                    document.getElementById('admin-article-content').innerHTML = renderContent(article.content);
+                } else {
+                    document.getElementById('admin-article-content').innerHTML = '<em>No article linked to this course.</em>';
+                }
+            } else {
+                // Student Mode: Load student specific details and start timers
+                document.getElementById('student-steps').style.display = 'flex';
+                document.getElementById('action-grid').style.display = 'grid';
+
+                // Load enrollment status
+                const enQuery = `
+                    query GetStudentEnrollments($student_id: ID!) {
+                        studentEnrollments(student_id: $student_id) {
+                            id
+                            course_id
+                            status
+                        }
+                    }
+                `;
+                const enData = await fetchGraphQL('/enrollments', enQuery, { student_id: currentUser.student_id });
+                if (enData && enData.studentEnrollments) {
+                    enrollment = enData.studentEnrollments.find(e => String(e.course_id) === String(courseId)) || null;
+                }
+
+                // Load attendance status
+                const attQuery = `
+                    query GetStudentAttendance($student_id: ID!) {
+                        studentAttendance(student_id: $student_id) {
+                            id
+                            course_id
+                            date
+                            status
+                            notes
+                        }
+                    }
+                `;
+                const attData = await fetchGraphQL('/attendance', attQuery, { student_id: currentUser.student_id });
+                if (attData && attData.studentAttendance) {
+                    // Check attendance for today
+                    const todayStr = getTodayStr();
+                    attendance = attData.studentAttendance.find(a => 
+                        String(a.course_id) === String(courseId) && a.date === todayStr
+                    ) || null;
+                    isAttended = !!attendance;
+                }
+
+                renderFlowState();
+            }
+        }
+
+        // Render steps and panel classes based on current state
+        function renderFlowState() {
+            // Reset indicators
+            const s1 = document.getElementById('step-1-indicator');
+            const s2 = document.getElementById('step-2-indicator');
+            const s3 = document.getElementById('step-3-indicator');
+            s1.className = 'step-item';
+            s2.className = 'step-item';
+            s3.className = 'step-item';
+
+            const pEnroll = document.getElementById('panel-enrollment');
+            const pArticle = document.getElementById('panel-article');
+            const pAttendance = document.getElementById('panel-attendance');
+
+            pEnroll.className = 'action-panel';
+            pArticle.className = 'action-panel panel-locked';
+            pAttendance.className = 'action-panel panel-locked';
+
+            // Step 1: Check enrollment
+            if (!enrollment) {
+                s1.className = 'step-item active';
+                document.getElementById('enrollment-desc').innerHTML = 'You are <strong>not enrolled</strong> in this course yet. Enroll to access material and attendance.';
+                document.getElementById('enrollment-action-area').innerHTML = `<button class="btn btn-primary" onclick="submitEnroll()">🎓 Enroll Now</button>`;
+                
+                document.getElementById('article-desc').textContent = 'Enroll in the course first to unlock learning materials.';
+                document.getElementById('article-action-area').innerHTML = '';
+                document.getElementById('attendance-desc').textContent = 'Complete enrollment and read materials first.';
+                document.getElementById('attendance-action-area').innerHTML = '';
+                return;
+            }
+
+            s1.className = 'step-item done';
+            pEnroll.className = 'action-panel panel-done';
+            document.getElementById('enrollment-desc').innerHTML = `You are <strong>enrolled</strong> in this course. Status: <strong style="color:var(--success);">${enrollment.status.toUpperCase()}</strong>`;
+            document.getElementById('enrollment-action-area').innerHTML = '';
+
+            // Step 2: Check article reading
+            pArticle.className = 'action-panel';
+            
+            if (article && !isRead) {
+                s2.className = 'step-item active';
+                pArticle.className = 'action-panel';
+
+                if (isAttended && attendance.status === 'absent') {
+                    // Already marked absent
+                    s2.className = 'step-item';
+                    pArticle.className = 'action-panel panel-locked';
+                    document.getElementById('article-desc').innerHTML = `<strong style="color:var(--danger);">Absence recorded.</strong> Material access locked.`;
+                    document.getElementById('article-action-area').innerHTML = '';
+                } else {
+                    document.getElementById('article-desc').innerHTML = `<strong>Material: ${article.title}</strong><br>Read the article to unlock attendance.`;
+                    
+                    const timeWarningClass = globalCountdown <= 10 ? 'class="countdown-warning"' : '';
+                    document.getElementById('article-action-area').innerHTML = `
+                        <p style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 0.75rem;" id="countdown-status">
+                            ⏳ Must start reading in: <span ${timeWarningClass} id="countdown-value">${globalCountdown}s</span>
+                        </p>
+                        <button class="btn btn-primary" id="btn-start-read" onclick="startReading()">📖 Read Article</button>
+                    `;
+                    
+                    startGlobalTimer();
+                }
+            } else {
+                s2.className = 'step-item done';
+                pArticle.className = 'action-panel panel-done';
+                document.getElementById('article-desc').innerHTML = article 
+                    ? `✅ You have <strong>read</strong> the article: <strong>${article.title}</strong>.`
+                    : `No article required for this course.`;
+                document.getElementById('article-action-area').innerHTML = '';
+            }
+
+            // Step 3: Check attendance
+            if (!enrollment || (article && !isRead)) {
+                // Locked
+                document.getElementById('attendance-desc').textContent = 'Complete steps 1 and 2 to unlock attendance.';
+                document.getElementById('attendance-action-area').innerHTML = '';
+            } else if (isAttended) {
+                s3.className = 'step-item done';
+                pAttendance.className = 'action-panel panel-done';
+                
+                const badgeClass = attendance.status === 'present' ? 'badge-present' : 'badge-absent';
+                document.getElementById('attendance-desc').innerHTML = `
+                    <div class="attendance-badge ${badgeClass}" style="margin-bottom: 0.75rem;">${attendance.status}</div>
+                    <p>Recorded for today: <strong>${attendance.date}</strong></p>
+                    <p style="font-size: 0.85rem; color: var(--text-secondary); margin-top: 0.5rem;">Notes: ${attendance.notes || '-'}</p>
+                `;
+                document.getElementById('attendance-action-area').innerHTML = '';
+            } else {
+                s3.className = 'step-item active';
+                pAttendance.className = 'action-panel';
+                document.getElementById('attendance-desc').innerHTML = 'You have completed all prerequisites. Mark your attendance for today.';
+                document.getElementById('attendance-action-area').innerHTML = `
+                    <button class="btn btn-primary" onclick="submitAttendance('present', 'Manual Attendance Completed')">✅ Mark Hadir</button>
+                `;
+            }
+        }
+
+        // Global countdown timer
+        function startGlobalTimer() {
+            if (globalTimerInterval) return;
+            globalTimerInterval = setInterval(() => {
+                globalCountdown--;
+                
+                const valueEl = document.getElementById('countdown-value');
+                if (valueEl) {
+                    valueEl.textContent = `${globalCountdown}s`;
+                    if (globalCountdown <= 10) {
+                        valueEl.className = 'countdown-warning';
+                    }
+                }
+
+                if (globalCountdown <= 0) {
+                    clearInterval(globalTimerInterval);
+                    globalTimerInterval = null;
+                    // Auto mark absent!
+                    autoMarkAbsent('Did not start reading the article within the allowed time');
+                }
+            }, 1000);
+        }
+
+        // Auto mark absent
+        async function autoMarkAbsent(reason) {
+            clearInterval(globalTimerInterval);
+            globalTimerInterval = null;
+            clearInterval(readTimerInterval);
+            readTimerInterval = null;
+            
+            document.getElementById('article-reader-sec').style.display = 'none';
+
+            await submitAttendance('absent', reason);
+            showToast('❌ Time is up! You have been marked ABSENT.', 'error');
+        }
+
+        // Start reading flow
+        function startReading() {
+            if (isAttended) {
+                showToast('You already have an attendance record for today.', 'error');
+                return;
+            }
+            clearInterval(globalTimerInterval); // stop global timer
+            globalTimerInterval = null;
+
+            // Show article reader
+            document.getElementById('article-reader-sec').style.display = 'flex';
+            document.getElementById('reader-article-title').textContent = `📰 ${article.title}`;
+            document.getElementById('reader-body-content').innerHTML = renderContent(article.content);
+
+            if (isRead) {
+                // Already read, no timer needed
+                document.getElementById('reading-timer-container').style.display = 'none';
+                document.getElementById('btn-complete-read').disabled = false;
+                document.getElementById('btn-complete-read').textContent = 'Already Read';
+                return;
+            }
+
+            // Setup reading timer
+            document.getElementById('reading-timer-container').style.display = 'block';
+            readSecondsElapsed = 0;
+            globalCountdown = DEADLINE_SECONDS; // reset deadline for reading
+
+            document.getElementById('reading-progress-text').textContent = `Read for ${READ_SECONDS} more seconds to unlock...`;
+            document.getElementById('reading-deadline-text').textContent = `Time left: ${globalCountdown}s`;
+            document.getElementById('reading-timer-fill').style.width = '0%';
+            document.getElementById('btn-complete-read').disabled = true;
+
+            clearInterval(readTimerInterval);
+            readTimerInterval = setInterval(() => {
+                readSecondsElapsed++;
+                globalCountdown--;
+
+                // Update progress bar
+                const pct = Math.min((readSecondsElapsed / READ_SECONDS) * 100, 100);
+                document.getElementById('reading-timer-fill').style.width = `${pct}%`;
+
+                // Update text
+                const secLeft = Math.max(READ_SECONDS - readSecondsElapsed, 0);
+                if (secLeft > 0) {
+                    document.getElementById('reading-progress-text').textContent = `Read for ${secLeft} more seconds to unlock...`;
+                } else {
+                    document.getElementById('reading-progress-text').textContent = '✅ You can now mark this article as read!';
+                    document.getElementById('btn-complete-read').disabled = false;
+                }
+
+                document.getElementById('reading-deadline-text').textContent = `Time left: ${globalCountdown}s`;
+                if (globalCountdown <= 10) {
+                    document.getElementById('reading-deadline-text').className = 'countdown-warning';
+                }
+
+                if (globalCountdown <= 0 && secLeft > 0) {
+                    // Time run out before 15 seconds reading
+                    autoMarkAbsent('Time limit exceeded while reading');
+                }
+            }, 1000);
+        }
+
+        function closeReader() {
+            document.getElementById('article-reader-sec').style.display = 'none';
+            clearInterval(readTimerInterval);
+            readTimerInterval = null;
+            // Rerender state (re-triggers global timer if enrollment active & not read & not attended)
+            if (enrollment && !isRead && !isAttended) {
+                globalCountdown = DEADLINE_SECONDS; // reset timer on close
+                renderFlowState();
+            }
+        }
+
+        // Submit enrollment
+        async function submitEnroll() {
+            const mutate = `
+                mutation CreateEn($studentId: ID!, $courseId: ID!) {
+                    createEnrollment(student_id: $studentId, course_id: $courseId) {
+                        id
+                        status
+                    }
+                }
+            `;
+            const data = await fetchGraphQL('/enrollments', mutate, {
+                studentId: currentUser.student_id,
+                courseId: courseId
+            });
+            if (data && data.createEnrollment) {
+                showToast('🎉 Enrolled successfully!', 'success');
+                enrollment = data.createEnrollment;
+                renderFlowState();
+            }
+        }
+
+        // Submit article read completed
+        async function submitReadDone() {
+            clearInterval(readTimerInterval);
+            readTimerInterval = null;
+
+            if (isRead) {
+                document.getElementById('article-reader-sec').style.display = 'none';
+                return;
+            }
+
+            const mutate = `
+                mutation MarkRead($articleId: ID!) {
+                    markAsRead(article_id: $articleId)
+                }
+            `;
+            const data = await fetchGraphQL('/articles', mutate, { articleId: article.id });
+            if (data && data.markAsRead) {
+                showToast('✅ Article marked as read!', 'success');
+                isRead = true;
+                document.getElementById('article-reader-sec').style.display = 'none';
+                renderFlowState();
+            }
+        }
+
+        // Submit attendance record
+        async function submitAttendance(status = 'present', notes = 'Manual Attendance') {
+            const mutate = `
+                mutation MarkAttendance($studentId: ID!, $courseId: ID!, $date: String!, $status: String, $notes: String) {
+                    markAttendance(student_id: $studentId, course_id: $courseId, date: $date, status: $status, notes: $notes) {
+                        id
+                        status
+                        date
+                        notes
+                    }
+                }
+            `;
+            const data = await fetchGraphQL('/attendance', mutate, {
+                studentId: currentUser.student_id,
+                courseId: courseId,
+                date: getTodayStr(),
+                status: status,
+                notes: notes
+            });
+            if (data && data.markAttendance) {
+                if (status === 'present') {
+                    showToast('🎉 Attendance marked — you are PRESENT today!', 'success');
+                }
+                attendance = data.markAttendance;
+                isAttended = true;
+                renderFlowState();
+            }
+        }
+
+        // Render helper for markdown headings/paragraphs
+        function renderContent(content) {
+            return (content || '').split('\n').map(line => {
+                if (line.startsWith('## ')) return `<h2>${line.slice(3)}</h2>`;
+                if (line.startsWith('# ')) return `<h1>${line.slice(2)}</h1>`;
+                if (!line.trim()) return '<br>';
+                return `<p>${line}</p>`;
+            }).join('');
+        }
+
+        // Helper to get local date string YYYY-MM-DD
+        function getTodayStr() {
+            const tzOffset = (new Date()).getTimezoneOffset() * 60000;
+            return (new Date(Date.now() - tzOffset)).toISOString().slice(0, 10);
+        }
+
+        // Initial load
+        loadAllData();
+    </script>
+</body>
+</html>
