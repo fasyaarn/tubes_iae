@@ -9,13 +9,12 @@
       rel="stylesheet"
     />
     <style>
-      *,
-      *::before,
-      *::after {
-        box-sizing: border-box;
-        margin: 0;
-        padding: 0;
-      }
+      * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
       :root {
         --red: #cc0000;
         --red-dark: #a80000;
@@ -34,13 +33,11 @@
         --blue: #3b82f6;
       }
       body {
-        font-family: 'Inter', sans-serif;
-        background: var(--bg);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         color: var(--text);
         min-height: 100vh;
       }
 
-      /* ── NAVBAR REWRITE (Sama persis dengan Dashboard Utama) ── */
       nav {
         background: #ffffff;
         border-bottom: 2px solid #e5e7eb; /* Menghilangkan garis merah tebal, diganti abu-sub subtle */
@@ -112,7 +109,6 @@
         align-items: center;
       }
 
-      /* User Profile Box Kanan */
       .user-profile-box {
         display: flex;
         align-items: center;
@@ -121,6 +117,7 @@
         padding: 6px 14px;
         border-radius: 14px;
         border: 1px solid #e5e7eb;
+        margin-right: 14px;
       }
       .user-greeting {
         font-size: 14px;
@@ -157,7 +154,6 @@
         color: #b71c1c;
       }
 
-      /* ── LAYOUT & CONTENT SYSTEM ── */
       .layout {
         max-width: 1180px;
         margin: 0 auto;
@@ -273,7 +269,7 @@
       }
       .search-bar {
         flex: 1;
-        max-width: 280px;
+        max-width: 350px;
         padding: 9px 14px 9px 36px;
         border: 1.5px solid var(--border);
         border-radius: 24px;
@@ -666,7 +662,6 @@
         </div>
       </a>
 
-      <!-- MENU SERVICES DI TENGAH NAVBAR -->
       <div class="nav-menu-links">
         <a href="/students" class="nav-link-item" id="nav-students" style="display: none;">Students</a>
         <a href="/courses" class="nav-link-item">Courses</a>
@@ -683,18 +678,22 @@
             <strong id="nav-username">User</strong>
           </span>
           <span class="role-badge" id="roleBadge">STUDENT</span>
-          <button class="logout-btn" onclick="authLogout()">Logout</button>
         </div>
+          <button class="logout-btn" onclick="authLogout()">Log out</button>
       </div>
     </nav>
 
     <div class="layout">
       <main>
+        <h1 style="font-size: 22px; font-weight: 700; margin-bottom: 4px">
+          👥💬 Discussion Forum
+        </h1>
+        <h3 style="color: grey; font-size: 14px; font-weight: 450; margin-bottom: 18px">Use Discussion Forum to ask questions, share ideas, and connect with others.</h3>
         <div class="feed-header">
           <input
             class="search-bar"
             type="text"
-            placeholder="Search discussions…"
+            placeholder="Search for discussions                               🔍︎"
             oninput="handleSearch(this.value)"
           />
           <button class="btn btn-red" onclick="openCreateModal()">+ New Discussion</button>
@@ -874,12 +873,6 @@
     <div class="toast-wrap" id="toastWrap"></div>
 
     <script>
-      /* ── AUTH ── */
-      // PENTING: semua navigasi antar-service HARUS lewat API Gateway (port 5000),
-      // bukan mengakses port service satu-satu secara langsung. Tiap service hanya
-      // melayani static file di path-nya sendiri (auth service hanya serve index.html
-      // di root '/', tidak ada rute '/auth.html'). Gateway yang menyatukan semuanya
-      // di bawah satu origin dengan prefix path per-service (/auth, /courses, dst).
       const GATEWAY_ORIGIN = `${window.location.protocol}//${window.location.hostname}:5000`;
       const AUTH_LOGIN_URL = `${GATEWAY_ORIGIN}/auth/`;
       const DASHBOARD_URL = `${GATEWAY_ORIGIN}/`;
@@ -915,23 +908,11 @@
         if (navEnrollments) navEnrollments.textContent = 'Enrollments';
       }
 
-      // ✅ UPDATE DATA PROFILE DENGAN SINKRONISASI DARI LOCALSTORAGE
       document.getElementById('nav-username').textContent = user.name || 'User';
-      document.getElementById('roleBadge').innerHTML =
-        (isAdmin ? '🛡️ ' : '🎓 ') + user.role.toUpperCase();
-
-      // Customisasi warna badge dinamis (Biru untuk Student, Merah Muda untuk Admin)
-      if (isAdmin) {
-        document.getElementById('roleBadge').style.background = '#FEE2E2';
-        document.getElementById('roleBadge').style.color = '#991B1B';
-      } else {
-        document.getElementById('roleBadge').style.background = '#E0E7FF';
-        document.getElementById('roleBadge').style.color = '#3730A3';
-      }
+      document.getElementById('roleBadge').textContent = isAdmin ? 'ADMIN' : 'STUDENT';
 
       document.getElementById('logoLink').href = DASHBOARD_URL;
 
-      /* ── GraphQL ── */
       const GRAPHQL_URL = window.location.port === '5000' ? '/form-discussion/graphql' : '/graphql';
       const IMAGE_BASE_URL = window.location.port === '5000' ? '/form-discussion' : '';
       async function gql(query, variables = {}) {
@@ -1289,8 +1270,8 @@
             b: body,
           });
           input.value = '';
-          openView(currentPostId); // refresh comments
-          loadPosts(); // refresh comment counts in feed
+          openView(currentPostId); 
+          loadPosts(); 
         } catch (err) {
           showToast(err.message, 'error');
         }
