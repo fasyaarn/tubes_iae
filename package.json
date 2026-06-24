@@ -4,8 +4,8 @@
   "description": "EduBrain Online Learning Platform - Microservices with GraphQL & SQLite",
   "main": "gateway/server.js",
   "scripts": {
-    "start": "concurrently -k \"node auth/backend/src/index.js\" \"node students/backend/src/index.js\" \"node courses/backend/src/index.js\" \"node enrollments/backend/src/index.js\" \"node attendance/backend/src/index.js\" \"node articles/backend/src/index.js\" \"node gateway/backend/src/index.js\"",
-    "dev": "concurrently -k \"nodemon auth/backend/src/index.js\" \"nodemon students/backend/src/index.js\" \"nodemon courses/backend/src/index.js\" \"nodemon enrollments/backend/src/index.js\" \"nodemon attendance/backend/src/index.js\" \"nodemon articles/backend/src/index.js\" \"nodemon gateway/backend/src/index.js\""
+    "start": "concurrently -k \"node auth/backend/src/index.js\" \"node students/backend/src/index.js\" \"node courses/backend/src/index.js\" \"node enrollments/backend/src/index.js\" \"node attendance/backend/src/index.js\" \"node articles/backend/src/index.js\" \"node form_discussion/backend/src/index.js\" \"node gateway/backend/src/index.js\"",
+    "dev": "concurrently -k \"nodemon auth/backend/src/index.js\" \"nodemon students/backend/src/index.js\" \"nodemon courses/backend/src/index.js\" \"nodemon enrollments/backend/src/index.js\" \"nodemon attendance/backend/src/index.js\" \"nodemon articles/backend/src/index.js\" \"nodemon form_discussion/backend/src/index.js\" \"nodemon gateway/backend/src/index.js\""
   },
   "dependencies": {
     "@apollo/server": "^4.11.0",

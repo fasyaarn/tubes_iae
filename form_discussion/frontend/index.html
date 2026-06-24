@@ -80,10 +80,36 @@
         margin-top: 2px;
       }
 
+      .nav-menu-links {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin-left: 24px;
+      }
+
+      .nav-link-item {
+        color: #4b5563;
+        text-decoration: none;
+        font-size: 14px;
+        font-weight: 600;
+        padding: 8px 14px;
+        border-radius: 8px;
+        transition: all 0.2s;
+      }
+
+      .nav-link-item:hover {
+        background: #f4f5f7;
+        color: #1f2937;
+      }
+
+      .nav-link-item.active {
+        background: #ffebee;
+        color: #c62828;
+      }
+
       .nav-actions {
         display: flex;
         align-items: center;
-        margin-left: auto;
       }
 
       /* User Profile Box Kanan */
@@ -639,6 +665,17 @@
           <small>Telkom University</small>
         </div>
       </a>
+
+      <!-- MENU SERVICES DI TENGAH NAVBAR -->
+      <div class="nav-menu-links">
+        <a href="/students" class="nav-link-item" id="nav-students" style="display: none;">Students</a>
+        <a href="/courses" class="nav-link-item">Courses</a>
+        <a href="/articles" class="nav-link-item">Articles</a>
+        <a href="/form-discussion" class="nav-link-item active">Discussion</a>
+        <a href="/enrollments" class="nav-link-item" id="nav-enrollments">My Enrollments</a>
+        <a href="/attendance" class="nav-link-item">Attendance</a>
+      </div>
+
       <div class="nav-actions">
         <div class="user-profile-box">
           <span class="user-greeting">
@@ -871,6 +908,13 @@
       const user = JSON.parse(userStr);
       const isAdmin = user.role === 'admin' || user.role === 'ADMIN';
 
+      if (isAdmin) {
+        const navStudents = document.getElementById('nav-students');
+        if (navStudents) navStudents.style.display = 'inline-block';
+        const navEnrollments = document.getElementById('nav-enrollments');
+        if (navEnrollments) navEnrollments.textContent = 'Enrollments';
+      }
+
       // ✅ UPDATE DATA PROFILE DENGAN SINKRONISASI DARI LOCALSTORAGE
       document.getElementById('nav-username').textContent = user.name || 'User';
       document.getElementById('roleBadge').innerHTML =
@@ -888,7 +932,8 @@
       document.getElementById('logoLink').href = DASHBOARD_URL;
 
       /* ── GraphQL ── */
-      const GRAPHQL_URL = 'http://localhost:5007/graphql';
+      const GRAPHQL_URL = window.location.port === '5000' ? '/form-discussion/graphql' : '/graphql';
+      const IMAGE_BASE_URL = window.location.port === '5000' ? '/form-discussion' : '';
       async function gql(query, variables = {}) {
         const res = await fetch(GRAPHQL_URL, {
           method: 'POST',
@@ -1011,7 +1056,14 @@
             const col = avColor(p.author || 'a');
             const commentCount = (p.comments || []).length;
             const imgHtml = p.image_url
-              ? `<img class="thread-img" src="http://localhost:5007${p.image_url}"/>`
+              ? `<img class="thread-img" src="${IMAGE_BASE_URL}${p.image_url}"/>`
+              : '';
+            const showActions = (p.author === user.name) || isAdmin;
+            const actionsHtml = showActions
+              ? `<div class="t-actions" onclick="event.stopPropagation()">
+                  <button class="t-btn t-btn-edit" onclick="openEdit('${p.id}')">Edit</button>
+                  <button class="t-btn t-btn-del" onclick="askDeletePost('${p.id}')">Delete</button>
+                </div>`
               : '';
             return `
       <div class="thread-card" onclick="openView('${p.id}')">
@@ -1022,10 +1074,7 @@
           <div class="t-meta">Posted by <strong>@${escHtml(p.author || 'anonymous')}</strong> · ${timeAgo(p.created_at)}</div>
           ${imgHtml}
           <p class="t-body">${escHtml(p.body)}</p>
-          <div class="t-actions" onclick="event.stopPropagation()">
-            <button class="t-btn t-btn-edit" onclick="openEdit('${p.id}')">Edit</button>
-            <button class="t-btn t-btn-del" onclick="askDeletePost('${p.id}')">Delete</button>
-          </div>
+          ${actionsHtml}
         </div>
         <div class="t-right"><div class="cmt">💬 ${commentCount} Comments</div></div>
       </div>`;
@@ -1183,10 +1232,18 @@
           document.getElementById('view-body').textContent = p.body;
           const imgEl = document.getElementById('view-img');
           if (p.image_url) {
-            imgEl.src = `http://localhost:5007${p.image_url}`;
+            imgEl.src = `${IMAGE_BASE_URL}${p.image_url}`;
             imgEl.style.display = 'block';
           } else {
             imgEl.style.display = 'none';
+          }
+          const isOwnerOrAdmin = (p.author === user.name) || isAdmin;
+          if (isOwnerOrAdmin) {
+            document.getElementById('view-edit-btn').style.display = 'block';
+            document.getElementById('view-del-btn').style.display = 'block';
+          } else {
+            document.getElementById('view-edit-btn').style.display = 'none';
+            document.getElementById('view-del-btn').style.display = 'none';
           }
           document.getElementById('view-edit-btn').onclick = () => {
             closeModal('viewOverlay');

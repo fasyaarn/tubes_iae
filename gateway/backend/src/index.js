@@ -26,7 +26,7 @@ app.get('/api/status', async (req, res) => {
         enrollments: `${ENROLLMENTS_URL}/graphql`,
         attendance:  `${ATTENDANCE_URL}/graphql`,
         articles:    `${ARTICLES_URL}/graphql`,
-        form_discussion: `${FORM_DISCUSSION_URL}/graphql`
+        'form-discussion': `${FORM_DISCUSSION_URL}/graphql`
     };
     
     const statuses = {};

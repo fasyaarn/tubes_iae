@@ -8,6 +8,8 @@ services:
     container_name: edubrain-gateway
     ports:
       - "5000:5000"
+    volumes:
+      - ./gateway/frontend:/frontend
     environment:
       - PORT=5000
       - AUTH_SERVICE_URL=http://auth:5001
@@ -16,6 +18,7 @@ services:
       - ENROLLMENTS_SERVICE_URL=http://enrollments:5004
       - ATTENDANCE_SERVICE_URL=http://attendance:5005
       - ARTICLES_SERVICE_URL=http://articles:5006
+      - FORM_DISCUSSION_SERVICE_URL=http://form_discussion:5007
     depends_on:
       - auth
       - students
@@ -23,14 +26,15 @@ services:
       - enrollments
       - attendance
       - articles
+      - form_discussion
 
   auth:
     build:
       context: ./auth/backend
       dockerfile: Dockerfile
     container_name: edubrain-auth
-    ports:
-      - "5001:5001"
+    volumes:
+      - ./auth/frontend:/frontend
     environment:
       - AUTH_PORT=5001
       - STUDENTS_SERVICE_URL=http://students:5002/graphql
@@ -40,8 +44,8 @@ services:
       context: ./students/backend
       dockerfile: Dockerfile
     container_name: edubrain-students
-    ports:
-      - "5002:5002"
+    volumes:
+      - ./students/frontend:/frontend
     environment:
       - STUDENT_PORT=5002
 
@@ -50,18 +54,19 @@ services:
       context: ./courses/backend
       dockerfile: Dockerfile
     container_name: edubrain-courses
-    ports:
-      - "5003:5003"
+    volumes:
+      - ./courses/frontend:/frontend
     environment:
       - COURSE_PORT=5003
+      - ARTICLES_SERVICE_URL=http://articles:5006/graphql
 
   enrollments:
     build:
       context: ./enrollments/backend
       dockerfile: Dockerfile
     container_name: edubrain-enrollments
-    ports:
-      - "5004:5004"
+    volumes:
+      - ./enrollments/frontend:/frontend
     environment:
       - ENROLLMENT_PORT=5004
       - STUDENTS_SERVICE_URL=http://students:5002/graphql
@@ -74,8 +79,8 @@ services:
       context: ./attendance/backend
       dockerfile: Dockerfile
     container_name: edubrain-attendance
-    ports:
-      - "5005:5005"
+    volumes:
+      - ./attendance/frontend:/frontend
     environment:
       - ATTENDANCE_PORT=5005
       - STUDENTS_SERVICE_URL=http://students:5002/graphql
@@ -87,7 +92,18 @@ services:
       context: ./articles/backend
       dockerfile: Dockerfile
     container_name: edubrain-articles
-    ports:
-      - "5006:5006"
+    volumes:
+      - ./articles/frontend:/frontend
     environment:
       - ARTICLE_PORT=5006
+      - ENROLLMENTS_SERVICE_URL=http://enrollments:5004/graphql
+
+  form_discussion:
+    build:
+      context: ./form_discussion/backend
+      dockerfile: Dockerfile
+    container_name: edubrain-form-discussion
+    volumes:
+      - ./form_discussion/frontend:/frontend
+    environment:
+      - PORT=5007

@@ -376,10 +376,11 @@
         </a>
 
         <div class="nav-menu-links">
+            <a href="/students" class="nav-link-item" id="nav-students" style="display: none;">Students</a>
             <a href="/courses" class="nav-link-item">Courses</a>
             <a href="/articles" class="nav-link-item">Articles</a>
             <a href="/form-discussion" class="nav-link-item">Discussion</a>
-            <a href="/enrollments" class="nav-link-item active">My Enrollments</a>
+            <a href="/enrollments" class="nav-link-item active" id="nav-enrollments">My Enrollments</a>
             <a href="/attendance" class="nav-link-item">Attendance</a>
         </div>
 
@@ -472,6 +473,11 @@
                 document.getElementById('nav-role-badge').textContent = currentUser.role ? currentUser.role.toUpperCase() : 'STUDENT';
                 
                 if (currentUser.role === 'admin') {
+                    const navStudents = document.getElementById('nav-students');
+                    if (navStudents) navStudents.style.display = 'inline-block';
+                    const navEnrollments = document.getElementById('nav-enrollments');
+                    if (navEnrollments) navEnrollments.textContent = 'Enrollments';
+                    
                     document.getElementById('student-select-group').style.display = 'flex';
                     document.getElementById('student-select').setAttribute('required', 'true');
                 }
