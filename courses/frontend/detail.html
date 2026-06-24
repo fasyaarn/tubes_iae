@@ -6,20 +6,7 @@
     <title>EduBrain - Course Details</title>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
-        :root {
-            --bg-gradient: linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%);
-            --panel-bg: rgba(30, 41, 59, 0.75);
-            --panel-border: rgba(255, 255, 255, 0.08);
-            --text-primary: #f8fafc;
-            --text-secondary: #94a3b8;
-            --accent: #6366f1;
-            --accent-hover: #4f46e5;
-            --accent-glow: rgba(99, 102, 241, 0.4);
-            --success: #10b981;
-            --danger: #ef4444;
-            --warning: #f59e0b;
-        }
-
+        /* --- RESET & VARIABLES (matched to catalog index.html) --- */
         * {
             margin: 0;
             padding: 0;
@@ -28,145 +15,187 @@
         }
 
         body {
-            background: var(--bg-gradient);
-            color: var(--text-primary);
+            background-color: #F8FAFC;
+            color: #1E293B;
+            padding-top: 90px; /* space so content isn't covered by fixed navbar */
             min-height: 100vh;
-            padding: 2.5rem 1.5rem;
-            display: flex;
-            justify-content: center;
         }
 
+        /* --- GLOBAL NAVBAR (same as catalog index.html) --- */
+        .navbar {
+            background-color: #ffffff;
+            border-bottom: 2px solid #E2E8F0;
+            padding: 0 40px;
+            height: 75px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+        }
+
+        .nav-brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .nav-logo {
+            font-size: 26px;
+        }
+
+        .nav-brand-text h1 {
+            font-size: 18px;
+            color: #C31F1F;
+            font-weight: 700;
+            line-height: 1;
+        }
+
+        .nav-brand-text p {
+            font-size: 10px;
+            color: #64748B;
+            letter-spacing: 0.5px;
+            font-weight: 600;
+            margin-top: 2px;
+        }
+
+        .nav-menu-links {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .nav-link-item {
+            color: #475569;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 600;
+            padding: 8px 14px;
+            border-radius: 8px;
+            transition: all 0.2s;
+        }
+
+        .nav-link-item:hover {
+            background: #F1F5F9;
+            color: #0F172A;
+        }
+
+        .nav-link-item.active {
+            background: #FEE2E2;
+            color: #991B1B;
+        }
+
+        .nav-right-side {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .user-profile-box {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            background: #F1F5F9;
+            padding: 6px 14px;
+            border-radius: 12px;
+            border: 1px solid #E2E8F0;
+        }
+
+        .user-greeting {
+            font-size: 14px;
+            color: #475569;
+        }
+
+        .user-greeting strong {
+            color: #0F172A;
+            font-weight: 600;
+        }
+
+        .role-badge {
+            background: #E0E7FF;
+            color: #3730A3;
+            padding: 4px 8px;
+            border-radius: 6px;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        .logout-btn {
+            background: #FEE2E2;
+            color: #991B1B;
+            border: 1px solid #FCA5A5;
+            padding: 6px 14px;
+            border-radius: 10px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .logout-btn:hover {
+            background: #FCA5A5;
+        }
+
+        /* --- MAIN CONTAINER --- */
         .container {
-            width: 100%;
-            max-width: 1000px;
+            max-width: 1300px;
+            margin: 0 auto;
+            padding: 32px 40px;
             display: flex;
             flex-direction: column;
             gap: 2rem;
         }
 
-        header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            background: var(--panel-bg);
-            border: 1px solid var(--panel-border);
-            padding: 1.5rem 2rem;
-            border-radius: 16px;
-            backdrop-filter: blur(12px);
+        /* --- CARD BASE (replaces old glass panel look) --- */
+        .card {
+            background: #ffffff;
+            border: 1px solid #E2E8F0;
+            border-radius: 14px;
+            padding: 24px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
         }
 
-        .logo {
-            font-size: 1.5rem;
-            font-weight: 700;
-            background: linear-gradient(to right, #818cf8, #c084fc);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .nav-links {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-        }
-
-        .btn {
-            padding: 0.6rem 1.2rem;
-            border-radius: 8px;
-            font-weight: 500;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            text-decoration: none;
-            border: none;
-            font-size: 0.9rem;
-        }
-
-        .btn-primary {
-            background: var(--accent);
-            color: white;
-            box-shadow: 0 4px 12px var(--accent-glow);
-        }
-
-        .btn-primary:hover:not(:disabled) {
-            background: var(--accent-hover);
-            transform: translateY(-1px);
-        }
-
-        .btn-primary:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-        }
-
-        .btn-secondary {
-            background: rgba(255, 255, 255, 0.05);
-            color: var(--text-primary);
-            border: 1px solid var(--panel-border);
-        }
-
-        .btn-secondary:hover {
-            background: rgba(255, 255, 255, 0.1);
-        }
-
-        .user-badge {
-            background: rgba(99, 102, 241, 0.15);
-            border: 1px solid rgba(99, 102, 241, 0.3);
-            color: #a5b4fc;
-            padding: 0.4rem 1rem;
-            border-radius: 20px;
-            font-size: 0.85rem;
-            font-weight: 500;
-        }
-
-        /* Hero banner for Course Details */
+        /* Course Hero Section */
         .course-hero {
-            background: var(--panel-bg);
-            border: 1px solid var(--panel-border);
-            border-radius: 24px;
-            padding: 2.5rem;
-            backdrop-filter: blur(16px);
+            background: #ffffff;
+            border: 1px solid #E2E8F0;
+            border-radius: 14px;
+            padding: 28px 24px;
             position: relative;
             overflow: hidden;
             display: flex;
             flex-direction: column;
             gap: 1rem;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-        }
-
-        .course-hero::before {
-            content: '';
-            position: absolute;
-            top: -50px;
-            right: -50px;
-            width: 200px;
-            height: 200px;
-            background: var(--accent);
-            filter: blur(100px);
-            opacity: 0.2;
-            border-radius: 50%;
-            pointer-events: none;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
         }
 
         .course-title {
-            font-size: 2.2rem;
-            font-weight: 800;
-            color: white;
+            font-size: 26px;
+            font-weight: 700;
+            color: #0F172A;
         }
 
         .course-meta {
             display: flex;
             gap: 1.5rem;
-            font-size: 0.95rem;
-            color: var(--text-secondary);
+            font-size: 14px;
+            color: #64748B;
         }
 
         .badge-sks {
-            background: rgba(99, 102, 241, 0.2);
-            color: #a5b4fc;
-            padding: 0.2rem 0.6rem;
+            background: #E0E7FF;
+            color: #3730A3;
+            padding: 4px 8px;
             border-radius: 6px;
-            font-weight: 600;
+            font-weight: 700;
+            font-size: 12px;
+            width: fit-content;
         }
 
         /* 3-Step visual flow indicator */
@@ -174,7 +203,7 @@
             display: flex;
             gap: 1rem;
             margin-top: 1rem;
-            border-top: 1px solid var(--panel-border);
+            border-top: 2px solid #F1F5F9;
             padding-top: 1.5rem;
         }
 
@@ -183,25 +212,25 @@
             display: flex;
             align-items: center;
             gap: 0.75rem;
-            background: rgba(255, 255, 255, 0.02);
-            border: 1px solid var(--panel-border);
+            background: #F8FAFC;
+            border: 1px solid #E2E8F0;
             padding: 0.75rem 1.25rem;
-            border-radius: 12px;
-            font-size: 0.9rem;
-            color: var(--text-secondary);
+            border-radius: 10px;
+            font-size: 14px;
+            color: #64748B;
+            font-weight: 600;
         }
 
         .step-item.active {
-            border-color: var(--accent);
-            color: white;
-            background: rgba(99, 102, 241, 0.05);
-            box-shadow: 0 0 15px rgba(99, 102, 241, 0.1);
+            border-color: #C31F1F;
+            color: #991B1B;
+            background: #FEF2F2;
         }
 
         .step-item.done {
-            border-color: var(--success);
-            color: #a7f3d0;
-            background: rgba(16, 185, 129, 0.05);
+            border-color: #A7F3D0;
+            color: #065F46;
+            background: #ECFDF5;
         }
 
         .step-num {
@@ -211,19 +240,19 @@
             width: 24px;
             height: 24px;
             border-radius: 50%;
-            background: rgba(255, 255, 255, 0.08);
+            background: #E2E8F0;
             font-weight: 700;
             font-size: 0.8rem;
             color: inherit;
         }
 
         .step-item.active .step-num {
-            background: var(--accent);
+            background: #C31F1F;
             color: white;
         }
 
         .step-item.done .step-num {
-            background: var(--success);
+            background: #10B981;
             color: white;
         }
 
@@ -235,49 +264,84 @@
         }
 
         .action-panel {
-            background: var(--panel-bg);
-            border: 1px solid var(--panel-border);
-            border-radius: 20px;
-            padding: 2rem;
-            backdrop-filter: blur(12px);
+            background: #ffffff;
+            border: 1px solid #E2E8F0;
+            border-radius: 14px;
+            padding: 24px;
             display: flex;
             flex-direction: column;
             gap: 1.25rem;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
             position: relative;
             transition: all 0.3s ease;
         }
 
         .action-panel.panel-locked {
-            opacity: 0.4;
+            opacity: 0.45;
             cursor: not-allowed;
             pointer-events: none;
         }
 
         .action-panel.panel-done {
-            border-color: rgba(16, 185, 129, 0.3);
-            background: rgba(16, 185, 129, 0.02);
+            border-color: #A7F3D0;
+            background: #F0FDF4;
         }
 
         .panel-icon {
             font-size: 2.2rem;
-            background: rgba(255, 255, 255, 0.03);
+            background: #F8FAFC;
             padding: 0.5rem;
             border-radius: 12px;
             width: fit-content;
-            border: 1px solid var(--panel-border);
+            border: 1px solid #E2E8F0;
         }
 
         .panel-title {
-            font-size: 1.25rem;
+            font-size: 18px;
             font-weight: 700;
-            color: white;
+            color: #0F172A;
         }
 
         .panel-desc {
-            font-size: 0.9rem;
-            color: var(--text-secondary);
+            font-size: 14px;
+            color: #475569;
             line-height: 1.5;
+        }
+
+        /* --- BUTTONS (matched to catalog) --- */
+        .btn {
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 13px;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-decoration: none;
+            border: none;
+        }
+
+        .btn-primary {
+            background: #C31F1F;
+            color: white;
+        }
+
+        .btn-primary:hover:not(:disabled) {
+            background: #991B1B;
+        }
+
+        .btn-primary:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .btn-secondary {
+            background: #F8FAFC;
+            color: #334155;
+            border: 1px solid #E2E8F0;
+        }
+
+        .btn-secondary:hover {
+            background: #F1F5F9;
         }
 
         /* Toast container */
@@ -293,8 +357,8 @@
         }
 
         .toast {
-            background: #1e293b;
-            border: 1px solid var(--panel-border);
+            background: #0F172A;
+            border: 1px solid #1E293B;
             color: white;
             padding: 1rem 1.5rem;
             border-radius: 10px;
@@ -303,15 +367,15 @@
             display: flex;
             align-items: center;
             gap: 0.75rem;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.4);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.25);
             transform: translateY(20px);
             opacity: 0;
             animation: slideUp 0.3s forwards;
             pointer-events: auto;
         }
 
-        .toast-success { border-color: var(--success); }
-        .toast-error { border-color: var(--danger); }
+        .toast-success { border-color: #10B981; }
+        .toast-error { border-color: #EF4444; }
 
         @keyframes slideUp {
             to { transform: translateY(0); opacity: 1; }
@@ -320,35 +384,34 @@
         /* Inline Article Reader */
         .article-reader {
             grid-column: span 1;
-            background: var(--panel-bg);
-            border: 1px solid var(--panel-border);
-            border-radius: 20px;
-            padding: 2.5rem;
-            backdrop-filter: blur(12px);
+            background: #ffffff;
+            border: 1px solid #E2E8F0;
+            border-radius: 14px;
+            padding: 28px 24px;
             display: flex;
             flex-direction: column;
             gap: 1.5rem;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.15);
-            margin-top: 1.5rem;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+            margin-top: 0;
         }
 
         .reader-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            border-bottom: 1px solid var(--panel-border);
+            border-bottom: 2px solid #F1F5F9;
             padding-bottom: 1rem;
         }
 
         .reader-title {
-            font-size: 1.5rem;
+            font-size: 20px;
             font-weight: 700;
-            color: white;
+            color: #0F172A;
         }
 
         .reader-body {
-            font-size: 1rem;
-            color: #cbd5e1;
+            font-size: 15px;
+            color: #334155;
             line-height: 1.7;
             max-height: 400px;
             overflow-y: auto;
@@ -363,14 +426,14 @@
             font-size: 1.25rem;
             margin-top: 1.5rem;
             margin-bottom: 0.75rem;
-            color: white;
+            color: #0F172A;
         }
 
         .reader-body h1 {
             font-size: 1.5rem;
             margin-top: 1.5rem;
             margin-bottom: 0.75rem;
-            color: white;
+            color: #0F172A;
         }
 
         /* Custom Scrollbar for reader */
@@ -378,17 +441,17 @@
             width: 6px;
         }
         .reader-body::-webkit-scrollbar-track {
-            background: rgba(0,0,0,0.1);
+            background: #F1F5F9;
         }
         .reader-body::-webkit-scrollbar-thumb {
-            background: rgba(255,255,255,0.1);
+            background: #CBD5E1;
             border-radius: 3px;
         }
 
         /* Timer progress bar */
         .timer-container {
-            background: rgba(0,0,0,0.2);
-            border: 1px solid var(--panel-border);
+            background: #F8FAFC;
+            border: 1px solid #E2E8F0;
             padding: 1rem 1.25rem;
             border-radius: 12px;
             display: flex;
@@ -400,12 +463,12 @@
             display: flex;
             justify-content: space-between;
             font-size: 0.85rem;
-            color: var(--text-secondary);
+            color: #64748B;
         }
 
         .timer-bar-bg {
             height: 8px;
-            background: rgba(255,255,255,0.05);
+            background: #E2E8F0;
             border-radius: 4px;
             overflow: hidden;
             width: 100%;
@@ -413,7 +476,7 @@
 
         .timer-bar-fill {
             height: 100%;
-            background: var(--accent);
+            background: #C31F1F;
             width: 0%;
             transition: width 1s linear;
         }
@@ -429,29 +492,29 @@
         }
 
         .badge-present {
-            background: rgba(16, 185, 129, 0.15);
-            color: #a7f3d0;
-            border: 1px solid rgba(16, 185, 129, 0.3);
+            background: #D1FAE5;
+            color: #065F46;
+            border: 1px solid #A7F3D0;
         }
 
         .badge-absent {
-            background: rgba(239, 68, 68, 0.15);
-            color: #fca5a5;
-            border: 1px solid rgba(239, 68, 68, 0.3);
+            background: #FEE2E2;
+            color: #991B1B;
+            border: 1px solid #FCA5A5;
         }
 
         .badge-late {
-            background: rgba(245, 158, 11, 0.15);
-            color: #fde68a;
-            border: 1px solid rgba(245, 158, 11, 0.3);
+            background: #FEF3C7;
+            color: #92400E;
+            border: 1px solid #FDE68A;
         }
 
         .spinner {
-            border: 4px solid rgba(255,255,255,0.05);
+            border: 4px solid #E2E8F0;
             width: 36px;
             height: 36px;
             border-radius: 50%;
-            border-left-color: var(--accent);
+            border-left-color: #C31F1F;
             animation: spin 0.8s linear infinite;
             margin: auto;
         }
@@ -462,7 +525,7 @@
         }
 
         .countdown-warning {
-            color: var(--danger);
+            color: #EF4444;
             font-weight: 700;
             animation: pulse 1s infinite;
         }
@@ -475,16 +538,34 @@
     </style>
 </head>
 <body>
+
+    <nav class="navbar">
+        <a href="/" class="nav-brand">
+            <span class="nav-logo">🎓</span>
+            <div class="nav-brand-text">
+                <h1>EduBrain</h1>
+                <p>TELKOM UNIVERSITY</p>
+            </div>
+        </a>
+
+        <div class="nav-menu-links">
+            <a href="/courses" class="nav-link-item active">Courses</a>
+            <a href="/articles" class="nav-link-item">Articles</a>
+            <a href="/form-discussion" class="nav-link-item">Discussion</a>
+            <a href="/enrollments" class="nav-link-item">My Enrollments</a>
+            <a href="/attendance" class="nav-link-item">Attendance</a>
+        </div>
+
+        <div class="nav-right-side">
+            <div class="user-profile-box">
+                <span class="user-greeting">Hi, <strong id="nav-username">Loading...</strong></span>
+                <span id="nav-role-badge" class="role-badge">STUDENT</span>
+            </div>
+            <button onclick="logout()" class="logout-btn">Log out</button>
+        </div>
+    </nav>
+
     <div class="container">
-        <header>
-            <div class="logo">
-                <span>📚</span> EduBrain Courses
-            </div>
-            <div class="nav-links">
-                <a href="/courses/" class="btn btn-secondary">← Back to Catalog</a>
-                <span id="user-badge" class="user-badge">Checking Auth...</span>
-            </div>
-        </header>
 
         <!-- Course Hero Section -->
         <div class="course-hero" id="course-hero-sec">
@@ -493,7 +574,7 @@
             </div>
             <h1 class="course-title" id="course-title-text">Loading Course details...</h1>
             <p class="course-meta" id="course-instructor-text">👨‍🏫 Instructor: -</p>
-            <p style="font-size: 1rem; color: var(--text-secondary); line-height: 1.6;" id="course-desc-text">-</p>
+            <p style="font-size: 14px; color: #64748B; line-height: 1.6;" id="course-desc-text">-</p>
 
             <!-- 3-Step Flow Indicator -->
             <div class="course-steps" id="student-steps" style="display: none;">
@@ -561,7 +642,7 @@
                 <!-- Loaded dynamically -->
             </div>
 
-            <div style="display: flex; gap: 0.75rem; border-top: 1px solid var(--panel-border); padding-top: 1.5rem;">
+            <div style="display: flex; gap: 0.75rem; border-top: 2px solid #F1F5F9; padding-top: 1.5rem;">
                 <button class="btn btn-secondary" onclick="closeReader()">Close</button>
                 <button class="btn btn-primary" id="btn-complete-read" disabled onclick="submitReadDone()">Mark as Read</button>
             </div>
@@ -569,8 +650,8 @@
 
         <!-- Admin View Notice -->
         <div class="course-hero" id="admin-article-preview" style="display: none;">
-            <h2 style="font-size: 1.25rem; font-weight: 700; border-bottom: 1px solid var(--panel-border); padding-bottom: 0.75rem; margin-bottom: 1rem;">📰 Course Article (Admin Preview)</h2>
-            <div id="admin-article-content" style="color: #cbd5e1; line-height: 1.6; max-height: 300px; overflow-y: auto;">
+            <h2 style="font-size: 18px; font-weight: 700; color: #0F172A; border-bottom: 2px solid #F1F5F9; padding-bottom: 0.75rem; margin-bottom: 1rem;">📰 Course Article (Admin Preview)</h2>
+            <div id="admin-article-content" style="color: #334155; line-height: 1.6; max-height: 300px; overflow-y: auto;">
                 No article linked to this course.
             </div>
         </div>
@@ -610,7 +691,13 @@
             window.location.href = '/auth/';
         } else {
             currentUser = JSON.parse(userStr);
-            document.getElementById('user-badge').textContent = `${currentUser.name} (${currentUser.role})`;
+            document.getElementById('nav-username').textContent = currentUser.name || 'User';
+            document.getElementById('nav-role-badge').textContent = currentUser.role || 'STUDENT';
+        }
+
+        function logout() {
+            localStorage.clear();
+            window.location.href = '/auth';
         }
 
         // Show toast
@@ -791,7 +878,7 @@
 
             s1.className = 'step-item done';
             pEnroll.className = 'action-panel panel-done';
-            document.getElementById('enrollment-desc').innerHTML = `You are <strong>enrolled</strong> in this course. Status: <strong style="color:var(--success);">${enrollment.status.toUpperCase()}</strong>`;
+            document.getElementById('enrollment-desc').innerHTML = `You are <strong>enrolled</strong> in this course. Status: <strong style="color:#10B981;">${enrollment.status.toUpperCase()}</strong>`;
             document.getElementById('enrollment-action-area').innerHTML = '';
 
             // Step 2: Check article reading
@@ -805,14 +892,14 @@
                     // Already marked absent
                     s2.className = 'step-item';
                     pArticle.className = 'action-panel panel-locked';
-                    document.getElementById('article-desc').innerHTML = `<strong style="color:var(--danger);">Absence recorded.</strong> Material access locked.`;
+                    document.getElementById('article-desc').innerHTML = `<strong style="color:#EF4444;">Absence recorded.</strong> Material access locked.`;
                     document.getElementById('article-action-area').innerHTML = '';
                 } else {
                     document.getElementById('article-desc').innerHTML = `<strong>Material: ${article.title}</strong><br>Read the article to unlock attendance.`;
                     
                     const timeWarningClass = globalCountdown <= 10 ? 'class="countdown-warning"' : '';
                     document.getElementById('article-action-area').innerHTML = `
-                        <p style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 0.75rem;" id="countdown-status">
+                        <p style="font-size: 0.85rem; color: #64748B; margin-bottom: 0.75rem;" id="countdown-status">
                             ⏳ Must start reading in: <span ${timeWarningClass} id="countdown-value">${globalCountdown}s</span>
                         </p>
                         <button class="btn btn-primary" id="btn-start-read" onclick="startReading()">📖 Read Article</button>
@@ -842,7 +929,7 @@
                 document.getElementById('attendance-desc').innerHTML = `
                     <div class="attendance-badge ${badgeClass}" style="margin-bottom: 0.75rem;">${attendance.status}</div>
                     <p>Recorded for today: <strong>${attendance.date}</strong></p>
-                    <p style="font-size: 0.85rem; color: var(--text-secondary); margin-top: 0.5rem;">Notes: ${attendance.notes || '-'}</p>
+                    <p style="font-size: 0.85rem; color: #64748B; margin-top: 0.5rem;">Notes: ${attendance.notes || '-'}</p>
                 `;
                 document.getElementById('attendance-action-area').innerHTML = '';
             } else {

@@ -4,192 +4,251 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>EduBrain - Attendance Tracking</title>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        :root {
-            --bg-gradient: linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%);
-            --panel-bg: rgba(30, 41, 59, 0.7);
-            --panel-border: rgba(255, 255, 255, 0.08);
-            --text-primary: #f8fafc;
-            --text-secondary: #94a3b8;
-            --accent: #6366f1;
-            --accent-hover: #4f46e5;
-            --success: #10b981;
-            --danger: #ef4444;
-            --warning: #f59e0b;
-        }
-
+        /* --- RESET & VARIABLES --- */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Outfit', sans-serif;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
 
         body {
-            background: var(--bg-gradient);
-            color: var(--text-primary);
-            min-height: 100vh;
-            padding: 2rem;
+            background-color: #F8FAFC;
+            color: #1E293B;
+            padding-top: 90px; /* Jarak pas agar konten tidak tertutup navbar */
+        }
+
+        /* --- GLOBAL NAVBAR --- */
+        .navbar {
+            background-color: #ffffff;
+            border-bottom: 2px solid #E2E8F0;
+            padding: 0 40px;
+            height: 75px;
             display: flex;
-            flex-direction: column;
             align-items: center;
-        }
-
-        .container {
-            width: 100%;
-            max-width: 1100px;
-            display: flex;
-            flex-direction: column;
-            gap: 2rem;
-        }
-
-        header {
-            display: flex;
             justify-content: space-between;
-            align-items: center;
-            background: var(--panel-bg);
-            border: 1px solid var(--panel-border);
-            padding: 1.5rem 2rem;
-            border-radius: 16px;
-            backdrop-filter: blur(12px);
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
         }
 
-        .logo {
-            font-size: 1.5rem;
-            font-weight: 700;
-            background: linear-gradient(to right, #818cf8, #c084fc);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+        .nav-brand {
             display: flex;
             align-items: center;
-            gap: 0.5rem;
-        }
-
-        .nav-links {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-        }
-
-        .btn {
-            padding: 0.6rem 1.2rem;
-            border-radius: 8px;
-            font-weight: 500;
-            cursor: pointer;
-            transition: all 0.2s ease;
+            gap: 12px;
             text-decoration: none;
-            border: none;
-            font-size: 0.9rem;
+            cursor: pointer;
         }
 
-        .btn-primary {
-            background: var(--accent);
-            color: white;
+        .nav-logo {
+            font-size: 26px;
         }
 
-        .btn-primary:hover {
-            background: var(--accent-hover);
-            transform: translateY(-1px);
+        .nav-brand-text h1 {
+            font-size: 18px;
+            color: #C31F1F;
+            font-weight: 700;
+            line-height: 1;
         }
 
-        .btn-secondary {
-            background: rgba(255, 255, 255, 0.05);
-            color: var(--text-primary);
-            border: 1px solid var(--panel-border);
+        .nav-brand-text p {
+            font-size: 10px;
+            color: #64748B;
+            letter-spacing: 0.5px;
+            font-weight: 600;
+            margin-top: 2px;
         }
 
-        .btn-secondary:hover {
-            background: rgba(255, 255, 255, 0.1);
+        .nav-menu-links {
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
 
-        .btn-danger {
-            background: rgba(239, 68, 68, 0.2);
-            color: #fca5a5;
-            border: 1px solid rgba(239, 68, 68, 0.3);
+        .nav-link-item {
+            color: #475569;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 600;
+            padding: 8px 14px;
+            border-radius: 8px;
+            transition: all 0.2s;
         }
 
-        .btn-danger:hover {
-            background: var(--danger);
-            color: white;
+        .nav-link-item:hover {
+            background: #F1F5F9;
+            color: #0F172A;
         }
 
-        .user-badge {
-            background: rgba(99, 102, 241, 0.15);
-            border: 1px solid rgba(99, 102, 241, 0.3);
-            color: #a5b4fc;
-            padding: 0.4rem 1rem;
-            border-radius: 20px;
-            font-size: 0.85rem;
-            font-weight: 500;
+        .nav-link-item.active {
+            background: #FEE2E2;
+            color: #991B1B;
         }
 
-        .grid {
+        /* Profile Box */
+        .nav-right-side {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .user-profile-box {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            background: #F1F5F9;
+            padding: 6px 14px;
+            border-radius: 12px;
+            border: 1px solid #E2E8F0;
+        }
+
+        .user-greeting {
+            font-size: 14px;
+            color: #475569;
+        }
+
+        .user-greeting strong {
+            color: #0F172A;
+            font-weight: 600;
+        }
+
+        .role-badge {
+            background: #E0E7FF;
+            color: #3730A3;
+            padding: 4px 8px;
+            border-radius: 6px;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        .logout-btn {
+            background: #FEE2E2;
+            color: #991B1B;
+            border: 1px solid #FCA5A5;
+            padding: 6px 14px;
+            border-radius: 10px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .logout-btn:hover {
+            background: #FCA5A5;
+        }
+
+        /* --- MAIN CONTAINER & GRID --- */
+        .main-container {
+            max-width: 1300px;
+            margin: 0 auto;
+            padding: 32px 40px;
+        }
+
+        .header-content {
+            margin-bottom: 32px;
+        }
+
+        .title-area h2 {
+            font-size: 26px;
+            font-weight: 700;
+            color: #0F172A;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .title-area p {
+            font-size: 14px;
+            color: #64748B;
+            margin-top: 4px;
+        }
+
+        .content-grid {
             display: grid;
             grid-template-columns: 1fr;
-            gap: 2rem;
+            gap: 32px;
         }
 
-        @media (min-width: 768px) {
-            .grid {
+        @media (min-width: 992px) {
+            .content-grid {
                 grid-template-columns: 1fr 2fr;
+            }
+            .content-grid.full-width {
+                grid-template-columns: 1fr;
             }
         }
 
+        /* --- CARDS & PANELS --- */
         .card {
-            background: var(--panel-bg);
-            border: 1px solid var(--panel-border);
-            border-radius: 16px;
-            padding: 2rem;
-            backdrop-filter: blur(12px);
+            background: #ffffff;
+            border-radius: 14px;
+            border: 1px solid #E2E8F0;
+            padding: 24px;
             display: flex;
             flex-direction: column;
-            gap: 1.5rem;
+            gap: 20px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
         }
 
         .card-title {
-            font-size: 1.25rem;
-            font-weight: 600;
-            color: #e2e8f0;
-            border-bottom: 1px solid var(--panel-border);
-            padding-bottom: 0.75rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+            font-size: 18px;
+            font-weight: 700;
+            color: #0F172A;
+            border-bottom: 2px solid #F1F5F9;
+            padding-bottom: 12px;
         }
 
+        /* --- FORMS --- */
         .form-group {
             display: flex;
             flex-direction: column;
-            gap: 0.5rem;
+            gap: 6px;
         }
 
         label {
-            font-size: 0.85rem;
-            color: var(--text-secondary);
-            font-weight: 500;
+            font-size: 13px;
+            color: #475569;
+            font-weight: 600;
         }
 
         input, textarea, select {
-            background: rgba(15, 23, 42, 0.6);
-            border: 1px solid var(--panel-border);
+            width: 100%;
+            background: #ffffff;
+            border: 1px solid #CBD5E1;
             border-radius: 8px;
-            padding: 0.75rem 1rem;
-            color: white;
-            font-size: 0.95rem;
+            padding: 10px 14px;
+            color: #1E293B;
+            font-size: 14px;
             outline: none;
             transition: border-color 0.2s;
         }
 
         input:focus, textarea:focus, select:focus {
-            border-color: var(--accent);
+            border-color: #C31F1F;
         }
 
-        select option {
-            background: #1e293b;
-            color: white;
+        .submit-btn {
+            background: #C31F1F;
+            color: #ffffff;
+            border: none;
+            padding: 12px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s;
+            margin-top: 8px;
         }
 
+        .submit-btn:hover {
+            background: #991B1B;
+        }
+
+        /* --- TABLES --- */
         .table-container {
             overflow-x: auto;
         }
@@ -201,95 +260,127 @@
         }
 
         th {
-            color: var(--text-secondary);
+            color: #64748B;
             font-weight: 600;
-            font-size: 0.85rem;
+            font-size: 13px;
             text-transform: uppercase;
-            padding: 1rem;
-            border-bottom: 2px solid var(--panel-border);
+            padding: 14px;
+            border-bottom: 2px solid #E2E8F0;
+            background: #F8FAFC;
         }
 
         td {
-            padding: 1rem;
-            border-bottom: 1px solid var(--panel-border);
-            font-size: 0.95rem;
-            color: #cbd5e1;
+            padding: 14px;
+            border-bottom: 1px solid #E2E8F0;
+            font-size: 14px;
+            color: #334155;
         }
 
         tr:hover td {
-            background: rgba(255, 255, 255, 0.02);
+            background: #F8FAFC;
         }
 
-        .action-btns {
-            display: flex;
-            gap: 0.5rem;
+        /* --- ALERTS & BADGES --- */
+        .alert {
+            padding: 12px 16px;
+            border-radius: 8px;
+            font-size: 14px;
+            margin-bottom: 24px;
+            display: none;
+            font-weight: 500;
+        }
+        .alert-error {
+            background: #FEE2E2;
+            border: 1px solid #FCA5A5;
+            color: #991B1B;
+        }
+        .alert-success {
+            background: #D1FAE5;
+            border: 1px solid #A7F3D0;
+            color: #065F46;
         }
 
         .status-badge {
-            padding: 0.25rem 0.6rem;
+            padding: 4px 10px;
             border-radius: 6px;
-            font-size: 0.8rem;
+            font-size: 12px;
             font-weight: 600;
             text-transform: capitalize;
             display: inline-block;
         }
         .status-present {
-            background: rgba(16, 185, 129, 0.15);
-            color: #a7f3d0;
-            border: 1px solid rgba(16, 185, 129, 0.3);
+            background: #D1FAE5;
+            color: #065F46;
         }
         .status-absent {
-            background: rgba(239, 68, 68, 0.15);
-            color: #fca5a5;
-            border: 1px solid rgba(239, 68, 68, 0.3);
+            background: #FEE2E2;
+            color: #991B1B;
         }
         .status-late {
-            background: rgba(245, 158, 11, 0.15);
-            color: #fde68a;
-            border: 1px solid rgba(245, 158, 11, 0.3);
+            background: #FEF3C7;
+            color: #92400E;
         }
 
-        .alert {
-            padding: 1rem;
-            border-radius: 8px;
-            font-size: 0.9rem;
-            display: none;
+        .btn-action {
+            padding: 6px 12px;
+            font-size: 12px;
+            font-weight: 600;
+            border-radius: 6px;
+            cursor: pointer;
+            border: 1px solid #E2E8F0;
+            background: #F8FAFC;
+            color: #334155;
+            transition: all 0.2s;
         }
-        .alert-error {
-            background: rgba(239, 68, 68, 0.15);
-            border: 1px solid rgba(239, 68, 68, 0.3);
-            color: #fca5a5;
-        }
-        .alert-success {
-            background: rgba(16, 185, 129, 0.15);
-            border: 1px solid rgba(16, 185, 129, 0.3);
-            color: #a7f3d0;
+        .btn-action:hover {
+            background: #F1F5F9;
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <header>
-            <div class="logo">
-                <span>⏰</span> EduBrain Attendance
+
+    <nav class="navbar">
+        <a href="/" class="nav-brand">
+            <span class="nav-logo">🎓</span>
+            <div class="nav-brand-text">
+                <h1>EduBrain</h1>
+                <p>TELKOM UNIVERSITY</p>
             </div>
-            <div class="nav-links">
-                <a href="/" class="btn btn-secondary">Portal Gateway</a>
-                <span id="user-badge" class="user-badge">Checking Auth...</span>
-                <button onclick="logout()" class="btn btn-danger btn-sm">Logout</button>
+        </a>
+
+        <div class="nav-menu-links">
+            <a href="/courses" class="nav-link-item">Courses</a>
+            <a href="/articles" class="nav-link-item">Articles</a>
+            <a href="/form-discussion" class="nav-link-item">Discussion</a>
+            <a href="/enrollments" class="nav-link-item">My Enrollments</a>
+            <a href="/attendance" class="nav-link-item active">Attendance</a>
+        </div>
+
+        <div class="nav-right-side">
+            <div class="user-profile-box">
+                <span class="user-greeting">Hi, <strong id="nav-username">Loading...</strong></span>
+                <span id="nav-role-badge" class="role-badge">STUDENT</span>
             </div>
-        </header>
+            <button onclick="logout()" class="logout-btn">Log out</button>
+        </div>
+    </nav>
+
+    <main class="main-container">
+        <div class="header-content">
+            <div class="title-area">
+                <h2>Attendance Tracking</h2>
+                <p>Monitor and manage class logs efficiently</p>
+            </div>
+        </div>
 
         <div id="alert-box" class="alert"></div>
 
-        <div class="grid">
-            <!-- Mark Attendance Form -->
+        <div class="content-grid" id="main-grid-layout">
             <div class="card" id="form-card">
                 <div class="card-title" id="form-title">Mark Attendance</div>
                 <form id="attendance-form" onsubmit="handleFormSubmit(event)">
                     <input type="hidden" id="record-id">
 
-                    <!-- Admin selects student, student is auto-selected -->
                     <div class="form-group" id="student-select-group" style="display: none;">
                         <label for="student-select">Select Student</label>
                         <select id="student-select">
@@ -323,11 +414,10 @@
                         <textarea id="notes-input" rows="2" placeholder="e.g. sick with doctor note..."></textarea>
                     </div>
 
-                    <button type="submit" class="btn btn-primary" style="margin-top: 1rem; width: 100%;">Record Attendance</button>
+                    <button type="submit" class="submit-btn">Record Attendance</button>
                 </form>
             </div>
 
-            <!-- Attendance Logs -->
             <div class="card">
                 <div class="card-title">Attendance History Logs</div>
                 <div class="table-container">
@@ -344,37 +434,38 @@
                         </thead>
                         <tbody id="attendance-list-body">
                             <tr>
-                                <td colspan="6" style="text-align: center; color: var(--text-secondary);">Loading logs...</td>
+                                <td colspan="6" style="text-align: center; color: #64748B;">Loading logs...</td>
                             </tr>
                         </tbody>
                     </table>
                 </div>
             </div>
         </div>
-    </div>
+    </main>
 
     <script>
-        const GRAPHQL_URL = window.location.port === '5000' ? '/attendance/graphql' : '/graphql'; // gateway path or direct port 5005 path
+        const GRAPHQL_URL = window.location.port === '5000' ? '/attendance/graphql' : '/graphql';
 
         const token = localStorage.getItem('token');
         const userStr = localStorage.getItem('user');
         let currentUser = null;
 
-        // Date input defaults to today
         document.getElementById('date-input').valueAsDate = new Date();
 
         if (!token || !userStr) {
             window.location.href = '/auth';
         } else {
             currentUser = JSON.parse(userStr);
-            document.getElementById('user-badge').textContent = `${currentUser.name} (${currentUser.role})`;
+            document.getElementById('nav-username').textContent = currentUser.name || 'User';
+            document.getElementById('nav-role-badge').textContent = currentUser.role || 'STUDENT';
             
             if (currentUser.role === 'admin') {
                 document.getElementById('student-select-group').style.display = 'flex';
                 document.getElementById('student-select').setAttribute('required', 'true');
+                document.querySelectorAll('.admin-actions').forEach(el => el.style.display = 'table-cell');
             } else {
                 document.getElementById('form-card').style.display = 'none';
-                document.querySelector('.grid').style.gridTemplateColumns = '1fr';
+                document.getElementById('main-grid-layout').classList.add('full-width');
             }
         }
 
@@ -388,9 +479,7 @@
             alertBox.className = `alert alert-${type}`;
             alertBox.textContent = message;
             alertBox.style.display = 'block';
-            setTimeout(() => {
-                alertBox.style.display = 'none';
-            }, 6000);
+            setTimeout(() => { alertBox.style.display = 'none'; }, 6000);
         }
 
         async function fetchGraphQL(url, query, variables = {}) {
@@ -411,9 +500,7 @@
                     body: JSON.stringify({ query, variables })
                 });
                 const result = await response.json();
-                if (result.errors) {
-                    throw new Error(result.errors[0].message);
-                }
+                if (result.errors) throw new Error(result.errors[0].message);
                 return result.data;
             } catch (err) {
                 showAlert(err.message, 'error');
@@ -421,7 +508,6 @@
             }
         }
 
-        // Load courses select. If student: load only their registered courses. If admin: load all courses.
         async function loadCoursesDropdown() {
             if (currentUser.role === 'admin') {
                 const query = `query { courses { id title } }`;
@@ -436,7 +522,6 @@
                     select.appendChild(opt);
                 });
             } else {
-                // Fetch student's enrollments to determine eligible courses
                 const query = `
                     query GetOwnEnrollments($student_id: ID!) {
                         studentEnrollments(student_id: $student_id) {
@@ -462,7 +547,6 @@
             }
         }
 
-        // Load students dropdown (Admin only)
         async function loadStudentsDropdown() {
             if (currentUser.role !== 'admin') return;
             const query = `query { students { id name } }`;
@@ -478,14 +562,13 @@
             });
         }
 
-        // Load History logs
         async function loadLogs() {
             let query;
             let variables = {};
 
             if (currentUser.role === 'admin') {
                 query = `
-                    query {
+                    query GetAdminLogs {
                         attendanceLogs {
                             id
                             student_id
@@ -493,18 +576,13 @@
                             date
                             status
                             notes
-                            student {
-                                name
-                            }
-                            course {
-                                title
-                            }
                         }
                     }
                 `;
             } else {
+                // Sesuai skema backend Anda: studentAttendance menerima argument student_id
                 query = `
-                    query GetOwnAttendance($student_id: ID!) {
+                    query GetStudentLogs($student_id: ID!) {
                         studentAttendance(student_id: $student_id) {
                             id
                             student_id
@@ -512,161 +590,134 @@
                             date
                             status
                             notes
-                            student {
-                                name
-                            }
-                            course {
-                                title
-                            }
                         }
                     }
                 `;
                 variables = { student_id: currentUser.id };
             }
 
-            const data = await fetchGraphQL(GRAPHQL_URL, query, variables);
-            if (!data) return;
-
-            const list = currentUser.role === 'admin' ? data.attendanceLogs : data.studentAttendance;
+            const data = await fetchGraphQL('/attendance/graphql', query, variables);
             const tbody = document.getElementById('attendance-list-body');
             tbody.innerHTML = '';
 
-            const isAdmin = currentUser.role === 'admin';
-            document.querySelectorAll('.admin-actions').forEach(el => el.style.display = isAdmin ? 'table-cell' : 'none');
+            if (!data) return;
 
-            if (list.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="6" style="text-align: center; color: var(--text-secondary);">No attendance recorded.</td></tr>`;
+            // Memastikan payload diambil dari field properti yang benar sesuai role
+            const logs = currentUser.role === 'admin' ? data.attendanceLogs : data.studentAttendance;
+
+            if (!logs) {
+                tbody.innerHTML = `<tr><td colspan="6" style="text-align: center;">Failed to load data.</td></tr>`;
                 return;
             }
 
-            list.forEach(a => {
-                const studentName = a.student ? a.student.name : `Student #${a.student_id}`;
-                const courseTitle = a.course ? a.course.title : `Course #${a.course_id}`;
+            if (logs.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="6" style="text-align: center; color: #64748B;">No attendance records found.</td></tr>`;
+                return;
+            }
+
+            for (const log of logs) {
                 const tr = document.createElement('tr');
+                
+                let studentName = log.student_id; 
+                let courseTitle = log.course_id;
+
+                if (currentUser.role === 'admin') {
+                    const sOption = document.querySelector(`#student-select option[value="${log.student_id}"]`);
+                    if (sOption) studentName = sOption.textContent;
+                } else {
+                    studentName = currentUser.name;
+                }
+
+                const cOption = document.querySelector(`#course-select option[value="${log.course_id}"]`);
+                if (cOption) courseTitle = cOption.textContent;
+
                 tr.innerHTML = `
-                    <td style="font-weight: 500; color: #fff;">${studentName}</td>
+                    <td><strong>${studentName}</strong></td>
                     <td>${courseTitle}</td>
-                    <td>${a.date}</td>
-                    <td><span class="status-badge status-${a.status}">${a.status}</span></td>
-                    <td style="font-size: 0.85rem; color: var(--text-secondary);">${a.notes || '-'}</td>
-                    ${isAdmin ? `
-                        <td class="admin-actions">
-                            <div class="action-btns">
-                                <button onclick="editRecord(${JSON.stringify(a).replace(/"/g, '&quot;')})" class="btn btn-secondary btn-sm" style="padding: 0.3rem 0.6rem; font-size: 0.8rem;">Edit</button>
-                                <button onclick="deleteRecord(${a.id})" class="btn btn-danger btn-sm" style="padding: 0.3rem 0.6rem; font-size: 0.8rem;">Delete</button>
-                            </div>
-                        </td>
-                    ` : ''}
+                    <td>${new Date(log.date).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' })}</td>
+                    <td><span class="status-badge status-${log.status}">${log.status}</span></td>
+                    <td><span style="font-size:13px; color:#64748B">${log.notes || '-'}</span></td>
+                    ${currentUser.role === 'admin' ? `
+                    <td class="admin-actions">
+                        <button class="btn-action" onclick="editLog('${log.id}', '${log.student_id}', '${log.course_id}', '${log.date}', '${log.status}', '${log.notes}')">Edit</button>
+                    </td>` : ''}
                 `;
                 tbody.appendChild(tr);
-            });
-        }
-
-        // Form Resets
-        function resetForm() {
-            document.getElementById('attendance-form').reset();
-            document.getElementById('record-id').value = '';
-            document.getElementById('form-title').textContent = 'Mark Attendance';
-            document.getElementById('date-input').valueAsDate = new Date();
-            if (currentUser.role === 'admin') {
-                document.getElementById('student-select').disabled = false;
             }
-            document.getElementById('course-select').disabled = false;
-            document.getElementById('date-input').disabled = false;
         }
 
-        // Populate Edit Form (Admin only)
-        function editRecord(a) {
-            document.getElementById('record-id').value = a.id;
-            if (currentUser.role === 'admin') {
-                document.getElementById('student-select').value = a.student_id;
-                document.getElementById('student-select').disabled = true;
-            }
-            document.getElementById('course-select').value = a.course_id;
-            document.getElementById('course-select').disabled = true;
-            document.getElementById('date-input').value = a.date;
-            document.getElementById('date-input').disabled = true;
-
-            document.getElementById('status-select').value = a.status;
-            document.getElementById('notes-input').value = a.notes || '';
-            document.getElementById('form-title').textContent = `Edit Attendance Log #${a.id}`;
-        }
-
-        // Form Submit handler
-        async function handleFormSubmit(event) {
-            event.preventDefault();
-            const id = document.getElementById('record-id').value;
+        async function handleFormSubmit(e) {
+            e.preventDefault();
+            const recordId = document.getElementById('record-id').value;
+            const studentId = currentUser.role === 'admin' ? document.getElementById('student-select').value : currentUser.id;
+            const courseId = document.getElementById('course-select').value;
+            const date = document.getElementById('date-input').value;
             const status = document.getElementById('status-select').value;
             const notes = document.getElementById('notes-input').value;
 
-            if (id) {
-                // Update
-                const mutation = `
-                    mutation UpdateAttendance($id: ID!, $status: String!, $notes: String) {
-                        updateAttendanceStatus(id: $id, status: $status, notes: $notes) {
-                            id
+            let query = '';
+            let variables = {};
+
+            if (recordId) {
+                // Sesuai skema backend Anda: updateAttendanceStatus
+                query = `
+                    mutation UpdateAttendanceStatus($id: ID!, $status: String!, $notes: String) {
+                        updateAttendanceStatus(id: $id, status: $status, notes: $notes) { 
+                            id 
+                            status 
                         }
                     }
                 `;
-                const data = await fetchGraphQL(GRAPHQL_URL, mutation, { id, status, notes });
-                if (data) {
-                    showAlert('Attendance log updated successfully!');
-                    resetForm();
-                    loadLogs();
-                }
+                variables = { id: recordId, status, notes };
             } else {
-                // Create
-                const student_id = currentUser.role === 'admin'
-                    ? document.getElementById('student-select').value
-                    : currentUser.id;
-                const course_id = document.getElementById('course-select').value;
-                const date = document.getElementById('date-input').value;
-
-                if (!student_id || !course_id || !date) {
-                    showAlert('Please fill in all required fields', 'error');
-                    return;
-                }
-
-                const mutation = `
-                    mutation MarkAttendance($student_id: ID!, $course_id: ID!, $date: String!, $status: String, $notes: String) {
-                        markAttendance(student_id: $student_id, course_id: $course_id, date: $date, status: $status, notes: $notes) {
-                            id
+                query = `
+                    mutation MarkAttendance($student_id: ID!, $course_id: ID!, $date: String!, $status: String!, $notes: String) {
+                        markAttendance(student_id: $student_id, course_id: $course_id, date: $date, status: $status, notes: $notes) { 
+                            id 
                         }
                     }
                 `;
-                const variables = { student_id, course_id, date, status, notes };
-                const data = await fetchGraphQL(GRAPHQL_URL, mutation, variables);
-                if (data) {
-                    showAlert('Attendance marked successfully!');
-                    resetForm();
-                    loadLogs();
-                }
+                variables = { student_id: studentId, course_id: courseId, date, status, notes };
+            }
+
+            const data = await fetchGraphQL('/attendance/graphql', query, variables);
+            if (data) {
+                showAlert(recordId ? 'Attendance log updated!' : 'Attendance successfully recorded!');
+                resetForm();
+                await loadLogs();
             }
         }
 
-        // Delete record
-        async function deleteRecord(id) {
-            if (!confirm('Are you sure you want to delete this log?')) return;
-            const mutation = `
-                mutation DeleteAttendance($id: ID!) {
-                    deleteAttendance(id: $id)
-                }
-            `;
-            const data = await fetchGraphQL(GRAPHQL_URL, mutation, { id });
-            if (data && data.deleteAttendance) {
-                showAlert('Attendance log deleted.');
-                loadLogs();
+        function editLog(id, studentId, courseId, date, status, notes) {
+            document.getElementById('form-title').textContent = 'Edit Attendance Record';
+            document.getElementById('record-id').value = id;
+            document.getElementById('student-select').value = studentId;
+            document.getElementById('course-select').value = courseId;
+            
+            if(date) {
+                const formattedDate = new Date(date).toISOString().split('T')[0];
+                document.getElementById('date-input').value = formattedDate;
             }
+            
+            document.getElementById('status-select').value = status;
+            document.getElementById('notes-input').value = notes === 'null' || !notes ? '' : notes;
+            window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
-        // Init
+        function resetForm() {
+            document.getElementById('form-title').textContent = 'Mark Attendance';
+            document.getElementById('record-id').value = '';
+            document.getElementById('attendance-form').reset();
+            document.getElementById('date-input').valueAsDate = new Date();
+        }
+
         async function init() {
             await loadCoursesDropdown();
             await loadStudentsDropdown();
             await loadLogs();
         }
 
-        init();
+        document.addEventListener('DOMContentLoaded', init);
     </script>
 </body>
 </html>

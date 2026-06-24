@@ -3,372 +3,431 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EduBrain - Authentication Portal</title>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <title>EduBrain - Learning Platform</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        :root {
-            --bg-gradient: linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%);
-            --panel-bg: rgba(30, 41, 59, 0.7);
-            --panel-border: rgba(255, 255, 255, 0.08);
-            --text-primary: #f8fafc;
-            --text-secondary: #94a3b8;
-            --accent: #6366f1;
-            --accent-glow: rgba(99, 102, 241, 0.4);
-            --accent-hover: #4f46e5;
-            --success: #10b981;
-            --danger: #ef4444;
-        }
-
+        /* --- GLOBAL STYLES --- */
         * {
+            box-sizing: border-box;
             margin: 0;
             padding: 0;
-            box-sizing: border-box;
-            font-family: 'Outfit', sans-serif;
+            font-family: 'Plus Jakarta Sans', sans-serif;
         }
 
         body {
-            background: var(--bg-gradient);
-            color: var(--text-primary);
+            background-color: #FFF3F3;
             min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* --- NAVBAR STYLES --- */
+        .navbar {
+            background-color: #ffffff;
+            border-bottom: 2px solid #E5E7EB;
+            padding: 0 40px;
+            height: 70px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+        }
+
+        .nav-brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+        }
+
+        .nav-logo {
+            font-size: 24px;
+        }
+
+        .nav-brand-text h1 {
+            font-size: 18px;
+            color: #C31F1F;
+            font-weight: 700;
+            line-height: 1;
+        }
+
+        .nav-brand-text p {
+            font-size: 10px;
+            color: #8C94A3;
+            letter-spacing: 0.5px;
+            font-weight: 600;
+            margin-top: 2px;
+        }
+
+        .nav-menu {
+            display: flex;
+            gap: 32px;
+            list-style: none;
+        }
+
+        .nav-item a {
+            text-decoration: none;
+            color: #6C757D;
+            font-size: 15px;
+            font-weight: 600;
+            transition: color 0.2s;
+        }
+
+        .nav-item a:hover {
+            color: #C31F1F;
+        }
+
+        /* --- AUTH CONTAINER CARD STYLES --- */
+        .page-content {
+            flex: 1;
             display: flex;
             justify-content: center;
             align-items: center;
-            padding: 1rem;
+            padding: 100px 20px 40px 20px; /* Padding atas longgar agar tidak tertutup fixed navbar */
         }
 
         .auth-container {
+            background: #ffffff;
             width: 100%;
-            max-width: 450px;
-            background: var(--panel-bg);
-            border: 1px solid var(--panel-border);
+            max-width: 420px;
             border-radius: 24px;
-            padding: 2.5rem;
-            backdrop-filter: blur(16px);
-            box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+            padding: 32px;
+            box-shadow: 0px 10px 30px rgba(219, 48, 48, 0.06);
+        }
+
+        .brand-header {
             display: flex;
-            flex-direction: column;
-            gap: 2rem;
-            position: relative;
-            overflow: hidden;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 28px;
         }
 
-        .auth-container::before {
-            content: '';
-            position: absolute;
-            top: -50px;
-            left: -50px;
-            width: 150px;
-            height: 150px;
-            background: var(--accent);
-            filter: blur(80px);
-            opacity: 0.15;
-            border-radius: 50%;
-            pointer-events: none;
+        .brand-logo {
+            font-size: 28px;
         }
 
-        .brand-section {
-            text-align: center;
-            display: flex;
-            flex-direction: column;
-            gap: 0.5rem;
+        .brand-text h1 {
+            font-size: 20px;
+            color: #C31F1F;
+            font-weight: 700;
+            line-height: 1.2;
         }
 
-        .logo {
-            font-size: 2rem;
-            font-weight: 800;
-            background: linear-gradient(to right, #818cf8, #c084fc);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        .subtitle {
-            color: var(--text-secondary);
-            font-size: 0.95rem;
-        }
-
-        .tabs {
-            display: flex;
-            background: rgba(15, 23, 42, 0.4);
-            padding: 0.35rem;
-            border-radius: 12px;
-            border: 1px solid var(--panel-border);
-        }
-
-        .tab {
-            flex: 1;
-            padding: 0.6rem;
-            text-align: center;
+        .brand-text p {
+            font-size: 11px;
+            color: #8C94A3;
+            letter-spacing: 1px;
             font-weight: 600;
-            font-size: 0.9rem;
+        }
+
+        /* Tab Switching */
+        .tab-container {
+            display: flex;
+            background: #F4F5F7;
+            border-radius: 12px;
+            padding: 4px;
+            margin-bottom: 24px;
+        }
+
+        .tab-btn {
+            flex: 1;
+            border: none;
+            background: none;
+            padding: 10px;
+            font-size: 14px;
+            font-weight: 600;
+            color: #6C757D;
             cursor: pointer;
             border-radius: 8px;
-            transition: all 0.25s ease;
-            color: var(--text-secondary);
-        }
-
-        .tab.active {
-            background: var(--accent);
-            color: white;
-            box-shadow: 0 4px 12px var(--accent-glow);
-        }
-
-        .auth-form {
-            display: flex;
-            flex-direction: column;
-            gap: 1.25rem;
-        }
-
-        .form-group {
-            display: flex;
-            flex-direction: column;
-            gap: 0.5rem;
-        }
-
-        label {
-            font-size: 0.85rem;
-            color: var(--text-secondary);
-            font-weight: 500;
-        }
-
-        input {
-            background: rgba(15, 23, 42, 0.6);
-            border: 1px solid var(--panel-border);
-            border-radius: 10px;
-            padding: 0.75rem 1rem;
-            color: white;
-            font-size: 0.95rem;
-            outline: none;
             transition: all 0.2s ease;
         }
 
-        input:focus {
-            border-color: var(--accent);
-            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.15);
+        .tab-btn.active {
+            background: #ffffff;
+            color: #1F2937;
+            box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.04);
         }
 
-        .btn-submit {
-            background: var(--accent);
+        /* Forms */
+        .auth-form {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .input-group {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .input-group label {
+            font-size: 13px;
+            font-weight: 600;
+            color: #4B5563;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 12px 16px;
+            border: 1.5px solid #E5E7EB;
+            border-radius: 12px;
+            font-size: 14px;
+            color: #1F2937;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        .input-group input:focus {
+            border-color: #D32F2F;
+        }
+
+        /* Submit Button */
+        .submit-btn {
+            background: #D32F2F;
             color: white;
             border: none;
-            padding: 0.85rem;
-            border-radius: 10px;
-            font-size: 1rem;
+            padding: 14px;
+            border-radius: 12px;
+            font-size: 15px;
             font-weight: 600;
             cursor: pointer;
-            transition: all 0.25s ease;
-            margin-top: 0.5rem;
+            margin-top: 8px;
+            transition: background 0.2s;
         }
 
-        .btn-submit:hover {
-            background: var(--accent-hover);
-            box-shadow: 0 4px 20px var(--accent-glow);
-            transform: translateY(-1px);
+        .submit-btn:hover {
+            background: #B71C1C;
         }
 
-        .alert {
-            padding: 0.85rem 1rem;
-            border-radius: 10px;
-            font-size: 0.9rem;
-            display: none;
-            text-align: center;
-        }
-        .alert-error {
-            background: rgba(239, 68, 68, 0.15);
-            border: 1px solid rgba(239, 68, 68, 0.3);
-            color: #fca5a5;
-        }
-        .alert-success {
-            background: rgba(16, 185, 129, 0.15);
-            border: 1px solid rgba(16, 185, 129, 0.3);
-            color: #a7f3d0;
+        /* Demo Info Box */
+        .demo-box {
+            background: #FFF0F0;
+            border-radius: 14px;
+            padding: 16px;
+            margin-top: 24px;
+            font-size: 12px;
         }
 
-        .guest-notice {
-            text-align: center;
-            font-size: 0.85rem;
-            color: var(--text-secondary);
+        .demo-box h3 {
+            font-size: 13px;
+            color: #1F2937;
+            margin-bottom: 8px;
+            font-weight: 700;
+        }
+
+        .demo-box p {
+            color: #4B5563;
+            margin-bottom: 6px;
+            line-height: 1.5;
+        }
+
+        .demo-box span {
+            color: #E53935;
+        }
+
+        .badge {
+            background: #FFEBEE;
+            color: #C62828;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: monospace;
+        }
+
+        /* Utilities */
+        .hidden {
+            display: none !important;
+        }
+
+        .alert-box {
+            background: #FFEBEE;
+            color: #C62828;
+            padding: 12px;
+            border-radius: 12px;
+            font-size: 13px;
+            font-weight: 500;
+            margin-bottom: 16px;
+            border: 1px solid #FFCDD2;
         }
     </style>
 </head>
 <body>
-    <div class="auth-container">
-        <div class="brand-section">
-            <div class="logo">EduBrain Portal</div>
-            <div class="subtitle" id="portal-sub">Sign in to access your modules</div>
-        </div>
 
-        <div id="alert-box" class="alert"></div>
+    <nav class="navbar">
+        <a href="/" class="nav-brand">
+            <span class="nav-logo">🎓</span>
+            <div class="nav-brand-text">
+                <h1>EduBrain</h1>
+                <p>TELKOM UNIVERSITY</p>
+            </div>
+        </a>
+    </nav>
 
-        <div class="tabs">
-            <div class="tab active" onclick="switchTab('login')">Login</div>
-            <div class="tab" onclick="switchTab('register')">Register</div>
-        </div>
+    <div class="page-content">
+        <div class="auth-container">
+            <div class="brand-header">
+                <span class="brand-logo">🎓</span>
+                <div class="brand-text">
+                    <h1>EduBrain</h1>
+                    <p>LEARNING PLATFORM</p>
+                </div>
+            </div>
 
-        <!-- Login Form -->
-        <form id="login-form" class="auth-form" onsubmit="handleLogin(event)">
-            <div class="form-group">
-                <label for="login-email">Email Address</label>
-                <input type="email" id="login-email" required placeholder="e.g. fasya@edubrain.id">
+            <div class="tab-container">
+                <button id="tab-signin" class="tab-btn active" onclick="switchTab('signin')">Sign In</button>
+                <button id="tab-register" class="tab-btn" onclick="switchTab('register')">Register</button>
             </div>
-            <div class="form-group">
-                <label for="login-password">Password</label>
-                <input type="password" id="login-password" required placeholder="••••••••">
-            </div>
-            <button type="submit" class="btn-submit">Login Account</button>
-        </form>
 
-        <!-- Register Form (Students Only) -->
-        <form id="register-form" class="auth-form" onsubmit="handleRegister(event)" style="display: none;">
-            <div class="form-group">
-                <label for="reg-name">Full Name</label>
-                <input type="text" id="reg-name" required placeholder="e.g. Fasya Arinal">
-            </div>
-            <div class="form-group">
-                <label for="reg-email">Email Address</label>
-                <input type="email" id="reg-email" required placeholder="e.g. fasya@edubrain.id">
-            </div>
-            <div class="form-group">
-                <label for="reg-password">Password</label>
-                <input type="password" id="reg-password" required placeholder="••••••••">
-            </div>
-            <div class="form-group">
-                <label for="reg-phone">Phone Number</label>
-                <input type="text" id="reg-phone" placeholder="e.g. 0812345678">
-            </div>
-            <div class="form-group">
-                <label for="reg-address">Home Address</label>
-                <input type="text" id="reg-address" placeholder="e.g. Bandung">
-            </div>
-            <button type="submit" class="btn-submit">Register Account</button>
-        </form>
+            <div id="error-alert" class="alert-box hidden"></div>
 
-        <div class="guest-notice" id="credentials-tip">
-            💡 Admin: <code>admin@edubrain.id</code> / <code>admin123</code><br>
-            💡 Student: <code>fasya@edubrain.id</code> / <code>student123</code>
+            <form id="form-signin" class="auth-form" onsubmit="handleSignIn(event)">
+                <div class="input-group">
+                    <label for="signin-email">Email *</label>
+                    <input type="email" id="signin-email" placeholder="your@email.com" required>
+                </div>
+                <div class="input-group">
+                    <label for="signin-password">Password *</label>
+                    <input type="password" id="signin-password" placeholder="••••••••" required>
+                </div>
+                <button type="submit" class="submit-btn">Sign In</button>
+            </form>
+
+            <form id="form-register" class="auth-form hidden" onsubmit="handleRegister(event)">
+                <div class="input-group">
+                    <label for="reg-name">Full Name *</label>
+                    <input type="text" id="reg-name" placeholder="Your full name" required>
+                </div>
+                <div class="input-group">
+                    <label for="reg-phone">Phone</label>
+                    <input type="text" id="reg-phone" placeholder="e.g. 08123456789">
+                </div>
+                <div class="input-group">
+                    <label for="reg-address">Address</label>
+                    <input type="text" id="reg-address" placeholder="City / Address">
+                </div>
+                <div class="input-group">
+                    <label for="reg-email">Email *</label>
+                    <input type="email" id="reg-email" placeholder="your@email.com" required>
+                </div>
+                <div class="input-group">
+                    <label for="reg-password">Password *</label>
+                    <input type="password" id="reg-password" placeholder="••••••••" required>
+                </div>
+                <button type="submit" class="submit-btn">Create Account</button>
+            </form>
+
+            <div class="demo-box">
+                <h3>Demo accounts:</h3>
+                <p><strong>Admin:</strong> <span>admin@edubrain.id</span> / <code class="badge">admin123</code></p>
+                <p><strong>Student:</strong> <span>fasya@edubrain.id</span> / <code class="badge">student123</code></p>
+            </div>
         </div>
     </div>
 
     <script>
-        const GRAPHQL_URL = window.location.port === '5000' ? '/auth/graphql' : '/graphql'; // gateway path proxying to port 5001 or direct port 5001 path
+        const GRAPHQL_URL = window.location.origin + '/auth/graphql';
+        function switchTab(type) {
+            const tabSignIn = document.getElementById('tab-signin');
+            const tabRegister = document.getElementById('tab-register');
+            const formSignIn = document.getElementById('form-signin');
+            const formRegister = document.getElementById('form-register');
+            document.getElementById('error-alert').classList.add('hidden');
 
-        // Check if already logged in, redirect to Gateway
-        if (localStorage.getItem('token')) {
-            window.location.href = '/';
-        }
-
-        // Switch login/register tabs
-        function switchTab(mode) {
-            const tabs = document.querySelectorAll('.tab');
-            const loginForm = document.getElementById('login-form');
-            const registerForm = document.getElementById('register-form');
-            const sub = document.getElementById('portal-sub');
-            const tip = document.getElementById('credentials-tip');
-
-            if (mode === 'login') {
-                tabs[0].classList.add('active');
-                tabs[1].classList.remove('active');
-                loginForm.style.display = 'flex';
-                registerForm.style.display = 'none';
-                sub.textContent = 'Sign in to access your modules';
-                tip.style.display = 'block';
+            if (type === 'signin') {
+                tabSignIn.classList.add('active');
+                tabRegister.classList.remove('active');
+                formSignIn.classList.remove('hidden');
+                formRegister.classList.add('hidden');
             } else {
-                tabs[0].classList.remove('active');
-                tabs[1].classList.add('active');
-                loginForm.style.display = 'none';
-                registerForm.style.display = 'flex';
-                sub.textContent = 'Register a new student account';
-                tip.style.display = 'none';
+                tabSignIn.classList.remove('active');
+                tabRegister.classList.add('active');
+                formSignIn.classList.add('hidden');
+                formRegister.classList.remove('hidden');
             }
         }
 
-        function showAlert(message, type = 'error') {
-            const box = document.getElementById('alert-box');
-            box.textContent = message;
-            box.className = `alert alert-${type}`;
-            box.style.display = 'block';
+        function showAlert(message) {
+            const alertBox = document.getElementById('error-alert');
+            alertBox.textContent = message;
+            alertBox.classList.remove('hidden');
         }
 
-        // Fetch GraphQL Utility
-        async function fetchGraphQL(query, variables = {}) {
-            try {
-                const response = await fetch(GRAPHQL_URL, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ query, variables })
-                });
-                const result = await response.json();
-                if (result.errors) {
-                    throw new Error(result.errors[0].message);
-                }
-                return result.data;
-            } catch (err) {
-                showAlert(err.message, 'error');
-                console.error(err);
-            }
-        }
-
-        // Handle Login Submission
-        async function handleLogin(event) {
+        async function handleSignIn(event) {
             event.preventDefault();
-            const email = document.getElementById('login-email').value;
-            const password = document.getElementById('login-password').value;
+            const email = document.getElementById('signin-email').value;
+            const password = document.getElementById('signin-password').value;
 
             const query = `
                 mutation Login($email: String!, $password: String!) {
                     login(email: $email, password: $password) {
                         token
-                        user {
-                            id
-                            name
-                            email
-                            role
-                        }
+                        user { id name email role }
                     }
                 }
             `;
 
-            const data = await fetchGraphQL(query, { email, password });
-            if (data && data.login) {
-                showAlert('Login successful! Redirecting...', 'success');
-                localStorage.setItem('token', data.login.token);
-                localStorage.setItem('user', JSON.stringify(data.login.user));
-                setTimeout(() => {
-                    window.location.href = '/';
-                }, 1000);
+            try {
+                const response = await fetch(GRAPHQL_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ query, variables: { email, password } })
+                });
+
+                const result = await response.json();
+                if (result.errors) {
+                    showAlert(result.errors[0].message);
+                } else {
+                    const { token, user } = result.data.login;
+                    localStorage.setItem('token', token);
+                    localStorage.setItem('user', JSON.stringify(user));
+                    window.location.href = '/'; 
+                }
+            } catch (err) {
+                showAlert('Server authentication error. Please try again.');
             }
         }
 
-        // Handle Register Submission
         async function handleRegister(event) {
             event.preventDefault();
             const name = document.getElementById('reg-name').value;
+            const phone = document.getElementById('reg-phone').value || null;
+            const address = document.getElementById('reg-address').value || null;
             const email = document.getElementById('reg-email').value;
             const password = document.getElementById('reg-password').value;
-            const phone = document.getElementById('reg-phone').value;
-            const address = document.getElementById('reg-address').value;
 
             const query = `
                 mutation Register($name: String!, $email: String!, $password: String!, $phone: String, $address: String) {
                     register(name: $name, email: $email, password: $password, phone: $phone, address: $address) {
                         token
-                        user {
-                            id
-                            name
-                            email
-                            role
-                        }
+                        user { id name email role }
                     }
                 }
             `;
 
-            const data = await fetchGraphQL(query, { name, email, password, phone, address });
-            if (data && data.register) {
-                showAlert('Account registered! Profile synchronized.', 'success');
-                localStorage.setItem('token', data.register.token);
-                localStorage.setItem('user', JSON.stringify(data.register.user));
-                setTimeout(() => {
+            try {
+                const response = await fetch(GRAPHQL_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ query, variables: { name, email, password, phone, address } })
+                });
+
+                const result = await response.json();
+                if (result.errors) {
+                    showAlert(result.errors[0].message);
+                } else {
+                    const { token, user } = result.data.register;
+                    localStorage.setItem('token', token);
+                    localStorage.setItem('user', JSON.stringify(user));
                     window.location.href = '/';
-                }, 1000);
+                }
+            } catch (err) {
+                showAlert('Failed to sign up. Connection dropped.');
             }
         }
     </script>
