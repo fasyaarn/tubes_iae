@@ -1,0 +1,1253 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>EduBrain – Discussion</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+      :root {
+        --red: #cc0000;
+        --red-dark: #a80000;
+        --red-light: #fdecea;
+        --text: #1f2937;
+        --muted: #6b7280;
+        --light: #9ca3af;
+        --bg: #f3f4f6;
+        --card: #ffffff;
+        --border: #e5e7eb;
+        --r-sm: 8px;
+        --r-md: 12px;
+        --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.08);
+        --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.12);
+        --green: #10b981;
+        --blue: #3b82f6;
+      }
+      body {
+        font-family: 'Inter', sans-serif;
+        background: var(--bg);
+        color: var(--text);
+        min-height: 100vh;
+      }
+
+      /* ── NAVBAR REWRITE (Sama persis dengan Dashboard Utama) ── */
+      nav {
+        background: #ffffff;
+        border-bottom: 2px solid #e5e7eb; /* Menghilangkan garis merah tebal, diganti abu-sub subtle */
+        height: 70px;
+        padding: 0 40px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        position: sticky;
+        top: 0;
+        z-index: 50;
+        box-shadow: var(--shadow-sm);
+      }
+      .logo {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        cursor: pointer;
+        text-decoration: none;
+      }
+      .logo-icon {
+        font-size: 24px;
+      }
+      .logo-name {
+        font-weight: 700;
+        font-size: 18px;
+        color: #c31f1f;
+        line-height: 1;
+      }
+      .logo-name small {
+        display: block;
+        font-weight: 600;
+        font-size: 10px;
+        color: #8c94a3;
+        letter-spacing: 0.5px;
+        text-transform: uppercase;
+        margin-top: 2px;
+      }
+
+      .nav-actions {
+        display: flex;
+        align-items: center;
+        margin-left: auto;
+      }
+
+      /* User Profile Box Kanan */
+      .user-profile-box {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        background: #f4f5f7;
+        padding: 6px 14px;
+        border-radius: 14px;
+        border: 1px solid #e5e7eb;
+      }
+      .user-greeting {
+        font-size: 14px;
+        color: #4b5563;
+      }
+      .user-greeting strong {
+        color: #1f2937;
+        font-weight: 600;
+      }
+      .role-badge {
+        background: #e0e7ff;
+        color: #3730a3;
+        padding: 4px 10px;
+        border-radius: 8px;
+        font-size: 11px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+      }
+      .logout-btn {
+        background: #ffebee;
+        color: #c62828;
+        border: 1px solid #ffcdd2;
+        padding: 6px 14px;
+        border-radius: 10px;
+        font-family: inherit;
+        font-size: 13px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.2s;
+      }
+      .logout-btn:hover {
+        background: #ffcdd2;
+        color: #b71c1c;
+      }
+
+      /* ── LAYOUT & CONTENT SYSTEM ── */
+      .layout {
+        max-width: 1180px;
+        margin: 0 auto;
+        padding: 28px 20px;
+        display: grid;
+        grid-template-columns: 1fr 270px;
+        gap: 24px;
+      }
+      .sidebar {
+        display: flex;
+        flex-direction: column;
+        gap: 14px;
+      }
+      .btn {
+        padding: 10px 20px;
+        border-radius: var(--r-sm);
+        border: none;
+        font-family: inherit;
+        font-size: 14px;
+        font-weight: 600;
+        cursor: pointer;
+      }
+      .btn-red {
+        background: var(--red);
+        color: #fff;
+        box-shadow: 0 2px 8px rgba(204, 0, 0, 0.28);
+      }
+      .btn-red:hover {
+        background: var(--red-dark);
+      }
+      .btn-outline {
+        background: #fff;
+        border: 1.5px solid var(--border);
+        color: var(--muted);
+      }
+      .btn-outline:hover {
+        border-color: var(--red);
+        color: var(--red);
+      }
+      .btn:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+      }
+
+      .sidebar-card {
+        background: var(--card);
+        border-radius: var(--r-md);
+        padding: 14px;
+        border: 1.5px solid var(--border);
+        box-shadow: var(--shadow-sm);
+      }
+      .s-nav-item {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 9px 12px;
+        border-radius: var(--r-sm);
+        font-size: 14px;
+        font-weight: 500;
+        color: var(--muted);
+        cursor: pointer;
+        transition:
+          background 0.15s,
+          color 0.15s;
+      }
+      .s-nav-item:hover {
+        background: var(--bg);
+        color: var(--text);
+      }
+      .s-nav-item.active {
+        background: var(--red-light);
+        color: var(--red);
+      }
+      .s-divider {
+        height: 1px;
+        background: var(--border);
+        margin: 8px 0;
+      }
+      .s-cat {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 8px 12px;
+        border-radius: var(--r-sm);
+        font-size: 13.5px;
+        color: var(--muted);
+        cursor: pointer;
+        transition:
+          background 0.15s,
+          color 0.15s;
+      }
+      .s-cat:hover {
+        background: var(--bg);
+        color: var(--text);
+      }
+      .s-cat.active-cat {
+        background: var(--red-light);
+        color: var(--red);
+        font-weight: 600;
+      }
+      .dot {
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        flex-shrink: 0;
+      }
+
+      .feed-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 16px;
+      }
+      .search-bar {
+        flex: 1;
+        max-width: 280px;
+        padding: 9px 14px 9px 36px;
+        border: 1.5px solid var(--border);
+        border-radius: 24px;
+        font-size: 13.5px;
+        font-family: inherit;
+        background: var(--card);
+        outline: none;
+        position: relative;
+      }
+
+      .thread-card {
+        background: var(--card);
+        border-radius: var(--r-md);
+        padding: 20px;
+        margin-bottom: 12px;
+        border: 1.5px solid var(--border);
+        box-shadow: var(--shadow-sm);
+        display: grid;
+        grid-template-columns: 52px 1fr auto;
+        gap: 16px;
+        align-items: start;
+        cursor: pointer;
+        transition:
+          border-color 0.2s,
+          box-shadow 0.2s,
+          transform 0.15s;
+      }
+      .thread-card:hover {
+        border-color: var(--red);
+        box-shadow: var(--shadow-md);
+        transform: translateY(-1px);
+      }
+      .av {
+        width: 44px;
+        height: 44px;
+        border-radius: 50%;
+        display: grid;
+        place-items: center;
+        font-weight: 700;
+        font-size: 16px;
+        color: #fff;
+        flex-shrink: 0;
+      }
+      .av-red {
+        background: var(--red);
+      }
+      .av-blue {
+        background: #3b82f6;
+      }
+      .av-green {
+        background: #10b981;
+      }
+      .av-purple {
+        background: #8b5cf6;
+      }
+      .av-amber {
+        background: #f59e0b;
+      }
+      .tag {
+        display: inline-block;
+        font-size: 11px;
+        font-weight: 600;
+        letter-spacing: 0.4px;
+        text-transform: uppercase;
+        padding: 2px 8px;
+        border-radius: 4px;
+        margin-bottom: 6px;
+        color: #fff;
+      }
+      .t-title {
+        font-size: 16px;
+        font-weight: 600;
+        margin-bottom: 4px;
+        line-height: 1.4;
+      }
+      .t-meta {
+        font-size: 12px;
+        color: var(--muted);
+        margin-bottom: 7px;
+      }
+      .t-body {
+        font-size: 13.5px;
+        color: var(--muted);
+        line-height: 1.55;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+      }
+      .t-right {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end;
+        gap: 10px;
+        min-width: 90px;
+      }
+      .cmt {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        font-size: 13px;
+        font-weight: 500;
+        color: var(--muted);
+      }
+      .t-actions {
+        display: flex;
+        gap: 6px;
+        margin-top: 6px;
+      }
+      .t-btn {
+        padding: 5px 12px;
+        border-radius: 6px;
+        font-size: 12px;
+        font-weight: 600;
+        border: none;
+        cursor: pointer;
+        font-family: inherit;
+      }
+      .t-btn-edit {
+        background: #eff6ff;
+        color: #2563eb;
+      }
+      .t-btn-edit:hover {
+        background: #dbeafe;
+      }
+      .t-btn-del {
+        background: var(--red-light);
+        color: var(--red);
+      }
+      .t-btn-del:hover {
+        background: #fecaca;
+      }
+      .thread-img {
+        width: 100%;
+        max-height: 140px;
+        object-fit: cover;
+        border-radius: 8px;
+        margin: 8px 0;
+      }
+
+      .overlay {
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.45);
+        backdrop-filter: blur(3px);
+        z-index: 300;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 20px;
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.2s;
+      }
+      .overlay.open {
+        opacity: 1;
+        pointer-events: all;
+      }
+      .modal {
+        background: var(--card);
+        border-radius: 16px;
+        width: 100%;
+        max-width: 620px;
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.25);
+        transform: translateY(20px) scale(0.97);
+        transition: transform 0.22s ease;
+        max-height: 90vh;
+        overflow-y: auto;
+      }
+      .overlay.open .modal {
+        transform: translateY(0) scale(1);
+      }
+      .modal-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 22px 24px 16px;
+        border-bottom: 1.5px solid var(--border);
+      }
+      .modal-title {
+        font-size: 18px;
+        font-weight: 700;
+      }
+      .modal-close {
+        background: var(--bg);
+        border: none;
+        cursor: pointer;
+        width: 32px;
+        height: 32px;
+        border-radius: 8px;
+        font-size: 15px;
+      }
+      .modal-body {
+        padding: 24px;
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+      }
+      .form-group {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+      }
+      .form-label {
+        font-size: 13px;
+        font-weight: 600;
+      }
+      .form-input,
+      .form-select,
+      .form-textarea {
+        width: 100%;
+        padding: 11px 14px;
+        border: 1.5px solid var(--border);
+        border-radius: var(--r-sm);
+        font-size: 14px;
+        font-family: inherit;
+        color: var(--text);
+        background: var(--bg);
+        outline: none;
+      }
+      .form-input:focus,
+      .form-select:focus,
+      .form-textarea:focus {
+        border-color: var(--red);
+      }
+      .form-textarea {
+        resize: vertical;
+        min-height: 120px;
+      }
+      .form-error {
+        font-size: 12px;
+        color: #dc2626;
+        display: none;
+      }
+      .form-error.show {
+        display: block;
+      }
+      .modal-footer {
+        padding: 16px 24px 22px;
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        gap: 10px;
+        border-top: 1.5px solid var(--border);
+      }
+      .img-preview {
+        max-width: 100%;
+        max-height: 160px;
+        border-radius: 8px;
+        margin-top: 8px;
+        display: none;
+      }
+
+      .comment-list {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        margin-top: 6px;
+      }
+      .comment-item {
+        display: flex;
+        gap: 10px;
+      }
+      .comment-av {
+        width: 30px;
+        height: 30px;
+        border-radius: 50%;
+        display: grid;
+        place-items: center;
+        font-size: 12px;
+        font-weight: 700;
+        color: #fff;
+        flex-shrink: 0;
+      }
+      .comment-bubble {
+        background: var(--bg);
+        border-radius: 10px;
+        padding: 9px 12px;
+        flex: 1;
+      }
+      .comment-bubble .cb-top {
+        display: flex;
+        justify-content: space-between;
+        align-items: baseline;
+        margin-bottom: 2px;
+      }
+      .comment-bubble .cb-author {
+        font-size: 12.5px;
+        font-weight: 700;
+      }
+      .comment-bubble .cb-time {
+        font-size: 11px;
+        color: var(--light);
+      }
+      .comment-bubble .cb-body {
+        font-size: 13.5px;
+        line-height: 1.5;
+      }
+      .comment-form {
+        display: flex;
+        gap: 8px;
+        margin-top: 14px;
+      }
+      .comment-form input {
+        flex: 1;
+        border: 1.5px solid var(--border);
+        border-radius: 20px;
+        padding: 9px 16px;
+        font-family: inherit;
+        font-size: 13.5px;
+        outline: none;
+      }
+      .comment-form input:focus {
+        border-color: var(--red);
+      }
+      .comment-form button {
+        background: var(--red);
+        color: #fff;
+        border: none;
+        border-radius: 20px;
+        padding: 9px 18px;
+        font-weight: 600;
+        font-size: 13px;
+        cursor: pointer;
+        font-family: inherit;
+      }
+
+      .empty-state {
+        text-align: center;
+        padding: 50px 20px;
+        color: var(--muted);
+      }
+      .loading-state {
+        text-align: center;
+        padding: 40px 20px;
+        color: var(--muted);
+        font-size: 14px;
+      }
+      .toast-wrap {
+        position: fixed;
+        bottom: 28px;
+        left: 50%;
+        transform: translateX(-50%);
+        z-index: 500;
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        align-items: center;
+      }
+      .toast {
+        background: #1f2937;
+        color: #fff;
+        padding: 12px 20px;
+        border-radius: 10px;
+        font-size: 14px;
+        font-weight: 500;
+        min-width: 240px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
+      }
+      .toast.success {
+        border-left: 4px solid var(--green);
+      }
+      .toast.error {
+        border-left: 4px solid var(--red);
+      }
+      .toast.info {
+        border-left: 4px solid var(--blue);
+      }
+
+      @media (max-width: 900px) {
+        .layout {
+          grid-template-columns: 1fr;
+        }
+        .sidebar {
+          order: -1;
+        }
+        .t-right {
+          display: none;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <nav>
+      <a class="logo" id="logoLink">
+        <div class="logo-icon">🎓</div>
+        <div class="logo-name">
+          EduBrain
+          <small>Telkom University</small>
+        </div>
+      </a>
+      <div class="nav-actions">
+        <div class="user-profile-box">
+          <span class="user-greeting">
+            Hi,
+            <strong id="nav-username">User</strong>
+          </span>
+          <span class="role-badge" id="roleBadge">STUDENT</span>
+          <button class="logout-btn" onclick="authLogout()">Logout</button>
+        </div>
+      </div>
+    </nav>
+
+    <div class="layout">
+      <main>
+        <div class="feed-header">
+          <input
+            class="search-bar"
+            type="text"
+            placeholder="Search discussions…"
+            oninput="handleSearch(this.value)"
+          />
+          <button class="btn btn-red" onclick="openCreateModal()">+ New Discussion</button>
+        </div>
+        <div id="feedList"><div class="loading-state">Loading discussions…</div></div>
+      </main>
+      <aside class="sidebar">
+        <div class="sidebar-card">
+          <div class="s-nav-item active" onclick="filterByView(this)">
+            <svg
+              width="15"
+              height="15"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              viewBox="0 0 24 24"
+            >
+              <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
+            </svg>
+            All Discussions
+          </div>
+          <div class="s-divider"></div>
+          <div id="categoryList"></div>
+        </div>
+      </aside>
+    </div>
+
+    <div class="overlay" id="formOverlay" onclick="overlayClickClose(event, 'formOverlay')">
+      <div class="modal">
+        <div class="modal-header">
+          <div class="modal-title" id="formTitle">Start a New Discussion</div>
+          <button class="modal-close" onclick="closeModal('formOverlay')">✕</button>
+        </div>
+        <div class="modal-body">
+          <div class="form-group">
+            <label class="form-label">Title</label>
+            <input
+              class="form-input"
+              id="f-title"
+              maxlength="120"
+              placeholder="What's this discussion about?"
+              oninput="clearErr('f-title', 'e-title')"
+            />
+            <div class="form-error" id="e-title">Title is required.</div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Category</label>
+            <select class="form-select" id="f-cat" onchange="clearErr('f-cat', 'e-cat')">
+              <option value="">— Select a category —</option>
+            </select>
+            <div class="form-error" id="e-cat">Please select a category.</div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Body</label>
+            <textarea
+              class="form-textarea"
+              id="f-body"
+              maxlength="2000"
+              placeholder="Write your discussion here…"
+              oninput="clearErr('f-body', 'e-body')"
+            ></textarea>
+            <div class="form-error" id="e-body">Body cannot be empty.</div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Image (optional)</label>
+            <input
+              class="form-input"
+              id="f-image"
+              type="file"
+              accept="image/*"
+              onchange="previewImage(event)"
+            />
+            <img class="img-preview" id="imgPreview" />
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-outline" onclick="closeModal('formOverlay')">Cancel</button>
+          <button class="btn btn-red" id="formSubmitBtn" onclick="submitForm()">
+            Post Discussion
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="overlay" id="viewOverlay" onclick="overlayClickClose(event, 'viewOverlay')">
+      <div class="modal">
+        <div class="modal-header">
+          <div class="modal-title" id="view-tag-header"></div>
+          <button class="modal-close" onclick="closeModal('viewOverlay')">✕</button>
+        </div>
+        <div class="modal-body">
+          <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 16px">
+            <div class="av" id="view-av" style="width: 48px; height: 48px; font-size: 18px"></div>
+            <div>
+              <h4 id="view-author" style="font-size: 15px; font-weight: 600"></h4>
+              <span id="view-date" style="font-size: 12px; color: var(--muted)"></span>
+            </div>
+          </div>
+          <h2
+            style="font-size: 20px; font-weight: 700; margin-bottom: 14px; line-height: 1.35"
+            id="view-title"
+          ></h2>
+          <img class="thread-img" id="view-img" style="display: none" />
+          <div
+            style="font-size: 15px; line-height: 1.7; white-space: pre-wrap; margin-bottom: 18px"
+            id="view-body"
+          ></div>
+          <div class="s-divider"></div>
+          <div
+            style="
+              font-size: 13px;
+              font-weight: 700;
+              color: var(--muted);
+              margin: 14px 0 6px;
+              text-transform: uppercase;
+              letter-spacing: 0.4px;
+            "
+          >
+            Comments
+          </div>
+          <div class="comment-list" id="commentList"></div>
+          <div class="comment-form">
+            <input type="text" id="commentInput" placeholder="Write a comment…" />
+            <button onclick="submitComment()">Post</button>
+          </div>
+          <div
+            style="
+              display: flex;
+              gap: 10px;
+              margin-top: 18px;
+              padding-top: 14px;
+              border-top: 1.5px solid var(--border);
+            "
+          >
+            <button class="btn btn-outline" style="flex: 1" id="view-edit-btn">Edit</button>
+            <button
+              class="btn btn-outline"
+              style="flex: 1; color: var(--red); border-color: var(--red)"
+              id="view-del-btn"
+            >
+              Delete
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="overlay" id="delOverlay" onclick="overlayClickClose(event, 'delOverlay')">
+      <div class="modal" style="max-width: 420px">
+        <div style="padding: 28px 24px; text-align: center">
+          <div
+            style="
+              width: 56px;
+              height: 56px;
+              border-radius: 50%;
+              background: var(--red-light);
+              display: grid;
+              place-items: center;
+              margin: 0 auto 16px;
+              font-size: 24px;
+            "
+          >
+            🗑️
+          </div>
+          <h3 style="font-size: 18px; font-weight: 700; margin-bottom: 8px">
+            Delete this discussion?
+          </h3>
+          <p style="font-size: 14px; color: var(--muted)">This action cannot be undone.</p>
+        </div>
+        <div class="modal-footer" style="justify-content: center; gap: 12px">
+          <button class="btn btn-outline" onclick="closeModal('delOverlay')">Keep it</button>
+          <button class="btn btn-red" onclick="confirmDeletePost()">Yes, delete</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="toast-wrap" id="toastWrap"></div>
+
+    <script>
+      /* ── AUTH ── */
+      // PENTING: semua navigasi antar-service HARUS lewat API Gateway (port 5000),
+      // bukan mengakses port service satu-satu secara langsung. Tiap service hanya
+      // melayani static file di path-nya sendiri (auth service hanya serve index.html
+      // di root '/', tidak ada rute '/auth.html'). Gateway yang menyatukan semuanya
+      // di bawah satu origin dengan prefix path per-service (/auth, /courses, dst).
+      const GATEWAY_ORIGIN = `${window.location.protocol}//${window.location.hostname}:5000`;
+      const AUTH_LOGIN_URL = `${GATEWAY_ORIGIN}/auth/`;
+      const DASHBOARD_URL = `${GATEWAY_ORIGIN}/`;
+
+      function authLogout() {
+        localStorage.removeItem('token');
+        localStorage.removeItem('user');
+        location.href = AUTH_LOGIN_URL;
+      }
+
+      if (location.hash && location.hash.includes('token=')) {
+        const params = new URLSearchParams(location.hash.slice(1));
+        const t = params.get('token'),
+          u = params.get('user');
+        if (t && u) {
+          localStorage.setItem('token', t);
+          localStorage.setItem('user', u);
+        }
+        history.replaceState(null, '', location.pathname + location.search);
+      }
+      const token = localStorage.getItem('token');
+      const userStr = localStorage.getItem('user');
+      if (!token || !userStr) {
+        location.href = AUTH_LOGIN_URL;
+      }
+      const user = JSON.parse(userStr);
+      const isAdmin = user.role === 'admin' || user.role === 'ADMIN';
+
+      // ✅ UPDATE DATA PROFILE DENGAN SINKRONISASI DARI LOCALSTORAGE
+      document.getElementById('nav-username').textContent = user.name || 'User';
+      document.getElementById('roleBadge').innerHTML =
+        (isAdmin ? '🛡️ ' : '🎓 ') + user.role.toUpperCase();
+
+      // Customisasi warna badge dinamis (Biru untuk Student, Merah Muda untuk Admin)
+      if (isAdmin) {
+        document.getElementById('roleBadge').style.background = '#FEE2E2';
+        document.getElementById('roleBadge').style.color = '#991B1B';
+      } else {
+        document.getElementById('roleBadge').style.background = '#E0E7FF';
+        document.getElementById('roleBadge').style.color = '#3730A3';
+      }
+
+      document.getElementById('logoLink').href = DASHBOARD_URL;
+
+      /* ── GraphQL ── */
+      const GRAPHQL_URL = 'http://localhost:5007/graphql';
+      async function gql(query, variables = {}) {
+        const res = await fetch(GRAPHQL_URL, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+          body: JSON.stringify({ query, variables }),
+        });
+        const json = await res.json();
+        if (json.errors) throw new Error(json.errors[0].message);
+        return json.data;
+      }
+      function escHtml(s) {
+        return String(s)
+          .replace(/&/g, '&amp;')
+          .replace(/</g, '&lt;')
+          .replace(/>/g, '&gt;')
+          .replace(/"/g, '&quot;');
+      }
+      function timeAgo(dateStr) {
+        const s = Math.floor((Date.now() - new Date(dateStr).getTime()) / 1000);
+        if (s < 60) return 'just now';
+        if (s < 3600) return Math.floor(s / 60) + ' minutes ago';
+        if (s < 86400) return Math.floor(s / 3600) + ' hours ago';
+        return Math.floor(s / 86400) + ' days ago';
+      }
+      function fullDate(d) {
+        try {
+          return new Date(d).toLocaleString('id-ID', { dateStyle: 'long', timeStyle: 'short' });
+        } catch (e) {
+          return d;
+        }
+      }
+      const avColors = ['av-red', 'av-blue', 'av-green', 'av-purple', 'av-amber'];
+      function avColor(str) {
+        let h = 0;
+        for (let c of String(str)) h = (h * 31 + c.charCodeAt(0)) & 0xffff;
+        return avColors[h % avColors.length];
+      }
+      function showToast(msg, type = 'info') {
+        const wrap = document.getElementById('toastWrap');
+        const t = document.createElement('div');
+        t.className = `toast ${type}`;
+        t.textContent = msg;
+        wrap.appendChild(t);
+        setTimeout(() => {
+          t.style.opacity = '0';
+          t.style.transition = 'opacity .3s';
+          setTimeout(() => t.remove(), 300);
+        }, 2800);
+      }
+      function openModal(id) {
+        document.getElementById(id).classList.add('open');
+        document.body.style.overflow = 'hidden';
+      }
+      function closeModal(id) {
+        document.getElementById(id).classList.remove('open');
+        document.body.style.overflow = '';
+      }
+      function overlayClickClose(e, id) {
+        if (e.target.id === id) closeModal(id);
+      }
+      function showErr(inputId, errId) {
+        document.getElementById(inputId).classList.add('error');
+        document.getElementById(errId).classList.add('show');
+      }
+      function clearErr(inputId, errId) {
+        document.getElementById(inputId).classList.remove('error');
+        document.getElementById(errId).classList.remove('show');
+      }
+
+      let categories = [];
+      let posts = [];
+      let catFilter = null;
+      let search = '';
+      let editingId = null;
+      let deletingId = null;
+      let currentPostId = null;
+      let pendingImageBase64 = null;
+
+      async function loadCategories() {
+        try {
+          const data = await gql('{ categories { id name slug color } }');
+          categories = data.categories;
+          document.getElementById('categoryList').innerHTML = categories
+            .map(
+              (c) =>
+                `<div class="s-cat" onclick="filterByCat('${c.slug}', this)"><div class="dot" style="background:${c.color || '#9CA3AF'}"></div>${escHtml(c.name)}</div>`,
+            )
+            .join('');
+          document.getElementById('f-cat').innerHTML =
+            '<option value="">— Select a category —</option>' +
+            categories.map((c) => `<option value="${c.slug}">${escHtml(c.name)}</option>`).join('');
+        } catch (err) {
+          showToast('Could not load categories: ' + err.message, 'error');
+        }
+      }
+
+      async function loadPosts() {
+        const list = document.getElementById('feedList');
+        try {
+          const data = await gql(
+            `query($slug:String,$search:String){ posts(categorySlug:$slug,search:$search){ id title body image_url author category { id name slug color } created_at comments { id } } }`,
+            { slug: catFilter, search: search || null },
+          );
+          posts = data.posts;
+          renderFeed();
+        } catch (err) {
+          list.innerHTML = `<div class="empty-state"><h3>Could not load discussions</h3><p>${escHtml(err.message)}</p></div>`;
+        }
+      }
+
+      function renderFeed() {
+        const list = document.getElementById('feedList');
+        if (!posts.length) {
+          list.innerHTML = `<div class="empty-state"><h3>No discussions found</h3><p>${search ? 'Try a different search term.' : 'Be the first to start a discussion!'}</p></div>`;
+          return;
+        }
+        list.innerHTML = posts
+          .map((p) => {
+            const initials = (p.author || 'A').charAt(0).toUpperCase();
+            const col = avColor(p.author || 'a');
+            const commentCount = (p.comments || []).length;
+            const imgHtml = p.image_url
+              ? `<img class="thread-img" src="http://localhost:5007${p.image_url}"/>`
+              : '';
+            return `
+      <div class="thread-card" onclick="openView('${p.id}')">
+        <div class="av ${col}">${initials}</div>
+        <div>
+          <span class="tag" style="background:${p.category?.color || '#9CA3AF'}">${escHtml(p.category?.name || 'General')}</span>
+          <div class="t-title">${escHtml(p.title)}</div>
+          <div class="t-meta">Posted by <strong>@${escHtml(p.author || 'anonymous')}</strong> · ${timeAgo(p.created_at)}</div>
+          ${imgHtml}
+          <p class="t-body">${escHtml(p.body)}</p>
+          <div class="t-actions" onclick="event.stopPropagation()">
+            <button class="t-btn t-btn-edit" onclick="openEdit('${p.id}')">Edit</button>
+            <button class="t-btn t-btn-del" onclick="askDeletePost('${p.id}')">Delete</button>
+          </div>
+        </div>
+        <div class="t-right"><div class="cmt">💬 ${commentCount} Comments</div></div>
+      </div>`;
+          })
+          .join('');
+      }
+
+      function filterByView(el) {
+        catFilter = null;
+        document.querySelectorAll('.s-cat').forEach((x) => x.classList.remove('active-cat'));
+        document.querySelectorAll('.s-nav-item').forEach((x) => x.classList.remove('active'));
+        el.classList.add('active');
+        loadPosts();
+      }
+      function filterByCat(slug, el) {
+        catFilter = catFilter === slug ? null : slug;
+        document.querySelectorAll('.s-cat').forEach((x) => x.classList.remove('active-cat'));
+        document.querySelectorAll('.s-nav-item').forEach((x) => x.classList.remove('active'));
+        if (catFilter) el.classList.add('active-cat');
+        else document.querySelector('.s-nav-item').classList.add('active');
+        loadPosts();
+      }
+      let searchDebounce;
+      function handleSearch(v) {
+        search = v;
+        clearTimeout(searchDebounce);
+        searchDebounce = setTimeout(loadPosts, 300);
+      }
+
+      function previewImage(e) {
+        const file = e.target.files[0];
+        if (!file) {
+          pendingImageBase64 = null;
+          document.getElementById('imgPreview').style.display = 'none';
+          return;
+        }
+        const reader = new FileReader();
+        reader.onload = () => {
+          pendingImageBase64 = reader.result;
+          const img = document.getElementById('imgPreview');
+          img.src = reader.result;
+          img.style.display = 'block';
+        };
+        reader.readAsDataURL(file);
+      }
+
+      function openCreateModal() {
+        editingId = null;
+        pendingImageBase64 = null;
+        document.getElementById('formTitle').textContent = 'Start a New Discussion';
+        document.getElementById('formSubmitBtn').textContent = 'Post Discussion';
+        document.getElementById('f-title').value = '';
+        document.getElementById('f-cat').value = '';
+        document.getElementById('f-body').value = '';
+        document.getElementById('f-image').value = '';
+        document.getElementById('imgPreview').style.display = 'none';
+        openModal('formOverlay');
+      }
+      function openEdit(id) {
+        const p = posts.find((x) => String(x.id) === String(id));
+        if (!p) return showToast('Post not found', 'error');
+        editingId = id;
+        pendingImageBase64 = null;
+        document.getElementById('formTitle').textContent = 'Edit Discussion';
+        document.getElementById('formSubmitBtn').textContent = 'Save Changes';
+        document.getElementById('f-title').value = p.title;
+        document.getElementById('f-cat').value = p.category?.slug || '';
+        document.getElementById('f-body').value = p.body;
+        document.getElementById('f-image').value = '';
+        document.getElementById('imgPreview').style.display = 'none';
+        openModal('formOverlay');
+      }
+      function askDeletePost(id) {
+        deletingId = id;
+        openModal('delOverlay');
+      }
+      async function confirmDeletePost() {
+        try {
+          await gql(`mutation($id:ID!){ deletePost(id:$id) }`, { id: deletingId });
+          showToast('Discussion deleted', 'success');
+          closeModal('delOverlay');
+          closeModal('viewOverlay');
+          loadPosts();
+        } catch (err) {
+          showToast(err.message, 'error');
+          closeModal('delOverlay');
+        }
+      }
+
+      async function submitForm() {
+        const title = document.getElementById('f-title').value.trim();
+        const categorySlug = document.getElementById('f-cat').value;
+        const body = document.getElementById('f-body').value.trim();
+        let valid = true;
+        if (!title) {
+          showErr('f-title', 'e-title');
+          valid = false;
+        }
+        if (!categorySlug) {
+          showErr('f-cat', 'e-cat');
+          valid = false;
+        }
+        if (!body) {
+          showErr('f-body', 'e-body');
+          valid = false;
+        }
+        if (!valid) return;
+        const btn = document.getElementById('formSubmitBtn');
+        btn.disabled = true;
+        btn.textContent = 'Saving…';
+        try {
+          const input = { title, body, categorySlug, imageQuery: pendingImageBase64 || null };
+          if (editingId) {
+            await gql(
+              `mutation($id:ID!,$input:PostInput!){ updatePost(id:$id,input:$input){ id } }`,
+              { id: editingId, input },
+            );
+            showToast('Discussion updated!', 'success');
+          } else {
+            await gql(`mutation($input:PostInput!){ createPost(input:$input){ id } }`, { input });
+            showToast('Discussion posted!', 'success');
+          }
+          closeModal('formOverlay');
+          loadPosts();
+        } catch (err) {
+          showToast(err.message, 'error');
+        } finally {
+          btn.disabled = false;
+          btn.textContent = editingId ? 'Save Changes' : 'Post Discussion';
+        }
+      }
+
+      async function openView(id) {
+        try {
+          const data = await gql(
+            `query($id:ID!){ post(id:$id){ id title body image_url author category { name slug color } created_at comments { id postId body author createdAt } } }`,
+            { id },
+          );
+          const p = data.post;
+          if (!p) return showToast('Post not found', 'error');
+          currentPostId = id;
+          const col = avColor(p.author || 'a');
+          document.getElementById('view-tag-header').innerHTML =
+            `<span class="tag" style="background:${p.category?.color || '#9CA3AF'}">${escHtml(p.category?.name || 'General')}</span>`;
+          document.getElementById('view-av').className = `av ${col}`;
+          document.getElementById('view-av').style.width = '48px';
+          document.getElementById('view-av').style.height = '48px';
+          document.getElementById('view-av').style.fontSize = '18px';
+          document.getElementById('view-av').textContent = (p.author || 'A')
+            .charAt(0)
+            .toUpperCase();
+          document.getElementById('view-author').textContent = '@' + (p.author || 'anonymous');
+          document.getElementById('view-date').textContent = fullDate(p.created_at);
+          document.getElementById('view-title').textContent = p.title;
+          document.getElementById('view-body').textContent = p.body;
+          const imgEl = document.getElementById('view-img');
+          if (p.image_url) {
+            imgEl.src = `http://localhost:5007${p.image_url}`;
+            imgEl.style.display = 'block';
+          } else {
+            imgEl.style.display = 'none';
+          }
+          document.getElementById('view-edit-btn').onclick = () => {
+            closeModal('viewOverlay');
+            openEdit(id);
+          };
+          document.getElementById('view-del-btn').onclick = () => {
+            askDeletePost(id);
+          };
+          renderComments(p.comments || []);
+          openModal('viewOverlay');
+        } catch (err) {
+          showToast(err.message, 'error');
+        }
+      }
+
+      function renderComments(comments) {
+        const list = document.getElementById('commentList');
+        if (!comments.length) {
+          list.innerHTML = `<p style="font-size:13px;color:var(--muted);">No comments yet. Be the first to reply.</p>`;
+          return;
+        }
+        list.innerHTML = comments
+          .map((c) => {
+            const col = avColor(c.author || 'a');
+            return `<div class="comment-item">
+        <div class="comment-av ${col}">${(c.author || 'A').charAt(0).toUpperCase()}</div>
+        <div class="comment-bubble">
+          <div class="cb-top"><span class="cb-author">${escHtml(c.author)}</span><span class="cb-time">${timeAgo(c.createdAt)}</span></div>
+          <div class="cb-body">${escHtml(c.body)}</div>
+        </div>
+      </div>`;
+          })
+          .join('');
+      }
+
+      async function submitComment() {
+        const input = document.getElementById('commentInput');
+        const body = input.value.trim();
+        if (!body || !currentPostId) return;
+        try {
+          await gql(`mutation($pid:ID!,$b:String!){ createComment(postId:$pid,body:$b){ id } }`, {
+            pid: currentPostId,
+            b: body,
+          });
+          input.value = '';
+          openView(currentPostId); // refresh comments
+          loadPosts(); // refresh comment counts in feed
+        } catch (err) {
+          showToast(err.message, 'error');
+        }
+      }
+
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') {
+          closeModal('formOverlay');
+          closeModal('viewOverlay');
+          closeModal('delOverlay');
+        }
+      });
+
+      loadCategories().then(loadPosts);
+    </script>
+  </body>
+</html>

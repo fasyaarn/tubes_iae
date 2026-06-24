@@ -3,624 +3,486 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EduBrain - Course Articles</title>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <title>EduBrain - Articles</title>
     <style>
-        :root {
-            --bg-gradient: linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%);
-            --panel-bg: rgba(30, 41, 59, 0.7);
-            --panel-border: rgba(255, 255, 255, 0.08);
-            --text-primary: #f8fafc;
-            --text-secondary: #94a3b8;
-            --accent: #6366f1;
-            --accent-hover: #4f46e5;
-            --success: #10b981;
-            --danger: #ef4444;
-            --warning: #f59e0b;
-        }
-
+        /* --- RESET & VARIABLES --- */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Outfit', sans-serif;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
 
         body {
-            background: var(--bg-gradient);
-            color: var(--text-primary);
-            min-height: 100vh;
-            padding: 2rem;
+            background-color: #F8FAFC;
+            color: #1E293B;
+            padding-top: 90px; /* Jarak pas agar konten tidak tertutup navbar */
+        }
+
+        /* --- GLOBAL NAVBAR --- */
+        .navbar {
+            background-color: #ffffff;
+            border-bottom: 2px solid #E2E8F0;
+            padding: 0 40px;
+            height: 75px;
             display: flex;
-            flex-direction: column;
             align-items: center;
-        }
-
-        .container {
-            width: 100%;
-            max-width: 1100px;
-            display: flex;
-            flex-direction: column;
-            gap: 2rem;
-        }
-
-        header {
-            display: flex;
             justify-content: space-between;
-            align-items: center;
-            background: var(--panel-bg);
-            border: 1px solid var(--panel-border);
-            padding: 1.5rem 2rem;
-            border-radius: 16px;
-            backdrop-filter: blur(12px);
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
         }
 
-        .logo {
-            font-size: 1.5rem;
-            font-weight: 700;
-            background: linear-gradient(to right, #818cf8, #c084fc);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+        .nav-brand {
             display: flex;
             align-items: center;
-            gap: 0.5rem;
-        }
-
-        .nav-links {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-        }
-
-        .btn {
-            padding: 0.6rem 1.2rem;
-            border-radius: 8px;
-            font-weight: 500;
-            cursor: pointer;
-            transition: all 0.2s ease;
+            gap: 12px;
             text-decoration: none;
-            border: none;
-            font-size: 0.9rem;
+            cursor: pointer;
         }
 
-        .btn-primary {
-            background: var(--accent);
-            color: white;
+        .nav-logo {
+            font-size: 26px;
         }
 
-        .btn-primary:hover {
-            background: var(--accent-hover);
-            transform: translateY(-1px);
+        .nav-brand-text h1 {
+            font-size: 18px;
+            color: #C31F1F;
+            font-weight: 700;
+            line-height: 1;
         }
 
-        .btn-secondary {
-            background: rgba(255, 255, 255, 0.05);
-            color: var(--text-primary);
-            border: 1px solid var(--panel-border);
-        }
-
-        .btn-secondary:hover {
-            background: rgba(255, 255, 255, 0.1);
-        }
-
-        .btn-danger {
-            background: rgba(239, 68, 68, 0.2);
-            color: #fca5a5;
-            border: 1px solid rgba(239, 68, 68, 0.3);
-        }
-
-        .btn-danger:hover {
-            background: var(--danger);
-            color: white;
-        }
-
-        .user-badge {
-            background: rgba(99, 102, 241, 0.15);
-            border: 1px solid rgba(99, 102, 241, 0.3);
-            color: #a5b4fc;
-            padding: 0.4rem 1rem;
-            border-radius: 20px;
-            font-size: 0.85rem;
-            font-weight: 500;
-        }
-
-        .grid {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 2rem;
-        }
-
-        @media (min-width: 768px) {
-            .grid {
-                grid-template-columns: 1fr 2fr;
-            }
-        }
-
-        .card {
-            background: var(--panel-bg);
-            border: 1px solid var(--panel-border);
-            border-radius: 16px;
-            padding: 2rem;
-            backdrop-filter: blur(12px);
-            display: flex;
-            flex-direction: column;
-            gap: 1.5rem;
-        }
-
-        .card-title {
-            font-size: 1.25rem;
+        .nav-brand-text p {
+            font-size: 10px;
+            color: #64748B;
+            letter-spacing: 0.5px;
             font-weight: 600;
-            color: #e2e8f0;
-            border-bottom: 1px solid var(--panel-border);
-            padding-bottom: 0.75rem;
+            margin-top: 2px;
+        }
+
+        /* Center / Right: Navigasi Menu Layanan Terintegrasi di Navbar */
+        .nav-menu-links {
             display: flex;
-            justify-content: space-between;
             align-items: center;
+            gap: 8px;
         }
 
-        .form-group {
+        .nav-link-item {
+            color: #475569;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 600;
+            padding: 8px 14px;
+            border-radius: 8px;
+            transition: all 0.2s;
+        }
+
+        .nav-link-item:hover {
+            background: #F1F5F9;
+            color: #0F172A;
+        }
+
+        .nav-link-item.active {
+            background: #FEE2E2;
+            color: #991B1B;
+        }
+
+        /* Sisi Kanan: Profile Box */
+        .nav-right-side {
             display: flex;
-            flex-direction: column;
-            gap: 0.5rem;
+            align-items: center;
+            gap: 16px;
         }
 
-        label {
-            font-size: 0.85rem;
-            color: var(--text-secondary);
-            font-weight: 500;
-        }
-
-        input, textarea, select {
-            background: rgba(15, 23, 42, 0.6);
-            border: 1px solid var(--panel-border);
-            border-radius: 8px;
-            padding: 0.75rem 1rem;
-            color: white;
-            font-size: 0.95rem;
-            outline: none;
-            transition: border-color 0.2s;
-        }
-
-        input:focus, textarea:focus, select:focus {
-            border-color: var(--accent);
-        }
-
-        select option {
-            background: #1e293b;
-            color: white;
-        }
-
-        .alert {
-            padding: 1rem;
-            border-radius: 8px;
-            font-size: 0.9rem;
-            display: none;
-        }
-        .alert-error {
-            background: rgba(239, 68, 68, 0.15);
-            border: 1px solid rgba(239, 68, 68, 0.3);
-            color: #fca5a5;
-        }
-        .alert-success {
-            background: rgba(16, 185, 129, 0.15);
-            border: 1px solid rgba(16, 185, 129, 0.3);
-            color: #a7f3d0;
-        }
-
-        /* Article list items */
-        .article-item {
-            background: rgba(15, 23, 42, 0.4);
-            border: 1px solid var(--panel-border);
+        .user-profile-box {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            background: #F1F5F9;
+            padding: 6px 14px;
             border-radius: 12px;
-            padding: 1.25rem;
+            border: 1px solid #E2E8F0;
+        }
+
+        .user-greeting {
+            font-size: 14px;
+            color: #475569;
+        }
+
+        .user-greeting strong {
+            color: #0F172A;
+            font-weight: 600;
+        }
+
+        .role-badge {
+            background: #E0E7FF;
+            color: #3730A3;
+            padding: 4px 8px;
+            border-radius: 6px;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        .logout-btn {
+            background: #FEE2E2;
+            color: #991B1B;
+            border: 1px solid #FCA5A5;
+            padding: 6px 14px;
+            border-radius: 10px;
+            font-size: 13px;
+            font-weight: 600;
             cursor: pointer;
             transition: all 0.2s;
+        }
+
+        .logout-btn:hover {
+            background: #FCA5A5;
+        }
+
+        /* --- MAIN CONTENT AREA (FULL WIDTH Tanpa Sidebar) --- */
+        .main-container {
+            max-width: 1300px;
+            margin: 0 auto;
+            padding: 32px 40px;
+        }
+
+        .header-content {
             display: flex;
             justify-content: space-between;
             align-items: center;
+            margin-bottom: 32px;
         }
 
-        .article-item:hover {
-            border-color: var(--accent);
-            transform: translateY(-1px);
+        .title-area h2 {
+            font-size: 26px;
+            font-weight: 700;
+            color: #0F172A;
+            display: flex;
+            align-items: center;
+            gap: 10px;
         }
 
-        .article-info {
+        .title-area p {
+            font-size: 14px;
+            color: #64748B;
+            margin-top: 4px;
+        }
+
+        .search-box {
+            width: 320px;
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 11px 18px;
+            border: 1px solid #CBD5E1;
+            border-radius: 24px;
+            font-size: 14px;
+            outline: none;
+            transition: border 0.2s;
+        }
+
+        .search-box input:focus {
+            border-color: #C31F1F;
+        }
+
+        /* --- ARTICLES GRID & CARDS --- */
+        .articles-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+            gap: 28px;
+        }
+
+        .article-card {
+            background: #ffffff;
+            border-radius: 14px;
+            border: 1px solid #E2E8F0;
+            padding: 24px;
             display: flex;
             flex-direction: column;
-            gap: 0.35rem;
+            justify-content: space-between;
+            transition: transform 0.2s, box-shadow 0.2s;
         }
 
-        .article-title-text {
+        .article-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 20px -5px rgba(0, 0, 0, 0.06);
+        }
+
+        .article-card.read {
+            border-left: 5px solid #10B981;
+        }
+
+        .article-card.unread {
+            border-left: 5px solid #EF4444;
+        }
+
+        .card-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+
+        .category-badge {
+            background: #F1F5F9;
+            color: #475569;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
             font-weight: 600;
-            color: white;
         }
 
-        .article-course-text {
-            font-size: 0.8rem;
-            color: var(--text-secondary);
-        }
-
-        .read-badge {
-            padding: 0.25rem 0.6rem;
-            border-radius: 4px;
-            font-size: 0.75rem;
+        .status-badge {
+            font-size: 12px;
             font-weight: 600;
-        }
-        .badge-read {
-            background: rgba(16, 185, 129, 0.15);
-            color: #a7f3d0;
-            border: 1px solid rgba(16, 185, 129, 0.3);
-        }
-        .badge-unread {
-            background: rgba(245, 158, 11, 0.15);
-            color: #fde68a;
-            border: 1px solid rgba(245, 158, 11, 0.3);
+            padding: 4px 10px;
+            border-radius: 6px;
         }
 
-        /* Reader Panel */
-        .reader-content {
-            line-height: 1.7;
-            color: #cbd5e1;
-            font-size: 1rem;
-            white-space: pre-line;
-            border-top: 1px solid var(--panel-border);
-            padding-top: 1.5rem;
+        .status-badge.status-read {
+            background: #D1FAE5;
+            color: #065F46;
         }
 
-        .reader-placeholder {
-            text-align: center;
-            padding: 4rem 2rem;
-            color: var(--text-secondary);
-            font-style: italic;
+        .status-badge.status-unread {
+            background: #FEE2E2;
+            color: #991B1B;
+        }
+
+        .card-body h3 {
+            font-size: 18px;
+            font-weight: 700;
+            color: #0F172A;
+            margin-bottom: 10px;
+            line-height: 1.4;
+        }
+
+        .card-body p {
+            font-size: 14px;
+            color: #64748B;
+            line-height: 1.6;
+            margin-bottom: 24px;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .action-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 10px 20px;
+            font-size: 13px;
+            font-weight: 600;
+            border-radius: 8px;
+            cursor: pointer;
+            border: 1px solid #E2E8F0;
+            background: #F8FAFC;
+            color: #334155;
+            transition: all 0.2s;
+        }
+
+        .action-btn:hover {
+            background: #F1F5F9;
+            border-color: #CBD5E1;
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <header>
-            <div class="logo">
-                <span>📖</span> EduBrain Articles
+
+    <nav class="navbar">
+        <a href="/" class="nav-brand">
+            <span class="nav-logo">🎓</span>
+            <div class="nav-brand-text">
+                <h1>EduBrain</h1>
+                <p>TELKOM UNIVERSITY</p>
             </div>
-            <div class="nav-links">
-                <a href="/" class="btn btn-secondary">Portal Gateway</a>
-                <span id="user-badge" class="user-badge">Checking Auth...</span>
-                <button onclick="logout()" class="btn btn-danger btn-sm">Logout</button>
+        </a>
+
+        <!-- MENU SERVICES DI TENGAH NAVBAR -->
+        <div class="nav-menu-links">
+            <a href="/courses" class="nav-link-item">Courses</a>
+            <a href="/articles" class="nav-link-item active">Articles</a>
+            <a href="/form-discussion" class="nav-link-item">Discussion</a>
+            <a href="/enrollments" class="nav-link-item">My Enrollments</a>
+            <a href="/attendance" class="nav-link-item">Attendance</a>
+        </div>
+
+        <!-- PROFILE & LOGOUT SISI KANAN -->
+        <div class="nav-right-side">
+            <div class="user-profile-box">
+                <span class="user-greeting">Hi, <strong id="nav-username">Loading...</strong></span>
+                <span id="nav-role-badge" class="role-badge">STUDENT</span>
             </div>
-        </header>
+            <button onclick="handleLogout()" class="logout-btn">Log out</button>
+        </div>
+    </nav>
 
-        <div id="alert-box" class="alert"></div>
-
-        <div class="grid">
-            <!-- Left panel: Form (Admin) or List (Student) -->
-            <div style="display: flex; flex-direction: column; gap: 2rem;">
-                <!-- Article Form (Admin only) -->
-                <div class="card" id="form-card" style="display: none;">
-                    <div class="card-title" id="form-title">Create Article</div>
-                    <form id="article-form" onsubmit="handleFormSubmit(event)">
-                        <input type="hidden" id="article-id">
-                        <div class="form-group">
-                            <label for="title">Title</label>
-                            <input type="text" id="title" required placeholder="e.g. Pengantar Web">
-                        </div>
-                        <div class="form-group">
-                            <label for="course-select">Link to Course</label>
-                            <select id="course-select" required>
-                                <option value="">-- Choose Course --</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label for="content">Content (Markdown / Text)</label>
-                            <textarea id="content" rows="8" required placeholder="Type article body..."></textarea>
-                        </div>
-                        <div style="display: flex; gap: 0.5rem; margin-top: 0.5rem;">
-                            <button type="submit" class="btn btn-primary" style="flex: 2;">Save</button>
-                            <button type="button" onclick="resetForm()" class="btn btn-secondary" style="flex: 1;">Cancel</button>
-                        </div>
-                    </form>
-                </div>
-
-                <!-- Articles Directory List -->
-                <div class="card">
-                    <div class="card-title">
-                        Directory
-                        <span id="admin-add-badge"></span>
-                    </div>
-                    <div style="display: flex; flex-direction: column; gap: 1rem;" id="article-list-container">
-                        <!-- Loaded dynamically -->
-                    </div>
-                </div>
+    <!-- CONTENT AREA -->
+    <main class="main-container">
+        <div class="header-content">
+            <div class="title-area">
+                <h2>📰 Articles</h2>
+                <p>Read articles to unlock course attendance</p>
             </div>
-
-            <!-- Right panel: Reader Screen -->
-            <div class="card" id="reader-card">
-                <div class="card-title" id="reader-title">Article Reader</div>
-                <div id="reader-body">
-                    <div class="reader-placeholder">Select an article from the directory list to open and read.</div>
-                </div>
+            <div class="search-box">
+                <input type="text" id="search-input" placeholder="Search articles..." oninput="filterArticles()">
             </div>
         </div>
-    </div>
 
+        <div class="articles-grid" id="articles-container">
+            <!-- Dynamic data injected here -->
+        </div>
+    </main>
+
+    <!-- SCRIPT LOGIC ENGINE -->
     <script>
-        const GRAPHQL_URL = window.location.port === '5000' ? '/articles/graphql' : '/graphql'; // gateway path or direct port 5006 path
+        const GRAPHQL_URL = window.location.origin + '/graphql';
+        let allArticles = [];
 
-        const token = localStorage.getItem('token');
-        const userStr = localStorage.getItem('user');
-        let currentUser = null;
-        let courseMap = new Map();
+        document.addEventListener("DOMContentLoaded", () => {
+            checkAuthSession();
+            fetchArticlesData();
+        });
 
-        if (!token || !userStr) {
-            window.location.href = '/auth';
-        } else {
-            currentUser = JSON.parse(userStr);
-            document.getElementById('user-badge').textContent = `${currentUser.name} (${currentUser.role})`;
-            
-            if (currentUser.role === 'admin') {
-                document.getElementById('form-card').style.display = 'flex';
-                document.getElementById('admin-add-badge').innerHTML = `<button onclick="resetForm()" class="btn btn-primary btn-sm">+ Create</button>`;
+        function checkAuthSession() {
+            const userData = localStorage.getItem('user');
+            if (userData) {
+                const user = JSON.parse(userData);
+                document.getElementById('nav-username').textContent = user.name || 'User';
+                document.getElementById('nav-role-badge').textContent = user.role || 'STUDENT';
+            } else {
+                window.location.href = '/auth';
             }
         }
 
-        function logout() {
-            localStorage.clear();
-            window.location.href = '/auth';
-        }
-
-        function showAlert(message, type = 'success') {
-            const alertBox = document.getElementById('alert-box');
-            alertBox.className = `alert alert-${type}`;
-            alertBox.textContent = message;
-            alertBox.style.display = 'block';
-            setTimeout(() => {
-                alertBox.style.display = 'none';
-            }, 4000);
-        }
-
-        async function fetchGraphQL(url, query, variables = {}) {
-            try {
-                let targetUrl = url;
-                if (window.location.port !== '5000') {
-                    if (url.startsWith('/courses')) targetUrl = 'http://localhost:5003/graphql';
-                    else if (url.startsWith('/articles')) targetUrl = 'http://localhost:5006/graphql';
-                    else if (url.startsWith('/enrollments')) targetUrl = 'http://localhost:5004/graphql';
-                }
-                const response = await fetch(targetUrl, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${token}`
-                    },
-                    body: JSON.stringify({ query, variables })
-                });
-                const result = await response.json();
-                if (result.errors) {
-                    throw new Error(result.errors[0].message);
-                }
-                return result.data;
-            } catch (err) {
-                showAlert(err.message, 'error');
-                console.error(err);
-            }
-        }
-
-        // Initialize courses lookup maps
-        async function loadCourses() {
-            const query = `query { courses { id title } }`;
-            const data = await fetchGraphQL('/courses/graphql', query);
-            if (!data) return;
-
-            const select = document.getElementById('course-select');
-            data.courses.forEach(c => {
-                courseMap.set(c.id, c.title);
-                if (currentUser.role === 'admin') {
-                    const opt = document.createElement('option');
-                    opt.value = c.id;
-                    opt.textContent = c.title;
-                    select.appendChild(opt);
-                }
-            });
-        }
-
-        const enrolledCourseIds = new Set();
-
-        async function loadStudentEnrollments() {
-            if (currentUser.role !== 'student') return;
+        async function fetchArticlesData() {
             const query = `
-                query GetStudentEnrollments($student_id: ID!) {
-                    studentEnrollments(student_id: $student_id) {
-                        course_id
-                        status
-                    }
-                }
-            `;
-            const data = await fetchGraphQL('/enrollments/graphql', query, { student_id: currentUser.id });
-            if (data && data.studentEnrollments) {
-                enrolledCourseIds.clear();
-                data.studentEnrollments.forEach(e => {
-                    if (e.status === 'active' || e.status === 'completed') {
-                        enrolledCourseIds.add(e.course_id.toString());
-                    }
-                });
-            }
-        }
-
-        // Load Articles
-        async function loadArticles() {
-            const query = `
-                query {
+                query GetArticles {
                     articles {
                         id
                         title
                         content
-                        course_id
-                        is_read
+                        category
+                        isRead
                     }
                 }
             `;
-            const data = await fetchGraphQL(GRAPHQL_URL, query);
-            if (!data) return;
 
-            const container = document.getElementById('article-list-container');
+            try {
+                const response = await fetch(GRAPHQL_URL, {
+                    method: 'POST',
+                    headers: { 
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${localStorage.getItem('token')}`
+                    },
+                    body: JSON.stringify({ query })
+                });
+
+                const result = await response.json();
+                if (result.data && result.data.articles) {
+                    allArticles = result.data.articles;
+                    renderArticles(allArticles);
+                }
+            } catch (error) {
+                console.error("Failed to load articles:", error);
+                // Fallback Mock Data agar UI tidak kosong saat development offline
+                allArticles = [
+                    { id: "1", title: "Pengantar Web Programming", content: "Web programming adalah proses membuat aplikasi atau halaman web yang dapat diakses melalui browser...", category: "Advanced Web Programming", isRead: true },
+                    { id: "2", title: "Dasar-Dasar Sistem Basis Data", content: "Sistem Basis Data (Database Systems) adalah cara terorganisir untuk menyimpan, mengelola, dan mengambil informasi...", category: "Database Systems", isRead: true },
+                    { id: "3", title: "Pengantar Jaringan Komputer", content: "Jaringan komputer memungkinkan perangkat saling berkomunikasi dan berbagi sumber daya. Model OSI & TCP/IP...", category: "Computer Networks", isRead: false }
+                ];
+                renderArticles(allArticles);
+            }
+        }
+
+        function renderArticles(articles) {
+            const container = document.getElementById('articles-container');
             container.innerHTML = '';
 
-            let articlesToShow = data.articles;
-            if (currentUser.role === 'student') {
-                articlesToShow = data.articles.filter(art => enrolledCourseIds.has(art.course_id.toString()));
-            }
-
-            if (articlesToShow.length === 0) {
-                container.innerHTML = `<div style="text-align: center; color: var(--text-secondary);">No articles available. (You must be enrolled in a course to see its articles)</div>`;
+            if(articles.length === 0) {
+                container.innerHTML = `<p style="color: #64748B; font-style: italic; grid-column: 1/-1;">No articles found.</p>`;
                 return;
             }
 
-            articlesToShow.forEach(art => {
-                const courseTitle = courseMap.get(art.course_id.toString()) || `Course #${art.course_id}`;
-                const div = document.createElement('div');
-                div.className = 'article-item';
-                div.onclick = () => openReader(art);
-
-                let badge = '';
-                if (currentUser.role === 'student') {
-                    badge = art.is_read 
-                        ? `<span class="read-badge badge-read">Read</span>` 
-                        : `<span class="read-badge badge-unread">Unread</span>`;
-                }
-
-                div.innerHTML = `
-                    <div class="article-info">
-                        <div class="article-title-text">${art.title}</div>
-                        <div class="article-course-text">📖 ${courseTitle}</div>
+            articles.forEach(article => {
+                const card = document.createElement('div');
+                card.className = `article-card ${article.isRead ? 'read' : 'unread'}`;
+                
+                card.innerHTML = `
+                    <div>
+                        <div class="card-top">
+                            <span class="category-badge">${article.category}</span>
+                            <span class="status-badge ${article.isRead ? 'status-read' : 'status-unread'}">
+                                ${article.isRead ? '✅ Read' : '📖 Unread'}
+                            </span>
+                        </div>
+                        <div class="card-body">
+                            <h3>${article.title}</h3>
+                            <p>${article.content}</p>
+                        </div>
                     </div>
-                    <div>${badge}</div>
+                    <div>
+                        <button class="action-btn" onclick="handleArticleAction('${article.id}', ${article.isRead})">
+                            ${article.isRead ? '👁️ View' : '📖 Read'}
+                        </button>
+                    </div>
                 `;
-                container.appendChild(div);
+                container.appendChild(card);
             });
         }
 
-        // Open Reader
-        async function openReader(art) {
-            if (currentUser.role === 'student' && !enrolledCourseIds.has(art.course_id.toString())) {
-                showAlert('You must enroll in the course to read this article.', 'error');
-                return;
-            }
-            const readerTitle = document.getElementById('reader-title');
-            const readerBody = document.getElementById('reader-body');
-            const courseTitle = courseMap.get(art.course_id.toString()) || `Course #${art.course_id}`;
-
-            readerTitle.innerHTML = `
-                <div>
-                    <div>${art.title}</div>
-                    <div style="font-size: 0.8rem; color: var(--text-secondary); margin-top: 0.25rem;">Course: ${courseTitle}</div>
-                </div>
-                ${currentUser.role === 'admin' ? `
-                    <div class="action-btns">
-                        <button class="btn btn-secondary btn-sm" onclick="editArticle(${JSON.stringify(art).replace(/"/g, '&quot;')})">Edit</button>
-                        <button class="btn btn-danger btn-sm" onclick="deleteArticle(${art.id})">Delete</button>
-                    </div>
-                ` : ''}
-            `;
-
-            readerBody.innerHTML = `
-                <div class="reader-content">
-                    ${art.content}
-                </div>
-            `;
-
-            // If user is student, automatically mark as read
-            if (currentUser.role === 'student' && !art.is_read) {
-                const mutation = `
-                    mutation MarkAsRead($article_id: ID!) {
-                        markAsRead(article_id: $article_id)
-                    }
-                `;
-                const success = await fetchGraphQL(GRAPHQL_URL, mutation, { article_id: art.id });
-                if (success) {
-                    // Refresh logs to update badges
-                    loadArticles();
-                }
-            }
-        }
-
-        // Form Resets
-        function resetForm() {
-            document.getElementById('article-form').reset();
-            document.getElementById('article-id').value = '';
-            document.getElementById('form-title').textContent = 'Create Article';
-        }
-
-        function editArticle(art) {
-            document.getElementById('article-id').value = art.id;
-            document.getElementById('title').value = art.title;
-            document.getElementById('course-select').value = art.course_id;
-            document.getElementById('content').value = art.content;
-            document.getElementById('form-title').textContent = `Edit Article #${art.id}`;
-            document.getElementById('title').focus();
-        }
-
-        // Handle Admin Form Submit
-        async function handleFormSubmit(event) {
-            event.preventDefault();
-            const id = document.getElementById('article-id').value;
-            const title = document.getElementById('title').value;
-            const course_id = document.getElementById('course-select').value;
-            const content = document.getElementById('content').value;
-
-            if (id) {
-                const mutation = `
-                    mutation UpdateArticle($id: ID!, $title: String!, $content: String!, $course_id: ID!) {
-                        updateArticle(id: $id, title: $title, content: $content, course_id: $course_id) {
-                            id
-                        }
-                    }
-                `;
-                const data = await fetchGraphQL(GRAPHQL_URL, mutation, { id, title, content, course_id });
-                if (data) {
-                    showAlert('Article updated successfully!');
-                    resetForm();
-                    loadArticles();
-                }
+        async function handleArticleAction(articleId, isRead) {
+            if (isRead) {
+                window.location.href = `/articles/view/${articleId}`;
             } else {
                 const mutation = `
-                    mutation CreateArticle($title: String!, $content: String!, $course_id: ID!) {
-                        createArticle(title: $title, content: $content, course_id: $course_id) {
+                    mutation MarkAsRead($id: ID!) {
+                        markArticleAsRead(id: $id) {
                             id
+                            isRead
                         }
                     }
                 `;
-                const data = await fetchGraphQL(GRAPHQL_URL, mutation, { title, content, course_id });
-                if (data) {
-                    showAlert('Article created and published!');
-                    resetForm();
-                    loadArticles();
+                try {
+                    await fetch(GRAPHQL_URL, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Authorization': `Bearer ${localStorage.getItem('token')}`
+                        },
+                        body: JSON.stringify({ query: mutation, variables: { id: articleId } })
+                    });
+                    
+                    const target = allArticles.find(a => a.id === articleId);
+                    if(target) target.isRead = true;
+                    renderArticles(allArticles);
+
+                } catch (err) {
+                    console.error("Mutation failed:", err);
                 }
             }
         }
 
-        // Delete article
-        async function deleteArticle(id) {
-            if (!confirm('Are you sure you want to delete this article?')) return;
-            const mutation = `
-                mutation DeleteArticle($id: ID!) {
-                    deleteArticle(id: $id)
-                }
-            `;
-            const data = await fetchGraphQL(GRAPHQL_URL, mutation, { id });
-            if (data && data.deleteArticle) {
-                showAlert('Article deleted.');
-                document.getElementById('reader-body').innerHTML = `<div class="reader-placeholder">Select an article from the directory list to open and read.</div>`;
-                loadArticles();
-            }
+        function filterArticles() {
+            const keyword = document.getElementById('search-input').value.toLowerCase();
+            const filtered = allArticles.filter(article => 
+                article.title.toLowerCase().includes(keyword) || 
+                article.content.toLowerCase().includes(keyword) ||
+                article.category.toLowerCase().includes(keyword)
+            );
+            renderArticles(filtered);
         }
 
-        // Init loads
-        async function init() {
-            await loadCourses();
-            await loadStudentEnrollments();
-            await loadArticles();
+        function handleLogout() {
+            localStorage.clear();
+            window.location.href = '/auth';
         }
-
-        init();
     </script>
 </body>
 </html>

@@ -4,161 +4,192 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>EduBrain - Course Enrollments</title>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        :root {
-            --bg-gradient: linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%);
-            --panel-bg: rgba(30, 41, 59, 0.7);
-            --panel-border: rgba(255, 255, 255, 0.08);
-            --text-primary: #f8fafc;
-            --text-secondary: #94a3b8;
-            --accent: #6366f1;
-            --accent-hover: #4f46e5;
-            --success: #10b981;
-            --danger: #ef4444;
-            --warning: #f59e0b;
-        }
-
+        /* --- RESET & VARIABLES --- */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Outfit', sans-serif;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
 
         body {
-            background: var(--bg-gradient);
-            color: var(--text-primary);
+            background-color: #F8FAFC;
+            color: #1E293B;
             min-height: 100vh;
-            padding: 2rem;
             display: flex;
             flex-direction: column;
-            align-items: center;
+            padding-top: 90px; /* Jarak pas agar konten tidak tertutup navbar */
         }
 
-        .container {
+        /* --- GLOBAL NAVBAR (Sama persis dengan modul Articles) --- */
+        .navbar {
+            background-color: #ffffff;
+            border-bottom: 2px solid #E2E8F0;
+            padding: 0 40px;
+            height: 75px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+        }
+
+        .nav-brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .nav-logo {
+            font-size: 26px;
+        }
+
+        .nav-brand-text h1 {
+            font-size: 18px;
+            color: #C31F1F;
+            font-weight: 700;
+            line-height: 1;
+        }
+
+        .nav-brand-text p {
+            font-size: 10px;
+            color: #64748B;
+            letter-spacing: 0.5px;
+            font-weight: 600;
+            margin-top: 2px;
+            text-transform: uppercase;
+        }
+
+        /* Center Menu Links */
+        .nav-menu-links {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .nav-link-item {
+            color: #475569;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 600;
+            padding: 8px 14px;
+            border-radius: 8px;
+            transition: all 0.2s;
+        }
+
+        .nav-link-item:hover {
+            background: #F1F5F9;
+            color: #0F172A;
+        }
+
+        .nav-link-item.active {
+            background: #FEE2E2;
+            color: #991B1B;
+        }
+
+        /* Right Side Profile Box */
+        .nav-right-side {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .user-profile-box {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            background: #F1F5F9;
+            padding: 6px 14px;
+            border-radius: 12px;
+            border: 1px solid #E2E8F0;
+        }
+
+        .user-greeting {
+            font-size: 14px;
+            color: #475569;
+        }
+
+        .user-greeting strong {
+            color: #0F172A;
+            font-weight: 600;
+        }
+
+        .role-badge {
+            background: #E0E7FF;
+            color: #3730A3;
+            padding: 4px 8px;
+            border-radius: 6px;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        .logout-btn {
+            background: #FEE2E2;
+            color: #991B1B;
+            border: 1px solid #FCA5A5;
+            padding: 6px 14px;
+            border-radius: 10px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .logout-btn:hover {
+            background: #FCA5A5;
+        }
+
+        /* --- MAIN CONTENT AREA --- */
+        .main-container {
             width: 100%;
-            max-width: 1100px;
+            max-width: 1300px;
+            margin: 0 auto;
+            padding: 32px 40px;
             display: flex;
             flex-direction: column;
             gap: 2rem;
         }
 
-        header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            background: var(--panel-bg);
-            border: 1px solid var(--panel-border);
-            padding: 1.5rem 2rem;
-            border-radius: 16px;
-            backdrop-filter: blur(12px);
-        }
-
-        .logo {
-            font-size: 1.5rem;
-            font-weight: 700;
-            background: linear-gradient(to right, #818cf8, #c084fc);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .nav-links {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-        }
-
-        .btn {
-            padding: 0.6rem 1.2rem;
-            border-radius: 8px;
-            font-weight: 500;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            text-decoration: none;
-            border: none;
-            font-size: 0.9rem;
-        }
-
-        .btn-primary {
-            background: var(--accent);
-            color: white;
-        }
-
-        .btn-primary:hover {
-            background: var(--accent-hover);
-            transform: translateY(-1px);
-        }
-
-        .btn-secondary {
-            background: rgba(255, 255, 255, 0.05);
-            color: var(--text-primary);
-            border: 1px solid var(--panel-border);
-        }
-
-        .btn-secondary:hover {
-            background: rgba(255, 255, 255, 0.1);
-        }
-
-        .btn-danger {
-            background: rgba(239, 68, 68, 0.2);
-            color: #fca5a5;
-            border: 1px solid rgba(239, 68, 68, 0.3);
-        }
-
-        .btn-danger:hover {
-            background: var(--danger);
-            color: white;
-        }
-
-        .user-badge {
-            background: rgba(99, 102, 241, 0.15);
-            border: 1px solid rgba(99, 102, 241, 0.3);
-            color: #a5b4fc;
-            padding: 0.4rem 1rem;
-            border-radius: 20px;
-            font-size: 0.85rem;
-            font-weight: 500;
-        }
-
-        .grid {
+        .grid-layout {
             display: grid;
             grid-template-columns: 1fr;
             gap: 2rem;
         }
 
-        @media (min-width: 768px) {
-            .grid {
-                grid-template-columns: 1fr 2fr;
+        @media (min-width: 992px) {
+            .grid-layout {
+                grid-template-columns: 1fr 2.5fr;
             }
         }
 
-        .card {
-            background: var(--panel-bg);
-            border: 1px solid var(--panel-border);
-            border-radius: 16px;
-            padding: 2rem;
-            backdrop-filter: blur(12px);
-            display: flex;
-            flex-direction: column;
-            gap: 1.5rem;
+        /* Cards Layout styling */
+        .ui-card {
+            background-color: #ffffff;
+            border: 1px solid #E2E8F0;
+            border-radius: 12px;
+            padding: 1.75rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.04);
         }
 
-        .card-title {
-            font-size: 1.25rem;
+        .ui-card-title {
+            font-size: 1.2rem;
             font-weight: 600;
-            color: #e2e8f0;
-            border-bottom: 1px solid var(--panel-border);
+            color: #0F172A;
+            margin-bottom: 1.25rem;
             padding-bottom: 0.75rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+            border-bottom: 1px solid #E2E8F0;
         }
 
+        /* Form Components */
         .form-group {
+            margin-bottom: 1.25rem;
             display: flex;
             flex-direction: column;
             gap: 0.5rem;
@@ -166,32 +197,83 @@
 
         label {
             font-size: 0.85rem;
-            color: var(--text-secondary);
-            font-weight: 500;
+            font-weight: 600;
+            color: #495057;
         }
 
-        input, textarea, select {
-            background: rgba(15, 23, 42, 0.6);
-            border: 1px solid var(--panel-border);
-            border-radius: 8px;
-            padding: 0.75rem 1rem;
-            color: white;
+        select, input {
+            width: 100%;
+            padding: 0.65rem 0.9rem;
             font-size: 0.95rem;
+            color: #1E293B;
+            background-color: #ffffff;
+            border: 1px solid #ced4da;
+            border-radius: 8px;
             outline: none;
-            transition: border-color 0.2s;
+            transition: border-color 0.2s, box-shadow 0.2s;
         }
 
-        input:focus, textarea:focus, select:focus {
-            border-color: var(--accent);
+        select:focus, input:focus {
+            border-color: #C31F1F;
+            box-shadow: 0 0 0 3px rgba(195, 31, 31, 0.15);
         }
 
-        select option {
-            background: #1e293b;
-            color: white;
+        /* Custom Button Theme */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0.6rem 1.2rem;
+            font-size: 0.9rem;
+            font-weight: 500;
+            border-radius: 8px;
+            border: 1px solid transparent;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-decoration: none;
         }
 
-        .table-container {
+        .btn-brand {
+            background-color: #C31F1F;
+            color: #ffffff;
+        }
+
+        .btn-brand:hover {
+            background-color: #991B1B;
+        }
+
+        .btn-danger-action {
+            background-color: rgba(220, 53, 69, 0.1);
+            color: #dc3545;
+            border: 1px solid rgba(220, 53, 69, 0.2);
+        }
+
+        .btn-danger-action:hover {
+            background-color: #dc3545;
+            color: #ffffff;
+        }
+
+        .btn-success-action {
+            background-color: rgba(25, 135, 84, 0.1);
+            color: #198754;
+            border: 1px solid rgba(25, 135, 84, 0.2);
+        }
+
+        .btn-success-action:hover {
+            background-color: #198754;
+            color: #ffffff;
+        }
+
+        .btn-sm {
+            padding: 0.35rem 0.75rem;
+            font-size: 0.8rem;
+            border-radius: 6px;
+        }
+
+        /* Table Components */
+        .table-responsive {
             overflow-x: auto;
+            width: 100%;
         }
 
         table {
@@ -201,164 +283,209 @@
         }
 
         th {
-            color: var(--text-secondary);
+            background-color: #f8f9fa;
+            color: #64748B;
             font-weight: 600;
-            font-size: 0.85rem;
+            font-size: 0.8rem;
             text-transform: uppercase;
+            letter-spacing: 0.5px;
             padding: 1rem;
-            border-bottom: 2px solid var(--panel-border);
+            border-bottom: 2px solid #E2E8F0;
         }
 
         td {
             padding: 1rem;
-            border-bottom: 1px solid var(--panel-border);
+            border-bottom: 1px solid #E2E8F0;
             font-size: 0.95rem;
-            color: #cbd5e1;
+            color: #495057;
+            vertical-align: middle;
         }
 
         tr:hover td {
-            background: rgba(255, 255, 255, 0.02);
+            background-color: #fafafa;
         }
 
-        .action-btns {
+        .action-flex-group {
             display: flex;
-            gap: 0.5rem;
+            gap: 0.4rem;
+            flex-wrap: wrap;
         }
 
-        .status-badge {
+        /* Status Badge Standard styling */
+        .status-pill {
+            display: inline-block;
             padding: 0.25rem 0.6rem;
             border-radius: 6px;
             font-size: 0.8rem;
             font-weight: 600;
             text-transform: capitalize;
-            display: inline-block;
-        }
-        .status-active {
-            background: rgba(16, 185, 129, 0.15);
-            color: #a7f3d0;
-            border: 1px solid rgba(16, 185, 129, 0.3);
-        }
-        .status-completed {
-            background: rgba(99, 102, 241, 0.15);
-            color: #c7d2fe;
-            border: 1px solid rgba(99, 102, 241, 0.3);
-        }
-        .status-dropped {
-            background: rgba(239, 68, 68, 0.15);
-            color: #fca5a5;
-            border: 1px solid rgba(239, 68, 68, 0.3);
+            border: 1px solid transparent;
         }
 
-        .alert {
-            padding: 1rem;
+        .status-active {
+            background-color: rgba(25, 135, 84, 0.1);
+            color: #198754;
+            border-color: rgba(25, 135, 84, 0.2);
+        }
+
+        .status-completed {
+            background-color: rgba(13, 202, 240, 0.1);
+            color: #0369a1;
+            border-color: rgba(13, 202, 240, 0.2);
+        }
+
+        .status-dropped {
+            background-color: rgba(220, 53, 69, 0.1);
+            color: #dc3545;
+            border-color: rgba(220, 53, 69, 0.2);
+        }
+
+        /* Alert System Notice */
+        .global-alert {
+            padding: 1rem 1.25rem;
             border-radius: 8px;
             font-size: 0.9rem;
+            font-weight: 500;
+            margin-bottom: 1.5rem;
             display: none;
+            border: 1px solid transparent;
         }
+
         .alert-error {
-            background: rgba(239, 68, 68, 0.15);
-            border: 1px solid rgba(239, 68, 68, 0.3);
-            color: #fca5a5;
+            background-color: #fff5f5;
+            border-color: #ffe3e3;
+            color: #dc3545;
         }
+
         .alert-success {
-            background: rgba(16, 185, 129, 0.15);
-            border: 1px solid rgba(16, 185, 129, 0.3);
-            color: #a7f3d0;
+            background-color: #f4fbf7;
+            border-color: #e6f6ec;
+            color: #198754;
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <header>
-            <div class="logo">
-                <span>📂</span> EduBrain Enrollments
-            </div>
-            <div class="nav-links">
-                <a href="/" class="btn btn-secondary">Portal Gateway</a>
-                <span id="user-badge" class="user-badge">Checking Auth...</span>
-                <button onclick="logout()" class="btn btn-danger btn-sm">Logout</button>
-            </div>
-        </header>
 
-        <div id="alert-box" class="alert"></div>
+    <nav class="navbar">
+        <a href="/" class="nav-brand">
+            <span class="nav-logo">🎓</span>
+            <div class="nav-brand-text">
+                <h1>EduBrain</h1>
+                <p>TELKOM UNIVERSITY</p>
+            </div>
+        </a>
 
-        <div class="grid">
-            <!-- Enroll Form -->
-            <div class="card">
-                <div class="card-title">New Course Enrollment</div>
+        <div class="nav-menu-links">
+            <a href="/courses" class="nav-link-item">Courses</a>
+            <a href="/articles" class="nav-link-item">Articles</a>
+            <a href="/form-discussion" class="nav-link-item">Discussion</a>
+            <a href="/enrollments" class="nav-link-item active">My Enrollments</a>
+            <a href="/attendance" class="nav-link-item">Attendance</a>
+        </div>
+
+        <div class="nav-right-side">
+            <div class="user-profile-box">
+                <span class="user-greeting">Hi, <strong id="nav-username">Loading...</strong></span>
+                <span id="nav-role-badge" class="role-badge">STUDENT</span>
+            </div>
+            <button onclick="handleLogout()" class="logout-btn">Log out</button>
+        </div>
+    </nav>
+
+    <main class="main-container">
+        
+        <div id="alert-box" class="global-alert"></div>
+
+        <div class="grid-layout">
+            
+            <section class="ui-card">
+                <div class="ui-card-title">New Course Enrollment</div>
                 <form id="enroll-form" onsubmit="handleEnroll(event)">
-                    <!-- Admin sees student select; student is locked to their own profile -->
+                    
                     <div class="form-group" id="student-select-group" style="display: none;">
-                        <label for="student-select">Select Student</label>
+                        <label for="student-select">Select Student Target</label>
                         <select id="student-select">
                             <option value="">-- Choose Student --</option>
                         </select>
                     </div>
                     
                     <div class="form-group">
-                        <label for="course-select">Select Course</label>
+                        <label for="course-select">Select Target Course</label>
                         <select id="course-select" required>
                             <option value="">-- Choose Course --</option>
                         </select>
                     </div>
 
-                    <button type="submit" class="btn btn-primary" style="margin-top: 1rem; width: 100%;">Enroll in Course</button>
+                    <button type="submit" class="btn btn-brand" style="margin-top: 0.5rem; width: 100%;">Enroll in Course</button>
                 </form>
-            </div>
+            </section>
 
-            <!-- Enrollments Table -->
-            <div class="card">
-                <div class="card-title">Enrollment Logs</div>
-                <div class="table-container">
+            <section class="ui-card">
+                <div class="ui-card-title">Enrollment Logs</div>
+                <div class="table-responsive">
                     <table>
                         <thead>
                             <tr>
-                                <th>Student</th>
+                                <th>Student Profile</th>
                                 <th>Course Title</th>
                                 <th>Instructor</th>
                                 <th>Status</th>
                                 <th>Enrolled Date</th>
-                                <th>Actions</th>
+                                <th>Management Actions</th>
                             </tr>
                         </thead>
                         <tbody id="enrollment-list-body">
                             <tr>
-                                <td colspan="6" style="text-align: center; color: var(--text-secondary);">Loading logs...</td>
+                                <td colspan="6" style="text-align: center; color: var(--text-muted);">Loading logs system activity...</td>
                             </tr>
                         </tbody>
                     </table>
                 </div>
-            </div>
+            </section>
+
         </div>
-    </div>
+    </main>
 
     <script>
-        const GRAPHQL_URL = window.location.port === '5000' ? '/enrollments/graphql' : '/graphql'; // gateway path or direct port 5004 path
-
-        const token = localStorage.getItem('token');
-        const userStr = localStorage.getItem('user');
+        // GraphQL Data Connectivity resolution
+        const GRAPHQL_URL = window.location.port === '5000' ? '/enrollments/graphql' : '/graphql';
         let currentUser = null;
 
-        if (!token || !userStr) {
-            window.location.href = '/auth';
-        } else {
-            currentUser = JSON.parse(userStr);
-            document.getElementById('user-badge').textContent = `${currentUser.name} (${currentUser.role})`;
-            
-            if (currentUser.role === 'admin') {
-                document.getElementById('student-select-group').style.display = 'flex';
-                document.getElementById('student-select').setAttribute('required', 'true');
+        document.addEventListener("DOMContentLoaded", () => {
+            checkAuthSession();
+            loadCoursesDropdown();
+            loadStudentsDropdown();
+            loadEnrollments();
+        });
+
+        function checkAuthSession() {
+            const token = localStorage.getItem('token');
+            const userStr = localStorage.getItem('user');
+
+            if (!token || !userStr) {
+                window.location.href = '/auth';
+            } else {
+                currentUser = JSON.parse(userStr);
+                
+                // Sinkronisasi komponen detail text profil navbar kanan
+                document.getElementById('nav-username').textContent = currentUser.name || 'User';
+                document.getElementById('nav-role-badge').textContent = currentUser.role ? currentUser.role.toUpperCase() : 'STUDENT';
+                
+                if (currentUser.role === 'admin') {
+                    document.getElementById('student-select-group').style.display = 'flex';
+                    document.getElementById('student-select').setAttribute('required', 'true');
+                }
             }
         }
 
-        function logout() {
+        function handleLogout() {
             localStorage.clear();
             window.location.href = '/auth';
         }
 
         function showAlert(message, type = 'success') {
             const alertBox = document.getElementById('alert-box');
-            alertBox.className = `alert alert-${type}`;
+            alertBox.className = `global-alert alert-${type}`;
             alertBox.textContent = message;
             alertBox.style.display = 'block';
             setTimeout(() => {
@@ -378,7 +505,7 @@
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${token}`
+                        'Authorization': `Bearer ${localStorage.getItem('token')}`
                     },
                     body: JSON.stringify({ query, variables })
                 });
@@ -393,7 +520,6 @@
             }
         }
 
-        // Load courses dropdown (from Courses Service)
         async function loadCoursesDropdown() {
             const query = `query { courses { id title instructor } }`;
             const data = await fetchGraphQL('/courses/graphql', query);
@@ -408,9 +534,8 @@
             });
         }
 
-        // Load students dropdown (from Students Service, Admin only)
         async function loadStudentsDropdown() {
-            if (currentUser.role !== 'admin') return;
+            if (!currentUser || currentUser.role !== 'admin') return;
             const query = `query { students { id name email } }`;
             const data = await fetchGraphQL('/students/graphql', query);
             if (!data) return;
@@ -424,8 +549,8 @@
             });
         }
 
-        // Load enrollment history
         async function loadEnrollments() {
+            if (!currentUser) return;
             let query;
             let variables = {};
             
@@ -477,8 +602,8 @@
             const tbody = document.getElementById('enrollment-list-body');
             tbody.innerHTML = '';
 
-            if (list.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="6" style="text-align: center; color: var(--text-secondary);">No enrollments recorded.</td></tr>`;
+            if (!list || list.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="6" style="text-align: center; color: #64748B;">No logs record discovered.</td></tr>`;
                 return;
             }
 
@@ -489,22 +614,22 @@
                 
                 const tr = document.createElement('tr');
                 tr.innerHTML = `
-                    <td style="font-weight: 500; color: #fff;">${studentName}</td>
+                    <td style="font-weight: 600; color: #0F172A;">${studentName}</td>
                     <td>${courseTitle}</td>
                     <td>${instructor}</td>
-                    <td><span class="status-badge status-${e.status}">${e.status}</span></td>
-                    <td style="font-size: 0.85rem; color: var(--text-secondary);">${new Date(parseInt(e.enrolled_at) || e.enrolled_at).toLocaleDateString()}</td>
+                    <td><span class="status-pill status-${e.status}">${e.status}</span></td>
+                    <td style="font-size: 0.85rem; color: #64748B;">${new Date(parseInt(e.enrolled_at) || e.enrolled_at).toLocaleDateString()}</td>
                     <td>
-                        <div class="action-btns">
+                        <div class="action-flex-group">
                             ${currentUser.role === 'admin' ? `
                                 ${e.status === 'active' ? `
-                                    <button onclick="updateStatus(${e.id}, 'completed')" class="btn btn-secondary btn-sm" style="padding: 0.3rem 0.6rem; font-size: 0.8rem; background: rgba(16, 185, 129, 0.1); color: #a7f3d0; border: 1px solid rgba(16,185,129,0.2);">Complete</button>
-                                    <button onclick="updateStatus(${e.id}, 'dropped')" class="btn btn-danger btn-sm" style="padding: 0.3rem 0.6rem; font-size: 0.8rem;">Drop</button>
+                                    <button onclick="updateStatus(${e.id}, 'completed')" class="btn btn-success-action btn-sm">Complete</button>
+                                    <button onclick="updateStatus(${e.id}, 'dropped')" class="btn btn-danger-action btn-sm">Drop</button>
                                 ` : ''}
-                                <button onclick="deleteEnrollment(${e.id})" class="btn btn-danger btn-sm" style="padding: 0.3rem 0.6rem; font-size: 0.8rem; background: rgba(239, 68, 68, 0.1); border: 1px solid rgba(239, 68, 68, 0.2);">Delete</button>
+                                <button onclick="deleteEnrollment(${e.id})" class="btn btn-danger-action btn-sm">Delete</button>
                             ` : `
                                 ${e.status === 'active' ? `
-                                    <button onclick="deleteEnrollment(${e.id})" class="btn btn-danger btn-sm" style="padding: 0.3rem 0.6rem; font-size: 0.8rem;">Drop Course</button>
+                                    <button onclick="deleteEnrollment(${e.id})" class="btn btn-danger-action btn-sm">Drop Course</button>
                                 ` : '-'}
                             `}
                         </div>
@@ -514,7 +639,6 @@
             });
         }
 
-        // Handle Form Submit
         async function handleEnroll(event) {
             event.preventDefault();
             const student_id = currentUser.role === 'admin' 
@@ -542,7 +666,6 @@
             }
         }
 
-        // Update status (Admin only)
         async function updateStatus(id, status) {
             if (status === 'dropped' && !confirm('Dropping this course will completely clear the student\'s attendance and article reading progress. Continue?')) return;
             
@@ -561,7 +684,6 @@
             }
         }
 
-        // Drop / Delete enrollment
         async function deleteEnrollment(id) {
             const msg = currentUser.role === 'admin' 
                 ? 'Are you sure you want to delete this enrollment? This wipes all student progress!'
@@ -579,11 +701,6 @@
                 loadEnrollments();
             }
         }
-
-        // Initializer
-        loadCoursesDropdown();
-        loadStudentsDropdown();
-        loadEnrollments();
     </script>
 </body>
 </html>

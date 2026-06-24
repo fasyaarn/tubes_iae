@@ -6,19 +6,7 @@
     <title>EduBrain - Course Catalog</title>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        :root {
-            --bg-gradient: linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%);
-            --panel-bg: rgba(30, 41, 59, 0.7);
-            --panel-border: rgba(255, 255, 255, 0.08);
-            --text-primary: #f8fafc;
-            --text-secondary: #94a3b8;
-            --accent: #6366f1;
-            --accent-hover: #4f46e5;
-            --success: #10b981;
-            --danger: #ef4444;
-            --warning: #f59e0b;
-        }
-
+        /* --- RESET & VARIABLES --- */
         * {
             margin: 0;
             padding: 0;
@@ -27,164 +15,271 @@
         }
 
         body {
-            background: var(--bg-gradient);
-            color: var(--text-primary);
-            min-height: 100vh;
-            padding: 2rem;
+            background-color: #F8FAFC;
+            color: #1E293B;
+            padding-top: 90px; /* Jarak pas agar konten tidak tertutup navbar */
+        }
+
+        /* --- GLOBAL NAVBAR (PERSIS SAMA DENGAN TEMPLATE ARTICLES) --- */
+        .navbar {
+            background-color: #ffffff;
+            border-bottom: 2px solid #E2E8F0;
+            padding: 0 40px;
+            height: 75px;
             display: flex;
-            flex-direction: column;
             align-items: center;
+            justify-content: space-between;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
         }
 
-        .container {
-            width: 100%;
-            max-width: 1100px;
+        .nav-brand {
             display: flex;
-            flex-direction: column;
-            gap: 2rem;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+            cursor: pointer;
         }
 
-        header {
+        .nav-logo {
+            font-size: 26px;
+        }
+
+        .nav-brand-text h1 {
+            font-size: 18px;
+            color: #C31F1F;
+            font-weight: 700;
+            line-height: 1;
+        }
+
+        .nav-brand-text p {
+            font-size: 10px;
+            color: #64748B;
+            letter-spacing: 0.5px;
+            font-weight: 600;
+            margin-top: 2px;
+        }
+
+        .nav-menu-links {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .nav-link-item {
+            color: #475569;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 600;
+            padding: 8px 14px;
+            border-radius: 8px;
+            transition: all 0.2s;
+        }
+
+        .nav-link-item:hover {
+            background: #F1F5F9;
+            color: #0F172A;
+        }
+
+        .nav-link-item.active {
+            background: #FEE2E2;
+            color: #991B1B;
+        }
+
+        /* Sisi Kanan Navbar: Profile Box */
+        .nav-right-side {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .user-profile-box {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            background: #F1F5F9;
+            padding: 6px 14px;
+            border-radius: 12px;
+            border: 1px solid #E2E8F0;
+        }
+
+        .user-greeting {
+            font-size: 14px;
+            color: #475569;
+        }
+
+        .user-greeting strong {
+            color: #0F172A;
+            font-weight: 600;
+        }
+
+        .role-badge {
+            background: #E0E7FF;
+            color: #3730A3;
+            padding: 4px 8px;
+            border-radius: 6px;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        .logout-btn {
+            background: #FEE2E2;
+            color: #991B1B;
+            border: 1px solid #FCA5A5;
+            padding: 6px 14px;
+            border-radius: 10px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .logout-btn:hover {
+            background: #FCA5A5;
+        }
+
+        /* --- MAIN CONTAINER & GRID SYSTEM (FULL WIDTH) --- */
+        .main-container {
+            max-width: 1300px;
+            margin: 0 auto;
+            padding: 32px 40px;
+        }
+
+        .header-content {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            background: var(--panel-bg);
-            border: 1px solid var(--panel-border);
-            padding: 1.5rem 2rem;
-            border-radius: 16px;
-            backdrop-filter: blur(12px);
+            margin-bottom: 32px;
         }
 
-        .logo {
-            font-size: 1.5rem;
+        .title-area h2 {
+            font-size: 26px;
             font-weight: 700;
-            background: linear-gradient(to right, #818cf8, #c084fc);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+            color: #0F172A;
             display: flex;
             align-items: center;
-            gap: 0.5rem;
+            gap: 10px;
         }
 
-        .nav-links {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-        }
-
-        .btn {
-            padding: 0.6rem 1.2rem;
-            border-radius: 8px;
-            font-weight: 500;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            text-decoration: none;
-            border: none;
-            font-size: 0.9rem;
-        }
-
-        .btn-primary {
-            background: var(--accent);
-            color: white;
-        }
-
-        .btn-primary:hover {
-            background: var(--accent-hover);
-            transform: translateY(-1px);
-        }
-
-        .btn-secondary {
-            background: rgba(255, 255, 255, 0.05);
-            color: var(--text-primary);
-            border: 1px solid var(--panel-border);
-        }
-
-        .btn-secondary:hover {
-            background: rgba(255, 255, 255, 0.1);
-        }
-
-        .btn-danger {
-            background: rgba(239, 68, 68, 0.2);
-            color: #fca5a5;
-            border: 1px solid rgba(239, 68, 68, 0.3);
-        }
-
-        .btn-danger:hover {
-            background: var(--danger);
-            color: white;
-        }
-
-        .user-badge {
-            background: rgba(99, 102, 241, 0.15);
-            border: 1px solid rgba(99, 102, 241, 0.3);
-            color: #a5b4fc;
-            padding: 0.4rem 1rem;
-            border-radius: 20px;
-            font-size: 0.85rem;
-            font-weight: 500;
+        .title-area p {
+            font-size: 14px;
+            color: #64748B;
+            margin-top: 4px;
         }
 
         .grid {
             display: grid;
             grid-template-columns: 1fr;
-            gap: 2rem;
+            gap: 32px;
         }
 
-        @media (min-width: 768px) {
+        @media (min-width: 992px) {
             .grid {
                 grid-template-columns: 1fr 2fr;
             }
+            .grid.full-width {
+                grid-template-columns: 1fr;
+            }
         }
 
+        /* --- CARDS UI --- */
         .card {
-            background: var(--panel-bg);
-            border: 1px solid var(--panel-border);
-            border-radius: 16px;
-            padding: 2rem;
-            backdrop-filter: blur(12px);
+            background: #ffffff;
+            border: 1px solid #E2E8F0;
+            border-radius: 14px;
+            padding: 24px;
             display: flex;
             flex-direction: column;
-            gap: 1.5rem;
+            gap: 20px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
         }
 
         .card-title {
-            font-size: 1.25rem;
-            font-weight: 600;
-            color: #e2e8f0;
-            border-bottom: 1px solid var(--panel-border);
-            padding-bottom: 0.75rem;
+            font-size: 18px;
+            font-weight: 700;
+            color: #0F172A;
+            border-bottom: 2px solid #F1F5F9;
+            padding-bottom: 12px;
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
 
+        /* --- FORMS --- */
         .form-group {
             display: flex;
             flex-direction: column;
-            gap: 0.5rem;
+            gap: 6px;
         }
 
         label {
-            font-size: 0.85rem;
-            color: var(--text-secondary);
-            font-weight: 500;
+            font-size: 13px;
+            color: #475569;
+            font-weight: 600;
         }
 
         input, textarea, select {
-            background: rgba(15, 23, 42, 0.6);
-            border: 1px solid var(--panel-border);
+            width: 100%;
+            background: #ffffff;
+            border: 1px solid #CBD5E1;
             border-radius: 8px;
-            padding: 0.75rem 1rem;
-            color: white;
-            font-size: 0.95rem;
+            padding: 10px 14px;
+            color: #1E293B;
+            font-size: 14px;
             outline: none;
             transition: border-color 0.2s;
         }
 
         input:focus, textarea:focus, select:focus {
-            border-color: var(--accent);
+            border-color: #C31F1F;
         }
 
+        /* --- BUTTONS --- */
+        .btn {
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 13px;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-decoration: none;
+            border: none;
+        }
+
+        .btn-primary {
+            background: #C31F1F;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #991B1B;
+        }
+
+        .btn-secondary {
+            background: #F8FAFC;
+            color: #334155;
+            border: 1px solid #E2E8F0;
+        }
+
+        .btn-secondary:hover {
+            background: #F1F5F9;
+        }
+
+        .btn-danger {
+            background: #FEE2E2;
+            color: #991B1B;
+            border: 1px solid #FCA5A5;
+        }
+
+        .btn-danger:hover {
+            background: #FCA5A5;
+        }
+
+        /* --- TABLES --- */
         .table-container {
             overflow-x: auto;
         }
@@ -196,23 +291,24 @@
         }
 
         th {
-            color: var(--text-secondary);
+            color: #64748B;
             font-weight: 600;
-            font-size: 0.85rem;
+            font-size: 13px;
             text-transform: uppercase;
-            padding: 1rem;
-            border-bottom: 2px solid var(--panel-border);
+            padding: 14px;
+            border-bottom: 2px solid #E2E8F0;
+            background: #F8FAFC;
         }
 
         td {
-            padding: 1rem;
-            border-bottom: 1px solid var(--panel-border);
-            font-size: 0.95rem;
-            color: #cbd5e1;
+            padding: 14px;
+            border-bottom: 1px solid #E2E8F0;
+            font-size: 14px;
+            color: #334155;
         }
 
         tr:hover td {
-            background: rgba(255, 255, 255, 0.02);
+            background: #F8FAFC;
         }
 
         .action-btns {
@@ -220,50 +316,76 @@
             gap: 0.5rem;
         }
 
+        /* --- ALERTS & BADGES --- */
         .alert {
-            padding: 1rem;
+            padding: 12px 16px;
             border-radius: 8px;
-            font-size: 0.9rem;
+            font-size: 14px;
+            margin-bottom: 24px;
             display: none;
+            font-weight: 500;
         }
         .alert-error {
-            background: rgba(239, 68, 68, 0.15);
-            border: 1px solid rgba(239, 68, 68, 0.3);
-            color: #fca5a5;
+            background: #FEE2E2;
+            border: 1px solid #FCA5A5;
+            color: #991B1B;
         }
         .alert-success {
-            background: rgba(16, 185, 129, 0.15);
-            border: 1px solid rgba(16, 185, 129, 0.3);
-            color: #a7f3d0;
+            background: #D1FAE5;
+            border: 1px solid #A7F3D0;
+            color: #065F46;
         }
 
         .badge-credit {
-            background: rgba(99, 102, 241, 0.2);
-            color: #a5b4fc;
-            padding: 0.2rem 0.6rem;
-            border-radius: 4px;
-            font-size: 0.8rem;
-            font-weight: 600;
+            background: #E0E7FF;
+            color: #3730A3;
+            padding: 4px 8px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 700;
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <header>
-            <div class="logo">
-                <span>📚</span> EduBrain Courses
+
+    <nav class="navbar">
+        <a href="/" class="nav-brand">
+            <span class="nav-logo">🎓</span>
+            <div class="nav-brand-text">
+                <h1>EduBrain</h1>
+                <p>TELKOM UNIVERSITY</p>
             </div>
-            <div class="nav-links">
-                <a href="/" class="btn btn-secondary">Portal Gateway</a>
-                <span id="user-badge" class="user-badge">Checking Auth...</span>
-                <button onclick="logout()" class="btn btn-danger btn-sm">Logout</button>
+        </a>
+
+        <div class="nav-menu-links">
+            <a href="/courses" class="nav-link-item active">Courses</a>
+            <a href="/articles" class="nav-link-item">Articles</a>
+            <a href="/form-discussion" class="nav-link-item">Discussion</a>
+            <a href="/enrollments" class="nav-link-item">My Enrollments</a>
+            <a href="/attendance" class="nav-link-item">Attendance</a>
+        </div>
+
+        <div class="nav-right-side">
+            <div class="user-profile-box">
+                <span class="user-greeting">Hi, <strong id="nav-username">Loading...</strong></span>
+                <span id="nav-role-badge" class="role-badge">STUDENT</span>
             </div>
-        </header>
+            <button onclick="logout()" class="logout-btn">Log out</button>
+        </div>
+    </nav>
+
+    <main class="main-container">
+        <div class="header-content">
+            <div class="title-area">
+                <h2>📚 Available Courses</h2>
+                <p>Manage and review global catalog modules</p>
+            </div>
+            <div id="admin-add-badge"></div>
+        </div>
 
         <div id="alert-box" class="alert"></div>
 
-        <div class="grid">
-            <!-- Course Form -->
+        <div class="grid" id="main-grid-layout">
             <div class="card" id="form-card" style="display: none;">
                 <div class="card-title" id="form-title">Add Course</div>
                 <form id="course-form" onsubmit="handleFormSubmit(event)">
@@ -291,20 +413,8 @@
                 </form>
             </div>
 
-            <!-- Access restriction warning for Students -->
-            <div class="card" id="restrict-card" style="display: none;">
-                <div class="card-title">Catalog Access</div>
-                <p style="color: var(--text-secondary); line-height: 1.5;">
-                    As a student, you can view the course catalog below. To manage courses (adding, updating, or deleting), you must login with an admin account.
-                </p>
-            </div>
-
-            <!-- Course List -->
             <div class="card" style="grid-column: span 1;">
-                <div class="card-title">
-                    Available Courses
-                    <span id="admin-add-badge"></span>
-                </div>
+                <div class="card-title">Available Course Catalog</div>
                 <div class="table-container">
                     <table>
                         <thead>
@@ -319,17 +429,17 @@
                         </thead>
                         <tbody id="course-list-body">
                             <tr>
-                                <td colspan="6" style="text-align: center; color: var(--text-secondary);">Loading course catalog...</td>
+                                <td colspan="6" style="text-align: center; color: #64748B;">Loading course catalog...</td>
                             </tr>
                         </tbody>
                     </table>
                 </div>
             </div>
         </div>
-    </div>
+    </main>
 
     <script>
-        const GRAPHQL_URL = window.location.port === '5000' ? '/courses/graphql' : '/graphql'; // gateway proxy path or direct port 5003 path
+        const GRAPHQL_URL = window.location.port === '5000' ? '/courses/graphql' : '/graphql';
 
         const token = localStorage.getItem('token');
         const userStr = localStorage.getItem('user');
@@ -339,15 +449,17 @@
             window.location.href = '/auth';
         } else {
             currentUser = JSON.parse(userStr);
-            document.getElementById('user-badge').textContent = `${currentUser.name} (${currentUser.role})`;
+            // Sinkronisasi data identitas ke top navbar global
+            document.getElementById('nav-username').textContent = currentUser.name || 'User';
+            document.getElementById('nav-role-badge').textContent = currentUser.role || 'STUDENT';
             
             if (currentUser.role === 'admin') {
                 document.getElementById('form-card').style.display = 'flex';
-                document.getElementById('admin-add-badge').innerHTML = `<button onclick="resetForm()" class="btn btn-primary btn-sm">+ Add New</button>`;
-                document.querySelector('.grid').style.gridTemplateColumns = '1fr 2fr';
+                document.getElementById('admin-add-badge').innerHTML = `<button onclick="resetForm()" class="btn btn-primary">+ Add New</button>`;
+                document.getElementById('main-grid-layout').style.gridTemplateColumns = '1fr 2fr';
             } else {
-                document.getElementById('restrict-card').style.display = 'flex';
-                document.querySelector('.grid').style.gridTemplateColumns = '1fr 2fr';
+                // Jika student: hilangkan sisa form card layout, tabel melebar full-screen lebar penuh
+                document.getElementById('main-grid-layout').classList.add('full-width');
             }
         }
 
@@ -361,9 +473,7 @@
             alertBox.className = `alert alert-${type}`;
             alertBox.textContent = message;
             alertBox.style.display = 'block';
-            setTimeout(() => {
-                alertBox.style.display = 'none';
-            }, 4000);
+            setTimeout(() => { alertBox.style.display = 'none'; }, 4000);
         }
 
         async function fetchGraphQL(query, variables = {}) {
@@ -377,9 +487,7 @@
                     body: JSON.stringify({ query, variables })
                 });
                 const result = await response.json();
-                if (result.errors) {
-                    throw new Error(result.errors[0].message);
-                }
+                if (result.errors) throw new Error(result.errors[0].message);
                 return result.data;
             } catch (err) {
                 showAlert(err.message, 'error');
@@ -413,17 +521,17 @@
                 const tr = document.createElement('tr');
                 tr.innerHTML = `
                     <td>${course.id}</td>
-                    <td style="font-weight: 500; color: #fff;">${course.title}</td>
+                    <td style="font-weight: 600; color: #0F172A;">${course.title}</td>
                     <td>${course.instructor || '-'}</td>
                     <td><span class="badge-credit">${course.credits} SKS</span></td>
-                    <td style="font-size: 0.85rem; max-width: 200px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${course.description || '-'}</td>
+                    <td style="font-size: 13px; max-width: 200px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: #64748B;">${course.description || '-'}</td>
                     <td class="course-actions">
                         <div class="action-btns">
                             ${isAdmin ? `
-                                <button onclick="editCourse(${JSON.stringify(course).replace(/"/g, '&quot;')})" class="btn btn-secondary btn-sm" style="padding: 0.3rem 0.6rem; font-size: 0.8rem;">Edit</button>
-                                <button onclick="deleteCourse(${course.id})" class="btn btn-danger btn-sm" style="padding: 0.3rem 0.6rem; font-size: 0.8rem;">Delete</button>
+                                <button onclick="editCourse(${JSON.stringify(course).replace(/"/g, '&quot;')})" class="btn btn-secondary" style="padding: 6px 12px; font-size: 12px;">Edit</button>
+                                <button onclick="deleteCourse(${course.id})" class="btn btn-danger" style="padding: 6px 12px; font-size: 12px;">Delete</button>
                             ` : `
-                                <a href="detail.html?id=${course.id}" class="btn btn-primary btn-sm" style="padding: 0.3rem 0.6rem; font-size: 0.8rem; text-decoration: none;">View Details</a>
+                                <a href="detail.html?id=${course.id}" class="btn btn-primary" style="padding: 6px 12px; font-size: 12px; text-decoration: none;">View Details</a>
                             `}
                         </div>
                     </td>
@@ -457,7 +565,6 @@
             const description = document.getElementById('description').value;
 
             if (id) {
-                // Update
                 const mutation = `
                     mutation UpdateCourse($id: ID!, $title: String!, $description: String, $instructor: String, $credits: Int) {
                         updateCourse(id: $id, title: $title, description: $description, instructor: $instructor, credits: $credits) {
@@ -474,7 +581,6 @@
                     loadCourses();
                 }
             } else {
-                // Create
                 const mutation = `
                     mutation CreateCourse($title: String!, $description: String, $instructor: String, $credits: Int) {
                         createCourse(title: $title, description: $description, instructor: $instructor, credits: $credits) {

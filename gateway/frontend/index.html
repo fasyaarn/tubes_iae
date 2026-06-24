@@ -3,170 +3,232 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EduBrain - Microservices Learning Portal</title>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <title>EduBrain - Portal Dashboard</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg-gradient: linear-gradient(135deg, #090d16 0%, #111827 50%, #1e1b4b 100%);
-            --panel-bg: rgba(17, 24, 39, 0.75);
-            --panel-border: rgba(255, 255, 255, 0.08);
-            --text-primary: #f8fafc;
-            --text-secondary: #94a3b8;
-            --accent: #6366f1;
-            --accent-glow: rgba(99, 102, 241, 0.4);
+            --bg-main: #FFF3F3;
+            --panel-bg: #ffffff;
+            --panel-border: #E5E7EB;
+            --text-primary: #1F2937;
+            --text-secondary: #6C757D;
+            --accent: #D32F2F;
+            --accent-hover: #B71C1C;
+            --accent-light: #FFEBEE;
             --success: #10b981;
-            --success-glow: rgba(16, 185, 129, 0.3);
             --danger: #ef4444;
-            --danger-glow: rgba(239, 68, 68, 0.3);
         }
 
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Outfit', sans-serif;
+            font-family: 'Plus Jakarta Sans', sans-serif;
         }
 
         body {
-            background: var(--bg-gradient);
+            background-color: var(--bg-main);
             color: var(--text-primary);
             min-height: 100vh;
-            padding: 2.5rem 1.5rem;
-            display: flex;
-            justify-content: center;
+            padding-bottom: 60px;
         }
 
-        .container {
+        /* Navbar Section */
+        .navbar {
+            background: var(--panel-bg);
+            border-bottom: 2px solid var(--panel-border);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            padding: 16px 24px;
+            display: flex;
+            justify-content: center;
+            box-shadow: 0px 4px 12px rgba(219, 48, 48, 0.02);
+        }
+
+        .nav-container {
+            width: 100%;
+            max-width: 1200px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nav-logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+        }
+
+        .nav-logo-text {
+            font-size: 20px;
+            font-weight: 800;
+            color: #C31F1F;
+        }
+
+        .nav-logo-subtext {
+            font-size: 11px;
+            color: #8C94A3;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+
+        .nav-auth-buttons {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        /* User Profile Box inside Navbar */
+        .nav-user-panel {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            background: #F4F5F7;
+            border: 1.5px solid var(--panel-border);
+            padding: 6px 14px;
+            border-radius: 12px;
+        }
+
+        /* Full Width Hero Banner */
+        .hero-fullwidth {
+            background: linear-gradient(135deg, #ffffff 0%, #FFF8F8 100%);
+            border-bottom: 2px solid var(--panel-border);
+            padding: 60px 24px;
+            display: flex;
+            justify-content: center;
+            margin-bottom: 40px;
+            box-shadow: 0px 8px 24px rgba(219, 48, 48, 0.03);
+        }
+
+        .hero-content {
             width: 100%;
             max-width: 1200px;
             display: flex;
             flex-direction: column;
-            gap: 2.5rem;
+            gap: 14px;
         }
 
-        /* Hero Banner */
-        .hero {
-            background: var(--panel-bg);
-            border: 1px solid var(--panel-border);
-            padding: 3rem;
-            border-radius: 24px;
-            backdrop-filter: blur(16px);
-            position: relative;
-            overflow: hidden;
-            display: flex;
-            flex-direction: column;
-            gap: 1rem;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-        }
-
-        .hero::before {
-            content: '';
-            position: absolute;
-            top: -100px;
-            right: -100px;
-            width: 300px;
-            height: 300px;
-            background: var(--accent);
-            filter: blur(120px);
-            opacity: 0.25;
-            border-radius: 50%;
-            pointer-events: none;
+        .hero-tag {
+            background: var(--accent-light);
+            color: var(--accent);
+            padding: 6px 14px;
+            border-radius: 30px;
+            font-size: 12px;
+            font-weight: 700;
+            width: fit-content;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
 
         .hero-title {
-            font-size: 2.5rem;
+            font-size: 32px;
             font-weight: 800;
-            background: linear-gradient(to right, #a5b4fc, #e9d5ff, #818cf8);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+            color: #1F2937;
+            letter-spacing: -0.5px;
+            line-height: 1.2;
+        }
+
+        .hero-title span {
+            color: #C31F1F;
         }
 
         .hero-subtitle {
             color: var(--text-secondary);
-            font-size: 1.1rem;
-            max-width: 700px;
+            font-size: 16px;
+            max-width: 780px;
             line-height: 1.6;
+            font-weight: 500;
         }
 
-        .user-panel {
-            margin-top: 1rem;
+        /* Main Container for Grid */
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
             display: flex;
-            align-items: center;
-            gap: 1rem;
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid var(--panel-border);
-            padding: 0.75rem 1.5rem;
-            border-radius: 12px;
-            width: fit-content;
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        .section-header-title {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 8px;
         }
 
         /* Microservices Grid Dashboard */
         .dashboard-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-            gap: 2rem;
+            gap: 24px;
         }
 
         .service-card {
             background: var(--panel-bg);
-            border: 1px solid var(--panel-border);
+            border: 2px solid var(--panel-border);
             border-radius: 20px;
-            padding: 2rem;
-            backdrop-filter: blur(12px);
+            padding: 28px;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
-            gap: 1.5rem;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+            gap: 20px;
+            transition: all 0.2s ease-in-out;
+            box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.02);
             text-decoration: none;
             color: inherit;
         }
 
         .service-card:hover {
-            transform: translateY(-5px);
+            transform: translateY(-4px);
             border-color: var(--accent);
-            box-shadow: 0 12px 30px rgba(99, 102, 241, 0.15);
+            box-shadow: 0px 10px 25px rgba(211, 47, 47, 0.08);
         }
 
         .card-header {
             display: flex;
             justify-content: space-between;
-            align-items: flex-start;
+            align-items: center;
         }
 
         .icon-box {
-            font-size: 2rem;
-            background: rgba(255, 255, 255, 0.03);
-            padding: 0.6rem;
+            font-size: 24px;
+            background: #F4F5F7;
+            padding: 10px;
             border-radius: 12px;
-            border: 1px solid var(--panel-border);
+            border: 1.5px solid var(--panel-border);
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
         .status-badge {
-            padding: 0.3rem 0.75rem;
+            padding: 6px 12px;
             border-radius: 20px;
-            font-size: 0.75rem;
+            font-size: 11px;
             font-weight: 700;
             display: flex;
             align-items: center;
-            gap: 0.4rem;
+            gap: 6px;
             text-transform: uppercase;
             letter-spacing: 0.05em;
         }
 
         .status-online {
-            background: rgba(16, 185, 129, 0.15);
-            color: #a7f3d0;
-            border: 1px solid rgba(16, 185, 129, 0.3);
-            box-shadow: 0 0 10px rgba(16, 185, 129, 0.1);
+            background: #E8F5E9;
+            color: #2E7D32;
+            border: 1.5px solid #A5D6A7;
         }
 
         .status-offline {
-            background: rgba(239, 68, 68, 0.15);
-            color: #fca5a5;
-            border: 1px solid rgba(239, 68, 68, 0.3);
-            box-shadow: 0 0 10px rgba(239, 68, 68, 0.1);
+            background: #FFEBEE;
+            color: #C62828;
+            border: 1.5px solid #EF9A9A;
         }
 
         .pulse {
@@ -176,41 +238,39 @@
             display: inline-block;
         }
         .status-online .pulse {
-            background: #10b981;
-            box-shadow: 0 0 8px #10b981;
+            background: #2E7D32;
             animation: pulse-green 1.5s infinite;
         }
         .status-offline .pulse {
-            background: #ef4444;
-            box-shadow: 0 0 8px #ef4444;
+            background: #C62828;
             animation: pulse-red 1.5s infinite;
         }
 
         @keyframes pulse-green {
             0% { transform: scale(0.9); opacity: 0.8; }
-            50% { transform: scale(1.15); opacity: 1; }
+            50% { transform: scale(1.2); opacity: 1; }
             100% { transform: scale(0.9); opacity: 0.8; }
         }
         @keyframes pulse-red {
             0% { transform: scale(0.9); opacity: 0.8; }
-            50% { transform: scale(1.15); opacity: 1; }
+            50% { transform: scale(1.2); opacity: 1; }
             100% { transform: scale(0.9); opacity: 0.8; }
         }
 
         .card-body {
             display: flex;
             flex-direction: column;
-            gap: 0.5rem;
+            gap: 8px;
         }
 
         .service-title {
-            font-size: 1.35rem;
+            font-size: 18px;
             font-weight: 700;
-            color: white;
+            color: var(--text-primary);
         }
 
         .service-desc {
-            font-size: 0.9rem;
+            font-size: 13px;
             color: var(--text-secondary);
             line-height: 1.5;
         }
@@ -219,9 +279,9 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            border-top: 1px solid var(--panel-border);
-            padding-top: 1rem;
-            font-size: 0.85rem;
+            border-top: 1.5px solid var(--panel-border);
+            padding-top: 16px;
+            font-size: 13px;
             color: var(--text-secondary);
         }
 
@@ -230,89 +290,109 @@
             font-weight: 600;
             display: flex;
             align-items: center;
-            gap: 0.25rem;
+            gap: 4px;
             transition: gap 0.2s;
         }
 
         .service-card:hover .arrow-link {
-            gap: 0.5rem;
+            gap: 8px;
         }
 
+        /* Buttons Pattern */
         .btn {
-            padding: 0.6rem 1.2rem;
-            border-radius: 8px;
-            font-weight: 500;
+            padding: 10px 18px;
+            border-radius: 10px;
+            font-weight: 600;
             cursor: pointer;
             transition: all 0.2s ease;
             text-decoration: none;
             border: none;
-            font-size: 0.9rem;
+            font-size: 13px;
+            display: inline-block;
+            text-align: center;
         }
 
         .btn-primary {
             background: var(--accent);
             color: white;
-            box-shadow: 0 4px 12px var(--accent-glow);
         }
 
         .btn-primary:hover {
-            background: #4f46e5;
-            transform: translateY(-1px);
+            background: var(--accent-hover);
+        }
+
+        .btn-outline {
+            background: transparent;
+            color: var(--accent);
+            border: 1.5px solid var(--accent);
+            padding: 8px 16px;
+        }
+
+        .btn-outline:hover {
+            background: var(--accent-light);
         }
 
         .btn-danger {
-            background: rgba(239, 68, 68, 0.15);
-            color: #fca5a5;
-            border: 1px solid rgba(239, 68, 68, 0.3);
+            background: #FFEBEE;
+            color: #C62828;
+            border: 1.5px solid #FFCDD2;
+            padding: 6px 12px;
+            font-size: 12px;
         }
 
         .btn-danger:hover {
             background: var(--danger);
             color: white;
+            border-color: var(--danger);
         }
 
         .badge-role {
-            background: rgba(99, 102, 241, 0.15);
-            color: #a5b4fc;
-            padding: 0.25rem 0.75rem;
-            border-radius: 20px;
-            font-weight: 600;
-            font-size: 0.8rem;
+            background: #E8EAF6;
+            color: #3F51B5;
+            padding: 3px 8px;
+            border-radius: 6px;
+            font-weight: 700;
+            font-size: 10px;
+            text-transform: uppercase;
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <!-- Hero Section -->
-        <div class="hero">
-            <h1 class="hero-title">EduBrain Portal Dashboard</h1>
-            <p class="hero-subtitle">
-                Welcome to the EduBrain Online Learning Platform. This implementation features a fully decoupled microservices architecture. Every service runs independently on its own port, maintains its own local SQLite database, and exposes a GraphQL API.
-            </p>
-            <div id="auth-section">
-                <!-- Loaded dynamically -->
-                <button class="btn btn-primary" onclick="window.location.href='/auth/'">Sign In to Dashboard</button>
-            </div>
-        </div>
 
-        <!-- Services Grid -->
-        <div class="dashboard-grid">
-            
-            <!-- Auth Service -->
-            <a href="/auth/" class="service-card">
-                <div class="card-header">
-                    <div class="icon-box">🔑</div>
-                    <div id="badge-auth" class="status-badge status-offline"><span class="pulse"></span>Checking</div>
-                </div>
-                <div class="card-body">
-                    <div class="service-title">Authentication Service</div>
-                    <div class="service-desc">Manages user accounts, login validation, registrations, and issues secure JWT credentials. Seeding available.</div>
-                </div>
-                <div class="card-footer">
-                    <span>Port 5001</span>
-                    <span class="arrow-link">Open Service &rarr;</span>
+    <!-- Navbar Component -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="#" class="nav-logo">
+                <span style="font-size: 24px;">🎓</span>
+                <div>
+                    <div class="nav-logo-text">EduBrain</div>
+                    <div class="nav-logo-subtext">TELKOM UNIVERSITY</div>
                 </div>
             </a>
+            
+            <div id="auth-navbar-section" class="nav-auth-buttons">
+                <button class="btn btn-outline" onclick="window.location.href='/auth/'">Sign In</button>
+                <button class="btn btn-primary" onclick="window.location.href='/auth/'">Register New Account</button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Full Width Hero Section -->
+    <header class="hero-fullwidth">
+        <div class="hero-content">
+            <div class="hero-tag">✨ Portal Hub</div>
+            <h1 class="hero-title" id="welcome-message">Hello! Welcome to <span>EduBrain</span></h1>
+            <p class="hero-subtitle">
+                Study hub for students and instructors. Explore the services below to manage students, courses, enrollments, attendance, articles, and discussions.
+            </p>
+        </div>
+    </header>
+
+    <div class="container">
+        <h2 class="section-header-title">Explore Learning Services</h2>
+        
+        <!-- Services Grid -->
+        <div class="dashboard-grid">
 
             <!-- Students Service -->
             <a href="/students/" class="service-card" id="card-students">
@@ -333,7 +413,7 @@
             <!-- Courses Service -->
             <a href="/courses/" class="service-card">
                 <div class="card-header">
-                    <div class="icon-box">📚</div>
+                    <div class="icon-box">👩🏻‍🏫</div>
                     <div id="badge-courses" class="status-badge status-offline"><span class="pulse"></span>Checking</div>
                 </div>
                 <div class="card-body">
@@ -349,7 +429,7 @@
             <!-- Enrollments Service -->
             <a href="/enrollments/" class="service-card">
                 <div class="card-header">
-                    <div class="icon-box">📂</div>
+                    <div class="icon-box">🏫</div>
                     <div id="badge-enrollments" class="status-badge status-offline"><span class="pulse"></span>Checking</div>
                 </div>
                 <div class="card-body">
@@ -362,26 +442,10 @@
                 </div>
             </a>
 
-            <!-- Articles Service -->
-            <a href="/articles/" class="service-card">
-                <div class="card-header">
-                    <div class="icon-box">📖</div>
-                    <div id="badge-articles" class="status-badge status-offline"><span class="pulse"></span>Checking</div>
-                </div>
-                <div class="card-body">
-                    <div class="service-title">Articles Service</div>
-                    <div class="service-desc">Hosts course reading articles. Logs student reading progress. Serves as a gateway checkpoint for attendance validation.</div>
-                </div>
-                <div class="card-footer">
-                    <span>Port 5006</span>
-                    <span class="arrow-link">Open Service &rarr;</span>
-                </div>
-            </a>
-
             <!-- Attendance Service -->
             <a href="/attendance/" class="service-card">
                 <div class="card-header">
-                    <div class="icon-box">⏰</div>
+                    <div class="icon-box">🗓️</div>
                     <div id="badge-attendance" class="status-badge status-offline"><span class="pulse"></span>Checking</div>
                 </div>
                 <div class="card-body">
@@ -394,6 +458,38 @@
                 </div>
             </a>
 
+            <!-- Articles Service -->
+            <a href="/articles/" class="service-card">
+                <div class="card-header">
+                    <div class="icon-box">📃</div>
+                    <div id="badge-articles" class="status-badge status-offline"><span class="pulse"></span>Checking</div>
+                </div>
+                <div class="card-body">
+                    <div class="service-title">Articles Service</div>
+                    <div class="service-desc">Hosts course reading articles. Logs student reading progress. Serves as a gateway checkpoint for attendance validation.</div>
+                </div>
+                <div class="card-footer">
+                    <span>Port 5006</span>
+                    <span class="arrow-link">Open Service &rarr;</span>
+                </div>
+            </a>
+
+            <!-- Form Discussion Service -->
+            <a href="/form-discussion/" class="service-card">
+                <div class="card-header">
+                    <div class="icon-box">🗪</div>
+                    <div id="badge-form-discussion" class="status-badge status-offline"><span class="pulse"></span>Checking</div>
+                </div>
+                <div class="card-body">
+                    <div class="service-title">Form Discussion Service</div>
+                    <div class="service-desc">Provides a platform for students to discuss course-related topics and ask questions.</div>
+                </div>
+                <div class="card-footer">
+                    <span>Port 5007</span>
+                    <span class="arrow-link">Open Service &rarr;</span>
+                </div>
+            </a>
+
         </div>
     </div>
 
@@ -402,15 +498,20 @@
         const token = localStorage.getItem('token');
         const userStr = localStorage.getItem('user');
         
-        const authSection = document.getElementById('auth-section');
+        const authNavbarSection = document.getElementById('auth-navbar-section');
+        const welcomeMessage = document.getElementById('welcome-message');
 
         if (token && userStr) {
             const user = JSON.parse(userStr);
-            authSection.innerHTML = `
-                <div class="user-panel">
-                    <span>Logged in as: <strong style="color: #fff;">${user.name}</strong></span>
+            
+            // Dynamic personal greeting in Hero Section
+            welcomeMessage.innerHTML = `Halo, <span>${user.name}</span>! Siap buat belajar hari ini?`;
+
+            authNavbarSection.innerHTML = `
+                <div class="nav-user-panel">
+                    <span style="font-size: 13px;">Hi, <strong style="color: #1F2937;">${user.name}</strong></span>
                     <span class="badge-role">${user.role}</span>
-                    <button class="btn btn-danger" onclick="logout()" style="padding: 0.45rem 1rem; font-size: 0.85rem;">Logout</button>
+                    <button class="btn btn-danger" onclick="logout()">Logout</button>
                 </div>
             `;
             if (user.role === 'student') {
@@ -418,8 +519,10 @@
                 if (studentCard) studentCard.style.display = 'none';
             }
         } else {
-            authSection.innerHTML = `
-                <button class="btn btn-primary" onclick="window.location.href='/auth/'">Sign In to Platform</button>
+            welcomeMessage.innerHTML = `Hai! Selamat Datang di <span>EduBrain Portal</span>`;
+            authNavbarSection.innerHTML = `
+                <button class="btn btn-outline" onclick="window.location.href='/auth/'">Sign In</button>
+                <button class="btn btn-primary" onclick="window.location.href='/auth/'">Register New Account</button>
             `;
         }
 

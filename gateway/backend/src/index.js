@@ -15,6 +15,7 @@ const COURSES_URL = process.env.COURSES_SERVICE_URL || 'http://localhost:5003';
 const ENROLLMENTS_URL = process.env.ENROLLMENTS_SERVICE_URL || 'http://localhost:5004';
 const ATTENDANCE_URL = process.env.ATTENDANCE_SERVICE_URL || 'http://localhost:5005';
 const ARTICLES_URL = process.env.ARTICLES_SERVICE_URL || 'http://localhost:5006';
+const FORM_DISCUSSION_URL = process.env.FORM_DISCUSSION_SERVICE_URL || 'http://localhost:5007';
 
 // Health status API for microservices
 app.get('/api/status', async (req, res) => {
@@ -25,6 +26,7 @@ app.get('/api/status', async (req, res) => {
         enrollments: `${ENROLLMENTS_URL}/graphql`,
         attendance:  `${ATTENDANCE_URL}/graphql`,
         articles:    `${ARTICLES_URL}/graphql`,
+        form_discussion: `${FORM_DISCUSSION_URL}/graphql`
     };
     
     const statuses = {};
@@ -51,8 +53,8 @@ app.use('/courses',     createProxyMiddleware({ target: COURSES_URL, changeOrigi
 app.use('/enrollments', createProxyMiddleware({ target: ENROLLMENTS_URL, changeOrigin: true }));
 app.use('/attendance',  createProxyMiddleware({ target: ATTENDANCE_URL, changeOrigin: true }));
 app.use('/articles',    createProxyMiddleware({ target: ARTICLES_URL, changeOrigin: true }));
+app.use('/form-discussion', createProxyMiddleware({ target: FORM_DISCUSSION_URL, changeOrigin: true}));
 
-// Serve static gateway portal files
 app.use(express.static(path.join(__dirname, '..', '..', 'frontend')));
 
 const PORT = process.env.PORT || 5000;

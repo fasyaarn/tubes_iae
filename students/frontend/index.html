@@ -6,19 +6,6 @@
     <title>EduBrain - Student Management</title>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        :root {
-            --bg-gradient: linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%);
-            --panel-bg: rgba(30, 41, 59, 0.7);
-            --panel-border: rgba(255, 255, 255, 0.08);
-            --text-primary: #f8fafc;
-            --text-secondary: #94a3b8;
-            --accent: #6366f1;
-            --accent-hover: #4f46e5;
-            --success: #10b981;
-            --danger: #ef4444;
-            --warning: #f59e0b;
-        }
-
         * {
             margin: 0;
             padding: 0;
@@ -27,169 +14,276 @@
         }
 
         body {
-            background: var(--bg-gradient);
-            color: var(--text-primary);
-            min-height: 100vh;
-            padding: 2rem;
+            background-color: #F8FAFC;
+            color: #1E293B;
+            padding-top: 90px; /* space so content isn't covered by fixed navbar */
+        }
+
+        .navbar {
+            background-color: #ffffff;
+            border-bottom: 2px solid #E2E8F0;
+            padding: 0 40px;
+            height: 75px;
             display: flex;
-            flex-direction: column;
             align-items: center;
+            justify-content: space-between;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
         }
 
-        .container {
-            width: 100%;
-            max-width: 1100px;
+        .nav-brand {
             display: flex;
-            flex-direction: column;
-            gap: 2rem;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+            cursor: pointer;
         }
 
-        /* Header Navigation */
-        header {
+        .nav-logo {
+            font-size: 26px;
+        }
+
+        .nav-brand-text h1 {
+            font-size: 18px;
+            color: #C31F1F;
+            font-weight: 700;
+            line-height: 1;
+        }
+
+        .nav-brand-text p {
+            font-size: 10px;
+            color: #64748B;
+            letter-spacing: 0.5px;
+            font-weight: 600;
+            margin-top: 2px;
+        }
+
+        .nav-menu-links {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .nav-link-item {
+            color: #475569;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 600;
+            padding: 8px 14px;
+            border-radius: 8px;
+            transition: all 0.2s;
+        }
+
+        .nav-link-item:hover {
+            background: #F1F5F9;
+            color: #0F172A;
+        }
+
+        .nav-link-item.active {
+            background: #FEE2E2;
+            color: #991B1B;
+        }
+
+        .nav-right-side {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .user-profile-box {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            background: #F1F5F9;
+            padding: 6px 14px;
+            border-radius: 12px;
+            border: 1px solid #E2E8F0;
+        }
+
+        .user-greeting {
+            font-size: 14px;
+            color: #475569;
+        }
+
+        .user-greeting strong {
+            color: #0F172A;
+            font-weight: 600;
+        }
+
+        .role-badge {
+            background: #E0E7FF;
+            color: #3730A3;
+            padding: 4px 8px;
+            border-radius: 6px;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        .logout-btn {
+            background: #FEE2E2;
+            color: #991B1B;
+            border: 1px solid #FCA5A5;
+            padding: 6px 14px;
+            border-radius: 10px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .logout-btn:hover {
+            background: #FCA5A5;
+        }
+
+        .main-container {
+            max-width: 1300px;
+            margin: 0 auto;
+            padding: 32px 40px;
+        }
+
+        .header-content {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            background: var(--panel-bg);
-            border: 1px solid var(--panel-border);
-            padding: 1.5rem 2rem;
-            border-radius: 16px;
-            backdrop-filter: blur(12px);
+            margin-bottom: 32px;
         }
 
-        .logo {
-            font-size: 1.5rem;
+        .title-area h2 {
+            font-size: 26px;
             font-weight: 700;
-            background: linear-gradient(to right, #818cf8, #c084fc);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+            color: #0F172A;
             display: flex;
             align-items: center;
-            gap: 0.5rem;
+            gap: 10px;
         }
 
-        .nav-links {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
+        .title-area p {
+            font-size: 14px;
+            color: #64748B;
+            margin-top: 4px;
         }
 
-        .btn {
-            padding: 0.6rem 1.2rem;
-            border-radius: 8px;
-            font-weight: 500;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            text-decoration: none;
-            border: none;
-            font-size: 0.9rem;
-        }
-
-        .btn-primary {
-            background: var(--accent);
-            color: white;
-        }
-
-        .btn-primary:hover {
-            background: var(--accent-hover);
-            transform: translateY(-1px);
-        }
-
-        .btn-secondary {
-            background: rgba(255, 255, 255, 0.05);
-            color: var(--text-primary);
-            border: 1px solid var(--panel-border);
-        }
-
-        .btn-secondary:hover {
-            background: rgba(255, 255, 255, 0.1);
-        }
-
-        .btn-danger {
-            background: rgba(239, 68, 68, 0.2);
-            color: #fca5a5;
-            border: 1px solid rgba(239, 68, 68, 0.3);
-        }
-
-        .btn-danger:hover {
-            background: var(--danger);
-            color: white;
-        }
-
-        /* User badge */
-        .user-badge {
-            background: rgba(99, 102, 241, 0.15);
-            border: 1px solid rgba(99, 102, 241, 0.3);
-            color: #a5b4fc;
-            padding: 0.4rem 1rem;
-            border-radius: 20px;
-            font-size: 0.85rem;
-            font-weight: 500;
-        }
-
-        /* Main Workspace Grid */
         .grid {
             display: grid;
             grid-template-columns: 1fr;
-            gap: 2rem;
+            gap: 32px;
         }
 
-        @media (min-width: 768px) {
+        @media (min-width: 992px) {
             .grid {
                 grid-template-columns: 1fr 2fr;
             }
+            .grid.full-width {
+                grid-template-columns: 1fr;
+            }
         }
 
+        /* --- CARDS UI --- */
         .card {
-            background: var(--panel-bg);
-            border: 1px solid var(--panel-border);
-            border-radius: 16px;
-            padding: 2rem;
-            backdrop-filter: blur(12px);
+            background: #ffffff;
+            border: 1px solid #E2E8F0;
+            border-radius: 14px;
+            padding: 24px;
             display: flex;
             flex-direction: column;
-            gap: 1.5rem;
+            gap: 20px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
         }
 
         .card-title {
-            font-size: 1.25rem;
-            font-weight: 600;
-            color: #e2e8f0;
-            border-bottom: 1px solid var(--panel-border);
-            padding-bottom: 0.75rem;
+            font-size: 18px;
+            font-weight: 700;
+            color: #0F172A;
+            border-bottom: 2px solid #F1F5F9;
+            padding-bottom: 12px;
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
 
-        /* Form Controls */
+        /* --- FORMS --- */
         .form-group {
             display: flex;
             flex-direction: column;
-            gap: 0.5rem;
+            gap: 6px;
         }
 
         label {
-            font-size: 0.85rem;
-            color: var(--text-secondary);
-            font-weight: 500;
+            font-size: 13px;
+            color: #475569;
+            font-weight: 600;
         }
 
-        input, textarea {
-            background: rgba(15, 23, 42, 0.6);
-            border: 1px solid var(--panel-border);
+        input, textarea, select {
+            width: 100%;
+            background: #ffffff;
+            border: 1px solid #CBD5E1;
             border-radius: 8px;
-            padding: 0.75rem 1rem;
-            color: white;
-            font-size: 0.95rem;
+            padding: 10px 14px;
+            color: #1E293B;
+            font-size: 14px;
             outline: none;
             transition: border-color 0.2s;
         }
 
-        input:focus, textarea:focus {
-            border-color: var(--accent);
+        input:focus, textarea:focus, select:focus {
+            border-color: #C31F1F;
         }
 
-        /* Data Tables */
+        textarea {
+            resize: vertical;
+        }
+
+        /* --- BUTTONS --- */
+        .btn {
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 13px;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-decoration: none;
+            border: none;
+        }
+
+        .btn-primary {
+            background: #C31F1F;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #991B1B;
+        }
+
+        .btn-secondary {
+            background: #F8FAFC;
+            color: #334155;
+            border: 1px solid #E2E8F0;
+        }
+
+        .btn-secondary:hover {
+            background: #F1F5F9;
+        }
+
+        .btn-danger {
+            background: #FEE2E2;
+            color: #991B1B;
+            border: 1px solid #FCA5A5;
+        }
+
+        .btn-danger:hover {
+            background: #FCA5A5;
+        }
+
+        .btn-sm {
+            padding: 6px 12px;
+            font-size: 12px;
+        }
+
         .table-container {
             overflow-x: auto;
         }
@@ -201,23 +295,24 @@
         }
 
         th {
-            color: var(--text-secondary);
+            color: #64748B;
             font-weight: 600;
-            font-size: 0.85rem;
+            font-size: 13px;
             text-transform: uppercase;
-            padding: 1rem;
-            border-bottom: 2px solid var(--panel-border);
+            padding: 14px;
+            border-bottom: 2px solid #E2E8F0;
+            background: #F8FAFC;
         }
 
         td {
-            padding: 1rem;
-            border-bottom: 1px solid var(--panel-border);
-            font-size: 0.95rem;
-            color: #cbd5e1;
+            padding: 14px;
+            border-bottom: 1px solid #E2E8F0;
+            font-size: 14px;
+            color: #334155;
         }
 
         tr:hover td {
-            background: rgba(255, 255, 255, 0.02);
+            background: #F8FAFC;
         }
 
         .action-btns {
@@ -225,44 +320,75 @@
             gap: 0.5rem;
         }
 
-        /* Alert notifications */
+        /* --- ALERTS & BADGES --- */
         .alert {
-            padding: 1rem;
+            padding: 12px 16px;
             border-radius: 8px;
-            font-size: 0.9rem;
+            font-size: 14px;
+            margin-bottom: 24px;
             display: none;
+            font-weight: 500;
         }
         .alert-error {
-            background: rgba(239, 68, 68, 0.15);
-            border: 1px solid rgba(239, 68, 68, 0.3);
-            color: #fca5a5;
+            background: #FEE2E2;
+            border: 1px solid #FCA5A5;
+            color: #991B1B;
         }
         .alert-success {
-            background: rgba(16, 185, 129, 0.15);
-            border: 1px solid rgba(16, 185, 129, 0.3);
-            color: #a7f3d0;
+            background: #D1FAE5;
+            border: 1px solid #A7F3D0;
+            color: #065F46;
+        }
+
+        .restrict-text {
+            color: #64748B;
+            line-height: 1.6;
+            font-size: 14px;
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <header>
-            <div class="logo">
-                <span>👨‍🎓</span> EduBrain Students
+
+    <nav class="navbar">
+        <a href="/" class="nav-brand">
+            <span class="nav-logo">🎓</span>
+            <div class="nav-brand-text">
+                <h1>EduBrain</h1>
+                <p>TELKOM UNIVERSITY</p>
             </div>
-            <div class="nav-links">
-                <a href="/" class="btn btn-secondary">Portal Gateway</a>
-                <span id="user-badge" class="user-badge">Checking Auth...</span>
-                <button onclick="logout()" class="btn btn-danger btn-sm">Logout</button>
+        </a>
+
+        <div class="nav-menu-links">
+            <a href="/courses" class="nav-link-item">Courses</a>
+            <a href="/articles" class="nav-link-item">Articles</a>
+            <a href="/form-discussion" class="nav-link-item">Discussion</a>
+            <a href="/enrollments" class="nav-link-item">My Enrollments</a>
+            <a href="/attendance" class="nav-link-item">Attendance</a>
+        </div>
+
+        <div class="nav-right-side">
+            <div class="user-profile-box">
+                <span class="user-greeting">Hi, <strong id="nav-username">Loading...</strong></span>
+                <span id="nav-role-badge" class="role-badge">STUDENT</span>
             </div>
-        </header>
+            <button onclick="logout()" class="logout-btn">Log out</button>
+        </div>
+    </nav>
+
+    <main class="main-container">
+        <div class="header-content">
+            <div class="title-area">
+                <h2>👨‍🎓 Students Registry Management</h2>
+                <p>Manage and review student records</p>
+            </div>
+            <div id="admin-add-badge"></div>
+        </div>
 
         <div id="alert-box" class="alert"></div>
 
-        <div class="grid">
-            <!-- Student Form -->
+        <div class="grid" id="main-grid-layout">
             <div class="card" id="form-card" style="display: none;">
-                <div class="card-title" id="form-title">Add Student</div>
+                <div class="card-title" id="form-title">Add New Student</div>
                 <form id="student-form" onsubmit="handleFormSubmit(event)">
                     <input type="hidden" id="student-id">
                     <div class="form-group">
@@ -282,26 +408,21 @@
                         <textarea id="address" rows="3" placeholder="Street Address, City"></textarea>
                     </div>
                     <div style="display: flex; gap: 0.5rem; margin-top: 1rem;">
-                        <button type="submit" class="btn btn-primary" style="flex: 2;">Save Student</button>
+                        <button type="submit" class="btn btn-primary" style="flex: 2;">Save Record</button>
                         <button type="button" onclick="resetForm()" class="btn btn-secondary" style="flex: 1;">Cancel</button>
                     </div>
                 </form>
             </div>
 
-            <!-- Access restriction warning for Students -->
             <div class="card" id="restrict-card" style="display: none;">
                 <div class="card-title">Access Restricted</div>
-                <p style="color: var(--text-secondary); line-height: 1.5;">
-                    Student accounts only have read-only privileges. To add, edit, or delete students, you must be logged in as an <strong>Admin</strong>.
+                <p class="restrict-text">
+                    Student accounts only have read-only privileges. To add, edit, or delete students data registry, you must be authorized as an <strong>Admin</strong>.
                 </p>
             </div>
 
-            <!-- Student List -->
-            <div class="card" style="grid-column: span 1;">
-                <div class="card-title">
-                    Students Registry
-                    <span id="admin-add-badge"></span>
-                </div>
+            <div class="card" id="table-card" style="grid-column: span 1;">
+                <div class="card-title">Active Registries</div>
                 <div class="table-container">
                     <table>
                         <thead>
@@ -316,52 +437,49 @@
                         </thead>
                         <tbody id="student-list-body">
                             <tr>
-                                <td colspan="6" style="text-align: center; color: var(--text-secondary);">Loading students data...</td>
+                                <td colspan="6" style="text-align: center; color: #64748B;">Loading students data...</td>
                             </tr>
                         </tbody>
                     </table>
                 </div>
             </div>
         </div>
-    </div>
+    </main>
 
     <script>
-        const GRAPHQL_URL = window.location.port === '5000' ? '/students/graphql' : '/graphql'; // gateway proxy path or direct port 5002 path
+        const GRAPHQL_URL = window.location.port === '5000' ? '/students/graphql' : '/graphql';
 
-        // Retrieve Token
         const token = localStorage.getItem('token');
         const userStr = localStorage.getItem('user');
         let currentUser = null;
 
         if (!token || !userStr) {
-            // Redirect to Login via gateway
             window.location.href = '/auth';
         } else {
             currentUser = JSON.parse(userStr);
-            
+            document.getElementById('nav-username').textContent = currentUser.name || 'User';
+            document.getElementById('nav-role-badge').textContent = currentUser.role || 'STUDENT';
+
             if (currentUser.role !== 'admin') {
-                // Students are not allowed to access Student Service frontend at all
-                window.location.href = '/';
+                // Sesuai logic lama: mengalihkan atau memberikan restriksi tampilan jika bukan admin
+                document.getElementById('restrict-card').style.display = 'flex';
+                document.getElementById('table-card').style.gridColumn = 'span 1';
+                document.getElementById('main-grid-layout').classList.add('full-width');
+                loadStudents();
             } else {
-                document.getElementById('user-badge').textContent = `${currentUser.name} (${currentUser.role})`;
-                
-                // Show forms for admin
                 document.getElementById('form-card').style.display = 'flex';
-                document.getElementById('admin-add-badge').innerHTML = `<button onclick="resetForm()" class="btn btn-primary btn-sm">+ Add New</button>`;
-                document.querySelector('.grid').style.gridTemplateColumns = '1fr 2fr';
-                
-                // Initial Load
+                document.getElementById('admin-add-badge').innerHTML = `<button onclick="resetForm()" class="btn btn-primary">+ Add New</button>`;
+                document.getElementById('main-grid-layout').style.gridTemplateColumns = '1fr 2fr';
+
                 loadStudents();
             }
         }
 
-        // Logout
         function logout() {
             localStorage.clear();
             window.location.href = '/auth';
         }
 
-        // Show Notification Alert
         function showAlert(message, type = 'success') {
             const alertBox = document.getElementById('alert-box');
             alertBox.className = `alert alert-${type}`;
@@ -372,7 +490,6 @@
             }, 4000);
         }
 
-        // Fetch GraphQL query
         async function fetchGraphQL(query, variables = {}) {
             try {
                 const response = await fetch(GRAPHQL_URL, {
@@ -394,7 +511,6 @@
             }
         }
 
-        // Load Students list
         async function loadStudents() {
             const query = `
                 query {
@@ -421,15 +537,15 @@
                 const tr = document.createElement('tr');
                 tr.innerHTML = `
                     <td>${student.id}</td>
-                    <td style="font-weight: 500;">${student.name}</td>
+                    <td style="font-weight: 600; color: #0F172A;">${student.name}</td>
                     <td>${student.email}</td>
                     <td>${student.phone || '-'}</td>
-                    <td>${student.address || '-'}</td>
+                    <td style="font-size: 13px; max-width: 200px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: #64748B;">${student.address || '-'}</td>
                     ${isAdmin ? `
                         <td class="admin-actions">
                             <div class="action-btns">
-                                <button onclick="editStudent(${JSON.stringify(student).replace(/"/g, '&quot;')})" class="btn btn-secondary btn-sm" style="padding: 0.3rem 0.6rem; font-size: 0.8rem;">Edit</button>
-                                <button onclick="deleteStudent(${student.id})" class="btn btn-danger btn-sm" style="padding: 0.3rem 0.6rem; font-size: 0.8rem;">Delete</button>
+                                <button onclick="editStudent(${JSON.stringify(student).replace(/"/g, '&quot;')})" class="btn btn-secondary" style="padding: 6px 12px; font-size: 12px;">Edit</button>
+                                <button onclick="deleteStudent(${student.id})" class="btn btn-danger" style="padding: 6px 12px; font-size: 12px;">Delete</button>
                             </div>
                         </td>
                     ` : ''}
@@ -438,14 +554,12 @@
             });
         }
 
-        // Reset Add/Edit Form
         function resetForm() {
             document.getElementById('student-form').reset();
             document.getElementById('student-id').value = '';
-            document.getElementById('form-title').textContent = 'Add Student';
+            document.getElementById('form-title').textContent = 'Add New Student';
         }
 
-        // Populate Edit Form
         function editStudent(student) {
             document.getElementById('student-id').value = student.id;
             document.getElementById('name').value = student.name;
@@ -456,7 +570,6 @@
             document.getElementById('name').focus();
         }
 
-        // Handle Add / Edit form submit
         async function handleFormSubmit(event) {
             event.preventDefault();
             const id = document.getElementById('student-id').value;
@@ -466,7 +579,6 @@
             const address = document.getElementById('address').value;
 
             if (id) {
-                // Update
                 const mutation = `
                     mutation UpdateStudent($id: ID!, $name: String!, $email: String!, $phone: String, $address: String) {
                         updateStudent(id: $id, name: $name, email: $email, phone: $phone, address: $address) {
@@ -483,7 +595,6 @@
                     loadStudents();
                 }
             } else {
-                // Create
                 const mutation = `
                     mutation CreateStudent($name: String!, $email: String!, $phone: String, $address: String) {
                         createStudent(name: $name, email: $email, phone: $phone, address: $address) {
@@ -502,7 +613,6 @@
             }
         }
 
-        // Delete student record
         async function deleteStudent(id) {
             if (!confirm(`Are you sure you want to delete student #${id}? This cannot be undone.`)) return;
 
@@ -517,8 +627,6 @@
                 loadStudents();
             }
         }
-
-        // Initial Load handled in auth block
     </script>
 </body>
 </html>

@@ -20,7 +20,7 @@ app.use(express.static(path.join(__dirname, '..', '..', 'frontend')));
 
 const PORT = process.env.AUTH_PORT || 5001;
 
-// Context for verifying current user auth status
+// Context untuk memverifikasi status autentikasi user saat ini
 const context = async ({ req }) => {
     const header = req.headers.authorization;
     if (!header) return { user: null };
